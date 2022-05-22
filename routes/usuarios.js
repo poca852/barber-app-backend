@@ -19,7 +19,6 @@ const router = Router();
 // localhost:8080/api/users
 
 router.post('/', [
-    validarJWT,
     check('email', 'Email is required').isEmail(),
     check('email').custom(verficarEmail),
     check('name', 'Name is required').not().isEmpty(),
