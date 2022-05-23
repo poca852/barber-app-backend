@@ -23,11 +23,6 @@ const UserModel = sequelize.define('user', {
         type: DataTypes.STRING
     },
 
-    ubicacion: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-
     name: {
         type: DataTypes.STRING,
         allowNull: false
