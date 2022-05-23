@@ -39,7 +39,7 @@ const UserModel = sequelize.define('user', {
     },
 
     rol: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 }, {timestamps: false});
