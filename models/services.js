@@ -25,7 +25,7 @@ const ServiceModel = sequelize.define('services', {
     },
 
     time: {
-        type: DataTypes.STRING,
+        type: DataTypes.TIME,
         allowNull: false
     }
 }, {timestamps: false});
