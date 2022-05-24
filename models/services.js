@@ -29,4 +29,4 @@ const ServiceModel = sequelize.define('services', {
     }
 }, {timestamps: false});
 
-module.exports = UserModel;
+module.exports = ServiceModel;
