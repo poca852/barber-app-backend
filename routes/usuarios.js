@@ -6,7 +6,8 @@ const { addUser,
         getUsers,
         getUser,
         putUser,
-        deleteUser } = require('../controllers/usuarios');
+        deleteUser, 
+        addRol} = require('../controllers/usuarios');
 
 // helpers
 const { verficarEmail, verificarId } = require('../helpers/db-validators');
@@ -26,6 +27,11 @@ router.post('/', [
     check('rol', 'rol is required').not().isEmpty(),
     validarCampos
 ], addUser)
+
+router.post('/rol', [
+    check('rol', 'Rol is required').not().isEmpty().isString(),
+    validarCampos
+], addRol)
 
 router.get('/', getUsers)
 
