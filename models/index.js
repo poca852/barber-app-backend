@@ -6,7 +6,7 @@ const DateModel = require('./date.js');
 const EmployeeModel = require('./employee.js');
 
 // relations rol - user
-Rolmodel.hasOne(UserModel, {foreignKey: 'id'});
+Rolmodel.hasOne(UserModel, {foreignKey: 'idRol'});
 UserModel.belongsTo(Rolmodel);
 
 // relation user - date

@@ -3,9 +3,10 @@ const sequelize = require('../database/config');
 
 const UserModel = sequelize.define('user', {
     id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false
     },
 
     email: {
@@ -38,7 +39,7 @@ const UserModel = sequelize.define('user', {
         defaultValue: true
     },
 
-    rol: {
+    idRol: {
         type: DataTypes.INTEGER,
         allowNull: false
     }

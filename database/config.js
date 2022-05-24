@@ -5,12 +5,12 @@ const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}
     logging: false,
     native: false,
     //error de ssl
-    dialectOptions: {
+    /*dialectOptions: {
         ssl:{
             require: true,
             rejectUnauthorized: false
         }
-    }
+    }*/
 });
 
 module.exports = sequelize;
