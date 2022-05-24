@@ -13,11 +13,11 @@ UserModel.belongsTo(Rolmodel);
 UserModel.hasOne(DateModel, {foreignKey: 'idUser'});
 DateModel.belongsTo(UserModel);
 
-//relation date - service
+//relation cita - service
 DateModel.belongsToMany(ServiceModel, {through: 'ServiceDate'});
 ServiceModel.belongsToMany(DateModel, {through: 'ServiceDate'});
 
-//relation date - employee
+//relation cita - employee
 EmployeeModel.hasOne(DateModel, {foreignKey: 'idEmployee'});
 DateModel.belongsTo(EmployeeModel);
 

@@ -12,7 +12,8 @@ class Server {
             // https://barbarapp.herokuapp.com
             auth: '/api/auth',
             usuarios: '/api/users',
-            products: '/api/products'
+            products: '/api/products',
+            services: '/api/services'
         }
 
 
@@ -52,6 +53,7 @@ class Server {
     routes() {
         this.app.use( this.paths.auth, require('../routes/auth'));
         this.app.use( this.paths.usuarios, require('../routes/usuarios'));
+        this.app.use( this.paths.services, require('../routes/services'));
     }
 
     listen() {
