@@ -1,4 +1,4 @@
-const { UserModel } = require("../models");
+const { UserModel, Rolmodel } = require("../models");
 
 //  ================== VERIFICACIONES PARA EL MANEJO DE LOS USUARIOS ==========
 const verficarEmail = async(email = '') => {
@@ -19,6 +19,19 @@ const verificarId = async(id = '') => {
    }
 }
 
+// para verificar si existe un rol antes de crearlo
+const existeRol = async(rol = '') => {
+   const rol = await Rolmodel.findOne({
+      where: {
+         rol
+      }
+   })
+
+   if(rol){
+      throw new Error(`El rol ${rol} ya existe`)
+   }
+}
+
 // =================== VERIFICACIONES PARA EL LOGIN =================
 const existeEmail = async(email = '') => {
    const user = await UserModel.findOne({
@@ -33,6 +46,7 @@ const existeEmail = async(email = '') => {
 
 module.exports = {
    verficarEmail,
+   existeRol,
    verificarId,
    existeEmail
 }
