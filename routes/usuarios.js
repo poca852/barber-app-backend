@@ -10,7 +10,7 @@ const { addUser,
         addRol} = require('../controllers/usuarios');
 
 // helpers
-const { verficarEmail, verificarId, existeRol } = require('../helpers/db-validators');
+const { verficarEmail, verificarId, existeRol, verificarRol } = require('../helpers/db-validators');
 
 // middlewares
 const {validarCampos, validarJWT} = require('../middlewares');
@@ -25,7 +25,8 @@ router.post('/', [
     check('email').custom(verficarEmail),
     check('name', 'Name is required').not().isEmpty(),
     check('password', 'password is required').isLength({min: 6}),
-    check('rol', 'rol is required').not().isEmpty(),
+    check('idRol', 'rol debe ser un uuid').isUUID(),
+    check('idRol').custom(verificarRol),
     validarCampos
 ], addUser)
 

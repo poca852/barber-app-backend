@@ -4,19 +4,32 @@ const { UserModel, Rolmodel } = require("../models");
 
 const addUser = async(req = request, res = response) => {
 
-    const {email, password, name, rol} = req.body;
+    const {email, password, name, phone, avatar, idRol} = req.body;
     
     try {
         // encriptamos el password
         const hash = bcryptjs.hashSync(password, 10);
 
+        // armamos el body
+        const data = {
+          email,
+          password: hash,
+          name,
+          phone,
+          avatar,
+          idRol
+        }
+
         // insertamos en la base de datos el user
-        const user = await UserModel.create({email, password: hash, name, rol});
+        const user = await UserModel.create(data);
 
         res.json({
           ok: true,
           name: user.name,
-          id: user.id
+          id: user.id,
+          email: user.email,
+          phone: user.phone,
+          rol: user.idRol
         })
 
     } catch (error) {

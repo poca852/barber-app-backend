@@ -21,14 +21,22 @@ const verificarId = async(id = '') => {
 
 // para verificar si existe un rol antes de crearlo
 const existeRol = async(rol = '') => {
-   const rol = await Rolmodel.findOne({
+   const UserRol = await Rolmodel.findOne({
       where: {
          rol
       }
    })
 
-   if(rol){
+   if(UserRol){
       throw new Error(`El rol ${rol} ya existe`)
+   }
+}
+
+// esta funcion verifica que el rol exista a la hora de crear un usuario
+const verificarRol = async(rol = '') => {
+   const userRol = await Rolmodel.findByPk(rol);
+   if(!userRol){
+      throw new Error(`El rol ${rol} no existe en la db`)
    }
 }
 
@@ -47,6 +55,7 @@ const existeEmail = async(email = '') => {
 module.exports = {
    verficarEmail,
    existeRol,
+   verificarRol,
    verificarId,
    existeEmail
 }
