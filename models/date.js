@@ -1,7 +1,7 @@
 const {DataTypes} = require('sequelize');
 const sequelize = require('../database/config');
 
-const ServiceModel = sequelize.define('services', {
+const DateModel = sequelize.define('date', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -9,25 +9,26 @@ const ServiceModel = sequelize.define('services', {
       allowNull: false
     },
 
-    name: {
-        type: DataTypes.STRING,
+    idUser: {
+        type: DataTypes.UUID,
         allowNull: false
     },
 
-    detail: {
-        type: DataTypes.STRING,
+    idEmployee: {
+        type: DataTypes.UUID,
         allowNull: false
     },
 
-    price: {
+    total: {
         type: DataTypes.FLOAT,
+        allowNull: false
+    },
+
+    date: {
+        type: DataTypes.DATE, //2022-01-17 04:33:12
         allowNull:false
     },
+    
+}, {timestamps: true});
 
-    time: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }
-}, {timestamps: false});
-
-module.exports = ServiceModel;
+module.exports = DateModel;
