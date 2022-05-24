@@ -40,7 +40,7 @@ const UserModel = sequelize.define('user', {
     },
 
     idRol: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
     }
 }, {timestamps: false});
