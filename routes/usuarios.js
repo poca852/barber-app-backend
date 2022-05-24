@@ -31,11 +31,13 @@ router.post('/', [
 ], addUser)
 
 // crear un nuevo rol
+
 router.post('/rol', [
     check('rol', 'Rol is required').not().isEmpty().isString(),
     check('rol').custom(existeRol),
     validarCampos
 ], addRol)
+
 
 // listar todos los usuarios
 router.get('/', getUsers)
