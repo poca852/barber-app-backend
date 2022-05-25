@@ -57,7 +57,11 @@ const getProducts = async(req = request, res = response, next) => {
   try {
 
     const products = await ProductsModel.findAll({
-      attributes: ["name", "stock", "price", "idCategorie", "img", "id"]
+      attributes: ["name", "stock", "price", "idCategorie", "img", "id"],
+      include: {
+        model: CategorieModel,
+        attributes: ['categorie', 'id']
+      }
     });
 
     if (name){

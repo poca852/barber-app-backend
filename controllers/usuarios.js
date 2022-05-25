@@ -1,7 +1,6 @@
 const { response, request } = require("express");
 const bcryptjs = require('bcryptjs');
-const { UserModel } = require("../models");
-const {Rolmodel} = require('../models');
+const { UserModel, Rolmodel } = require("../models");
 
 const addUser = async(req = request, res = response) => {
 
@@ -64,7 +63,11 @@ const addRol = async(req = request, res = response) => {
 const getUsers = async(req = request, res = response) => {
   try {
     const users = await UserModel.findAll({
-      attributes: ['id', 'name', 'email']
+      attributes: ['id', 'name', 'email'],
+      include: {
+        model: Rolmodel,
+        attributes: ['id', 'rol']
+      }
     });
 
     res.status(200).json({

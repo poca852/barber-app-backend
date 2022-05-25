@@ -8,8 +8,8 @@ const ProductsModel = require("./products.js")
 const CategorieModel = require ("./categorie.js")
 
 // relations rol - user
-Rolmodel.hasOne(UserModel, {foreignKey: 'idRol'});
-UserModel.belongsTo(Rolmodel);
+Rolmodel.hasMany(UserModel, {foreignKey: 'idRol'});
+UserModel.belongsTo(Rolmodel, {foreignKey: 'idRol'});
 
 // relation user - date
 UserModel.hasOne(DateModel, {foreignKey: 'idUser'});
@@ -24,8 +24,8 @@ EmployeeModel.hasOne(DateModel, {foreignKey: 'idEmployee'});
 DateModel.belongsTo(EmployeeModel);
 
 //relation categorie - products
-CategorieModel.hasOne(ProductsModel, {foreignKey: 'idCategorie'});
-ProductsModel.belongsTo(CategorieModel);
+CategorieModel.hasMany(ProductsModel, {foreignKey: 'idCategorie'})
+ProductsModel.belongsTo(CategorieModel, {foreignKey: 'idCategorie'})
 
 // models exports 
 module.exports = { 

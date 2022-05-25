@@ -21,7 +21,10 @@ router.get('/:id', [
     check('id', 'Id is not valid').isUUID(),
 ], getProduct)
 
+// ruta para actaulizar producto keneth ++++++++++++++++
 
+
+// ruta para eliminar producto
 
 
 

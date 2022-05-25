@@ -1,5 +1,6 @@
 const {DataTypes} = require('sequelize');
 const sequelize = require('../database/config');
+const Rolmodel = require('./rol');  
 
 const UserModel = sequelize.define('user', {
     id: {
@@ -42,7 +43,11 @@ const UserModel = sequelize.define('user', {
 
     idRol: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: Rolmodel,
+            key: 'id'
+        }
     }
 }, {timestamps: false});
 

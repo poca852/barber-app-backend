@@ -1,5 +1,5 @@
 const { response, request } = require("express");
-const { CategorieModel} = require('../models');
+const { CategorieModel, ProductsModel} = require('../models');
 
 const addCategorie = async(req = request, res = response) => {
 
@@ -52,7 +52,10 @@ const getCategories = async(req = request, res = response, next) => {
   try {
 
     const categories = await CategorieModel.findAll({
-      attributes: ["categorie", "id"]
+      attributes: ["categorie", "id"],
+      include: {
+        model: ProductsModel
+      }
     });
 
     if (categorie){

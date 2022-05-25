@@ -1,4 +1,5 @@
 const {DataTypes} = require('sequelize');
+const CategorieModel = require('./categorie')
 const sequelize = require('../database/config');
 
 const ProductsModel = sequelize.define('products', {
@@ -24,9 +25,18 @@ const ProductsModel = sequelize.define('products', {
         allowNull:false
     },
 
+    state: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
+
     idCategorie: {
         type: DataTypes.UUID,
-       allowNull: false
+        allowNull: false,
+        references: {
+            model: CategorieModel,
+            key: 'id'
+        }
    
     },
 
