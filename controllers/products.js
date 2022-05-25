@@ -1,25 +1,26 @@
 const { response, request } = require("express");
-const {ServiceModel, DateModel} = require('../models');
+const {ProductsModel, CategorieModel} = require('../models');
 
-const addService = async(req = request, res = response) => {
+const addProduct = async(req = request, res = response) => {
 
-    const {name, detail, price, time, img} = req.body;
+    const {name,stock, price, idCategorie, img} = req.body;
     
     try {
         // insertamos en la base de datos el service
-        const service = await ServiceModel.create({name, detail, price, time, img});
+        const product = await ProductsModel.create({name, stock, price, img, idCategorie});
+        
 
         res.json({
           ok: true,
-          id: service.id,
-          name: service.name,
-          detail: service.detail,
-          price: service.price,
-          time: service.time,
-          img: service.img
+          id: product.id,
+          name: product.name,
+          stock: product.stock,
+          price: product.price,
+          img: product.img,
+          idCategorie: product.idCategorie
         })
 
-        console.log(service)
+       
 
     } catch (error) {
         console.log(error);
@@ -50,36 +51,37 @@ const addRol = async(req = request, res = response) => {
 }
 */
 
-const getServices = async(req = request, res = response, next) => {
+const getProducts = async(req = request, res = response, next) => {
   const {name} = req.query;
 
   try {
 
-    const services = await ServiceModel.findAll({
-      attributes: ["name", "detail", "price", "time", "img", "id"]
+    const products = await ProductsModel.findAll({
+      attributes: ["name", "stock", "price", "idCategorie", "img", "id"]
     });
 
     if (name){
 
-    //const service = services.find((s) => s.name.toLowerCase() === name.toLowerCase());
-    const service = services.filter((s) => s.name.toLowerCase().includes(name.toLowerCase()));
+    //const product = services.find((p) => p.name.toLowerCase() === name.toLowerCase());
+    const product = products.filter((p) => p.name.toLowerCase().includes(name.toLowerCase()));
 
-    if (service.length>0){
+    if (product.length){
     return res.status(200).json({
       ok: true,
-      service
+      product
     })}
 
      return res.status(500).json({
         ok: false,
-        msg: "Servicio no encontrado",
+        msg: "Producto no encontrado",
     })
   }
 
   res.status(200).json({
     ok: true,
-    services
+    products
   })
+
 }catch (error) {
       //next(error)
     console.log(error);
@@ -90,19 +92,19 @@ const getServices = async(req = request, res = response, next) => {
   }
 };
 
-const getService = async(req = request, res = response, next) => {
+const getProduct = async(req = request, res = response, next) => {
   const {id} = req.params;
 
   try {
 
-    const service = await ServiceModel.findByPk(id,{
-      attributes: ["name", "detail", "price", "time", "img", "id"]
+    const product = await ProductsModel.findByPk(id,{
+      attributes: ["name", "stock", "price", "idCategorie", "img", "id"]
     });
 
 
   res.status(200).json({
     ok: true,
-    service
+    product
   })
 }catch (error) {
       //next(error)
@@ -168,8 +170,9 @@ const deleteUser = async(req = request, res = response) => {
 };
 */
 module.exports = {
-  addService,
-  getServices,
-  getService
+addProduct,
+getProducts,
+getProduct
+
 
 };
