@@ -1,0 +1,4 @@
+ruta get (/api/products) se debe agregar la relacion en el monento que consultamos en la base de datos los productos para que cuadno obtengamos todos los productos o un producto en particular podamos no solo ver el id de la categoria si no que podamos ver el nombre de la categoria
+
+como observacion tambien esta el tema como manejaron el llamado a los servicios para que quede mas optimizado
+
