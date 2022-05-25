@@ -32,7 +32,7 @@ class Server {
     async conectarDB() {
         try {
             await sequelize.authenticate();
-            await sequelize.sync({force: true})
+            // await sequelize.sync({force: true})
         } catch (error) {
             console.log(error)
         }
