@@ -1,34 +1,37 @@
-const {DataTypes} = require('sequelize');
-const sequelize = require('../database/config');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../database/config");
 
-const DateModel = sequelize.define('date', {
+const DateModel = sequelize.define(
+  "date",
+  {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      allowNull: false
+      allowNull: true,
     },
 
     idUser: {
-        type: DataTypes.UUID,
-        allowNull: false
+      type: DataTypes.UUID,
+      allowNull: true,
     },
 
     idEmployee: {
-        type: DataTypes.UUID,
-        allowNull: false
+      type: DataTypes.UUID,
+      allowNull: true,
     },
 
     total: {
-        type: DataTypes.FLOAT,
-        allowNull: false
+      type: DataTypes.FLOAT,
+      allowNull: true,
     },
 
     date: {
-        type: DataTypes.DATE, //2022-01-17 04:33:12
-        allowNull:false
+      type: DataTypes.DATE, //2022-01-17 04:33:12
+      allowNull: false,
     },
-    
-}, {timestamps: true});
+  },
+  { timestamps: true }
+);
 
 module.exports = DateModel;
