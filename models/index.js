@@ -4,6 +4,8 @@ const Rolmodel = require('./rol.js');
 const ServiceModel = require('./services.js');
 const DateModel = require('./date.js');
 const EmployeeModel = require('./employee.js');
+const ProductsModel = require("./products.js")
+const CategorieModel = require ("./categorie.js")
 
 // relations rol - user
 Rolmodel.hasOne(UserModel, {foreignKey: 'idRol'});
@@ -21,11 +23,17 @@ ServiceModel.belongsToMany(DateModel, {through: 'ServiceDate'});
 EmployeeModel.hasOne(DateModel, {foreignKey: 'idEmployee'});
 DateModel.belongsTo(EmployeeModel);
 
+//relation categorie - products
+CategorieModel.hasOne(ProductsModel, {foreignKey: 'idCategorie'});
+ProductsModel.belongsTo(CategorieModel);
+
 // models exports 
 module.exports = { 
   UserModel,
   Rolmodel,
   ServiceModel,
   DateModel,
-  EmployeeModel
+  EmployeeModel,
+  CategorieModel,
+  ProductsModel
 }

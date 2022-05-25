@@ -1,25 +1,21 @@
 const { response, request } = require("express");
-const {ServiceModel, DateModel} = require('../models');
+const { CategorieModel} = require('../models');
 
-const addService = async(req = request, res = response) => {
+const addCategorie = async(req = request, res = response) => {
 
-    const {name, detail, price, time, img} = req.body;
+    const {categorie} = req.body;
     
     try {
         // insertamos en la base de datos el service
-        const service = await ServiceModel.create({name, detail, price, time, img});
+        const categories = await CategorieModel.create({categorie});
 
         res.json({
           ok: true,
-          id: service.id,
-          name: service.name,
-          detail: service.detail,
-          price: service.price,
-          time: service.time,
-          img: service.img
+          id: categories.id,
+          categorie: categories.categorie,
         })
 
-        console.log(service)
+       
 
     } catch (error) {
         console.log(error);
@@ -50,36 +46,37 @@ const addRol = async(req = request, res = response) => {
 }
 */
 
-const getServices = async(req = request, res = response, next) => {
-  const {name} = req.query;
+const getCategories = async(req = request, res = response, next) => {
+  const {categorie} = req.query;
 
   try {
 
-    const services = await ServiceModel.findAll({
-      attributes: ["name", "detail", "price", "time", "img", "id"]
+    const categories = await CategorieModel.findAll({
+      attributes: ["categorie", "id"]
     });
 
-    if (name){
+    if (categorie){
 
-    //const service = services.find((s) => s.name.toLowerCase() === name.toLowerCase());
-    const service = services.filter((s) => s.name.toLowerCase().includes(name.toLowerCase()));
+    //const cat = services.find((c) => p.name.toLowerCase() === name.toLowerCase());
+    const cat = categories.filter((c) => c.categorie.toLowerCase().includes(categorie.toLowerCase()));
 
-    if (service.length>0){
+    if (cat.length){
     return res.status(200).json({
       ok: true,
-      service
+      cat
     })}
 
      return res.status(500).json({
         ok: false,
-        msg: "Servicio no encontrado",
+        msg: "Categorie no encontrado",
     })
   }
 
   res.status(200).json({
     ok: true,
-    services
+    categories
   })
+
 }catch (error) {
       //next(error)
     console.log(error);
@@ -89,32 +86,6 @@ const getServices = async(req = request, res = response, next) => {
     });
   }
 };
-
-const getService = async(req = request, res = response, next) => {
-  const {id} = req.params;
-
-  try {
-
-    const service = await ServiceModel.findByPk(id,{
-      attributes: ["name", "detail", "price", "time", "img", "id"]
-    });
-
-
-  res.status(200).json({
-    ok: true,
-    service
-  })
-}catch (error) {
-      //next(error)
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: "Hable con el administrador",
-    });
-  }
-};
-
-
 
 
 /*
@@ -168,8 +139,9 @@ const deleteUser = async(req = request, res = response) => {
 };
 */
 module.exports = {
-  addService,
-  getServices,
-  getService
+addCategorie,
+getCategories,
+
+
 
 };

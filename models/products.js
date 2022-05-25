@@ -1,7 +1,7 @@
 const {DataTypes} = require('sequelize');
 const sequelize = require('../database/config');
 
-const ServiceModel = sequelize.define('services', {
+const ProductsModel = sequelize.define('products', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -14,8 +14,8 @@ const ServiceModel = sequelize.define('services', {
         allowNull: false
     },
 
-    detail: {
-        type: DataTypes.STRING,
+    stock: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
 
@@ -24,14 +24,15 @@ const ServiceModel = sequelize.define('services', {
         allowNull:false
     },
 
-    time: {
-        type: DataTypes.TIME,
-        allowNull: false
+    idCategorie: {
+        type: DataTypes.UUID,
+       allowNull: false
+   
     },
 
     img: {
         type: DataTypes.STRING,
-        defaultValue:'https://img2.freepng.es/20180405/pww/kisspng-hair-cutting-shears-scissors-computer-icons-scissor-5ac5cbedcb8877.1228515315229122378337.jpg',
+        defaultValue:'https://m.media-amazon.com/images/I/71HMYf1sp1L._SX355_.jpg',
         allowNull: true,
         // validate: {
         //     isUrl: true,
@@ -40,4 +41,4 @@ const ServiceModel = sequelize.define('services', {
     }
 }, {timestamps: false});
 
-module.exports = ServiceModel;
+module.exports = ProductsModel;
