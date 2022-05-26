@@ -30,7 +30,7 @@ const DateModel = sequelize.define(
       type: DataTypes.DATE ,
       get: function() {
         return this.getDataValue('date')
-        .toLocaleString('en-US'); //da el formato "02/02/2022, 12:50:00", de lo contrario trae 2022-01-17T04:33:12.000Z,
+        .toLocaleString('en-US'); //da el formato "mm/dd/yyyy, 12:50:00", de lo contrario trae 2022-01-17T04:33:12.000Z,
         },
         allowNull: false,   
       },
