@@ -3,7 +3,7 @@ const {DateModel, ServiceModel} = require("../models");
 
 const addDate = async (req = request, res = response) => {
   const { idUser, idEmployee, total, date, service } = req.body;
-  //formato de date: "5/5/2022, 4:00:00 PM"
+  //formato de date: "mm/dd/yyyy, 4:00:00 PM"
 
   try {
     //   // insertamos en la base de datos la cita
@@ -14,8 +14,7 @@ const addDate = async (req = request, res = response) => {
         name: service
       }
     });
-
-    await newDate.addServiceModel(foundService);// <--Error
+    await newDate.addService(foundService);
 
 
     res.json({
@@ -51,6 +50,9 @@ const addDate = async (req = request, res = response) => {
 
       if (date) {
        const foundDate = allDates.filter((d) =>{
+         if(d.date === date){
+           return d
+         }
          return d.date.split(',')[0] === date
        });
 
