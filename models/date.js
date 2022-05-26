@@ -8,7 +8,7 @@ const DateModel = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      allowNull: true,
+      allowNull: false,
     },
 
     idUser: {
@@ -23,15 +23,19 @@ const DateModel = sequelize.define(
 
     total: {
       type: DataTypes.FLOAT,
-      allowNull: true,
+      allowNull: false,
     },
 
     date: {
-      type: DataTypes.DATE, //2022-01-17 04:33:12
-      allowNull: false,
-    },
+      type: DataTypes.DATE ,
+      get: function() {
+        return this.getDataValue('date')
+        .toLocaleString('en-US'); //da el formato "02/02/2022, 12:50:00", de lo contrario trae 2022-01-17T04:33:12.000Z,
+        },
+        allowNull: false,   
+      },
   },
-  { timestamps: true }
+  { timestamps: false }
 );
 
 module.exports = DateModel;

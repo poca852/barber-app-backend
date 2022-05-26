@@ -1,4 +1,4 @@
-const { UserModel, Rolmodel } = require("../models");
+const { UserModel, Rolmodel, DateModel } = require("../models");
 
 //  ================== VERIFICACIONES PARA EL MANEJO DE LOS USUARIOS ==========
 const verficarEmail = async(email = '') => {
@@ -40,6 +40,20 @@ const verificarRol = async(rol = '') => {
    }
 }
 
+// =================== VERIFICACIONES PARA CITAS =================
+const checkDates = async(date) =>{
+   const allDates = await DateModel.findAll()
+   if (date) {
+      const foundDate = allDates.filter((d) =>{
+        return d.date === date
+      });
+
+      if(foundDate.length){
+         throw new Error(`La cita en esta fecha ${date} no esta disponible`);
+      }
+}
+
+}
 // =================== VERIFICACIONES PARA EL LOGIN =================
 const existeEmail = async(email = '') => {
    const user = await UserModel.findOne({
@@ -57,5 +71,6 @@ module.exports = {
    existeRol,
    verificarRol,
    verificarId,
-   existeEmail
+   existeEmail,
+   checkDates
 }
