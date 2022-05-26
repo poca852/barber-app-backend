@@ -1,5 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/config");
+const EmployeeModel = require("./employee");
+const UserModel = require("./usuario");
 
 const DateModel = sequelize.define(
   "date",
@@ -14,10 +16,18 @@ const DateModel = sequelize.define(
     idUser: {
       type: DataTypes.UUID,
       allowNull: true,
+      references: {
+        model: UserModel,
+        key: 'id'
+      }
     },
 
     idEmployee: {
       type: DataTypes.UUID,
+      references: {
+        model: EmployeeModel,
+        key: 'id'
+      },
       allowNull: true,
     },
 
