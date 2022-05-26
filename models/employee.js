@@ -11,11 +11,13 @@ const EmployeeModel = sequelize.define('employee', {
 
     name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
 
     availability:{
         type: DataTypes.BOOLEAN,
+        defaultValue: true,
         allowNull: false
     }
 

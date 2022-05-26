@@ -1,4 +1,4 @@
-const { UserModel, Rolmodel,DateModel, CategorieModel, ProductsModel } = require("../models");
+const { UserModel, Rolmodel,DateModel, CategorieModel, ProductsModel, EmployeeModel } = require("../models");
 
 //  ================== VERIFICACIONES PARA EL MANEJO DE LOS USUARIOS ==========
 const verficarEmail = async(email = '') => {
@@ -83,6 +83,26 @@ const verificarProduct = async(idProduct = '') => {
    }
 }
 
+// ================== VALIDACIONES PARA EMPLOYEE============================
+const existeEmploye = async(employee = '') => {
+   const employeeModel = await EmployeeModel.findOne({
+      where: {
+         name: employee
+      }
+   })
+
+   if(employeeModel){
+      throw new Error(`El empleado ${employee} ya existe`)
+   }
+}
+
+const existeEmployeById = async(idEmploye = '') => {
+   const employeModel = await EmployeeModel.findByPk(idEmploye);
+   if(!employeModel) {
+      throw new Error(`El empleado con el id ${idEmploye} no existe`);
+   }
+}
+
 module.exports = {
    verficarEmail,
    existeRol,
@@ -91,6 +111,7 @@ module.exports = {
    existeEmail,
    verficarCategoria,
    verificarProduct,
-   checkDates
-
+   checkDates,
+   existeEmploye,
+   existeEmployeById
 }
