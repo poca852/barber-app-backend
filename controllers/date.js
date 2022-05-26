@@ -15,7 +15,7 @@ const addDate = async (req = request, res = response) => {
       }
     });
 
-    await newDate.addServiceModel(foundService);
+    await newDate.addServiceModel(foundService);// <--Error
 
 
     res.json({
