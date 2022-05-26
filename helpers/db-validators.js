@@ -1,5 +1,8 @@
 const { UserModel, Rolmodel,DateModel, CategorieModel, ProductsModel, EmployeeModel } = require("../models");
 
+const { UserModel, Rolmodel,DateModel, CategorieModel, ProductsModel, ServiceModel } = require("../models");
+
+
 //  ================== VERIFICACIONES PARA EL MANEJO DE LOS USUARIOS ==========
 const verficarEmail = async(email = '') => {
    const user = await UserModel.findOne({
@@ -67,7 +70,7 @@ const existeEmail = async(email = '') => {
 }
 
 // =================== validaciones para products ====================
-// david: esta funcion veriica que la categoria exista
+// david: esta funcion verifica que la categoria exista
 const verficarCategoria = async(categorie = '') => {
    const categorieModel = await CategorieModel.findByPk(categorie)
    if(!categorieModel){
@@ -103,6 +106,28 @@ const existeEmployeById = async(idEmploye = '') => {
    }
 }
 
+//  ================== VERIFICACIONES PARA EL MANEJO DE LOS SERVICIOS ==========
+
+
+// consu: esta funcion verifica que el servicio exista atraves del ID
+
+const verificarServicio = async(id = '') => {
+   const serviceModel = await ServiceModel.findByPk(id);
+   if(!serviceModel){
+      throw new Error(`El servicio con el id ${id} no existe`)
+   }
+}
+
+// consu: esta funcion verifica que el name no este repetido
+
+const verificarNameServicio = async(name = '') => {
+   const serviceNameModel = await ServiceModel.findOne({where: {name:name}});
+   if(!serviceNameModel){
+      throw new Error(`El servicio con el id ${name} no existe`)
+   }
+}
+
+
 module.exports = {
    verficarEmail,
    existeRol,
@@ -113,5 +138,8 @@ module.exports = {
    verificarProduct,
    checkDates,
    existeEmploye,
-   existeEmployeById
+   existeEmployeById,
+   verificarServicio,
+   verificarNameServicio
+
 }

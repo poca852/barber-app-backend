@@ -37,7 +37,12 @@ const ServiceModel = sequelize.define('services', {
         //     isUrl: true,
 
         //   }
+    },
+    state:{
+        type: DataTypes.BOOLEAN,
+        defaultValue:true
     }
+
 }, {timestamps: false});
 
 module.exports = ServiceModel;
