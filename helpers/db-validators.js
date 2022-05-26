@@ -1,4 +1,4 @@
-const { UserModel, Rolmodel } = require("../models");
+const { UserModel, Rolmodel, CategorieModel, ProductsModel } = require("../models");
 
 //  ================== VERIFICACIONES PARA EL MANEJO DE LOS USUARIOS ==========
 const verficarEmail = async(email = '') => {
@@ -52,10 +52,29 @@ const existeEmail = async(email = '') => {
    }
 }
 
+// =================== validaciones para products ====================
+// david: esta funcion veriica que la categoria exista
+const verficarCategoria = async(categorie = '') => {
+   const categorieModel = await CategorieModel.findByPk(categorie)
+   if(!categorieModel){
+      throw new Error(`La categoria ${categorie} no existe`)
+   }
+}
+
+// david: esta funcion verifica que el producto exista
+const verificarProduct = async(idProduct = '') => {
+   const productModel = await ProductsModel.findByPk(idProduct);
+   if(!productModel){
+      throw new Error(`El producto con el id ${idProduct} no existe`)
+   }
+}
+
 module.exports = {
    verficarEmail,
    existeRol,
    verificarRol,
    verificarId,
-   existeEmail
+   existeEmail,
+   verficarCategoria,
+   verificarProduct
 }
