@@ -3,20 +3,38 @@ const {ServiceModel} = require('../models');
 
 const addService = async(req = request, res = response) => {
 
-    const {name, detail, price, time, img} = req.body;
+    const {name, detail, price, time, img, state} = req.body;
     
     try {
-        // insertamos en la base de datos el service
-        const service = await ServiceModel.create({name, detail, price, time, img});
 
-        res.json({
+    // Consu :verifico que el nombre que queremos agregar no este en la base anteriormente
+    const validateName =  await ServiceModel.findOne({
+      where: {
+        name : name
+      }
+    });
+  
+   // si el nombre ya existe entonces le mando una respuesta indicando que el servicio ya existe
+   if(validateName){
+    return res.status(400).json({
+      ok: false,
+      msg: `El servicio ${name} ya existe`
+    })
+  }
+
+  // insertamos en la base de datos el service
+    const service = await ServiceModel.create({name, detail, price, time, img, state});
+  
+
+     return res.json({
           ok: true,
           id: service.id,
           name: service.name,
           detail: service.detail,
           price: service.price,
           time: service.time,
-          img: service.img
+          img: service.img,
+          state: service.state
         })
 
     } catch (error) {
@@ -28,25 +46,8 @@ const addService = async(req = request, res = response) => {
     }
 };
 
-/*
-const addRol = async(req = request, res = response) => {
-  const {rol} = req.body;
-  try {
-    const newRol = await Rolmodel.create({rol: rol});
 
-    res.status(201).json({
-      ok: true,
-      newRol
-    })
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador'
-    })
-  }
-}
-*/
+
 
 const getServices = async(req = request, res = response, next) => {
   const {name} = req.query;
@@ -54,12 +55,12 @@ const getServices = async(req = request, res = response, next) => {
   try {
 
     const services = await ServiceModel.findAll({
-      attributes: ["name", "detail", "price", "time", "img", "id"]
+      attributes: ["name", "detail", "price", "time", "img", "id", "state"]
     });
 
     if (name){
 
-    //const service = services.find((s) => s.name.toLowerCase() === name.toLowerCase());
+    
     const service = services.filter((s) => s.name.toLowerCase().includes(name.toLowerCase()));
 
     if (service.length>0){
@@ -94,7 +95,7 @@ const getService = async(req = request, res = response, next) => {
   try {
 
     const service = await ServiceModel.findByPk(id,{
-      attributes: ["name", "detail", "price", "time", "img", "id"]
+      attributes: ["name", "detail", "price", "time", "img", "id", "state"]
     });
 
 
@@ -113,22 +114,35 @@ const getService = async(req = request, res = response, next) => {
 };
 
 
-
-
-/*
 const putService = async(req = request, res = response) => {
   const {id} = req.params;
-  const {} = req.body;
+  
+  const { state, ...data} = req.body;
   try {
-    if(password){
-      resto.password = bcryptjs.hashSync(password, 10)
-    }
+ 
+  // verifico que el nombre que queremos actualizar este disponible
+  const validateName =  await ServiceModel.findOne({
+      where: {
+        name : data.name
+      }
+    });
 
-    const user = await UserModel.update(resto, {
+   // si el nombre ya existe entonces le mando una respuesta indicando que el servicio ya existe
+   if(validateName){
+    return res.status(400).json({
+      ok: false,
+      msg: `El servicio ${data.name} ya existe`
+    })
+  }
+  
+
+    await ServiceModel.update(data, {
       where: {
         id
       }
     });
+
+
     
     res.status(201).json({
       ok: true,
@@ -143,10 +157,10 @@ const putService = async(req = request, res = response) => {
   }
 };
 
-const deleteUser = async(req = request, res = response) => {
+const deleteService = async(req = request, res = response) => {
   const {id} = req.params;
   try {
-    const user = await UserModel.update({state: false}, {
+     await ServiceModel.update({state: false}, {
       where: {
         id
       }
@@ -164,10 +178,13 @@ const deleteUser = async(req = request, res = response) => {
     });
   }
 };
-*/
+
 module.exports = {
   addService,
   getServices,
-  getService
+  getService,
+  putService,
+  deleteService
+  
 
 };
