@@ -1,5 +1,5 @@
 const { response, request } = require("express");
-const {ServiceModel, DateModel} = require('../models');
+const {ServiceModel} = require('../models');
 
 const addService = async(req = request, res = response) => {
 
@@ -18,8 +18,6 @@ const addService = async(req = request, res = response) => {
           time: service.time,
           img: service.img
         })
-
-        console.log(service)
 
     } catch (error) {
         console.log(error);

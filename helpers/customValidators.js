@@ -1,8 +1,5 @@
 const validarHora = (time = "") => {
-  const validar = new RegExp(
-    //"^(?:0?[1-9]|1[0-2]):[0-5][0-9]s?(?:[aApP](.?)[mM]\1)?$"
-    "^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$"
-  );
+  const validar = new RegExp("^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$");
 
   if (!validar.test(time)) {
     throw new Error("El formato es incorrecto 00:00");
@@ -11,6 +8,30 @@ const validarHora = (time = "") => {
     return "ok"
   }
 };
+
+const validateDateTime = (date) =>{
+  //no funciona el regex
+  const validate = new RegExp("(?:19\d{2}|20[01][0-9]|2020)[-/.](?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])");
+  if(!validate.test(date)){
+    throw new Error("El formato es incorrecto dd/mm/aaaa");
+  }
+  else{
+    return 0;
+  }
+}
+
+const validateDate = (date) =>{
+  //no funciona el regex
+  const validate = new RegExp("^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$")
+  console.log(validate.test(String(date)))
+if(!validate.test(date)){
+  throw new Error("El formato es incorrecto dd/mm/aaaa");
+}
+else{
+  return 0;
+}
+}
+
 
 const validarImg = (img) => {
   if (!img || !img.length) {
@@ -29,4 +50,6 @@ const validarImg = (img) => {
 module.exports = {
   validarHora,
   validarImg,
+  validateDateTime,
+  validateDate
 };

@@ -1,19 +1,29 @@
 const { response, request } = require("express");
-const { DateModel, ProductsModel } = require("../models");
+const {DateModel, ServiceModel} = require("../models");
 
 const addDate = async (req = request, res = response) => {
-  const { idUser, idEmployee, total, date } = req.body;
-  console.log(total, date);
+  const { idUser, idEmployee, total, date, service } = req.body;
+  //formato de date: "5/5/2022, 4:00:00 PM"
+
   try {
-    //   // insertamos en la base de datos el service
-    const newDate = await DateModel.create({ total, date });
+    //   // insertamos en la base de datos la cita
+    const newDate = await DateModel.create({total, date});
+
+    const foundService = await ServiceModel.findAll({
+      where: {
+        name: service
+      }
+    });
+
+    await newDate.addServiceModel(foundService);// <--Error
+
+
     res.json({
       ok: true,
-      // id: newDate.id,
-      // idUser: newDate.idUser,
-      // idEmployee: newDate.idEmployee,
+      id: newDate.id,
+     // idUser: newDate.idUser,
+     //idEmployee: newDate.idEmployee,
       total: newDate.total,
-
       date: newDate.date,
     });
   } catch (error) {
@@ -25,92 +35,52 @@ const addDate = async (req = request, res = response) => {
   }
 };
 
-// const getDate = async (req = request, res = response, next) => {
-//   const { categorie } = req.query;
+ const getDates = async (req = request, res = response, next) => {
+   const { date } = req.query;
 
-//   try {
-//     const categories = await CategorieModel.findAll({
-//       attributes: ["categorie", "id"],
-//       include: {
-//         model: ProductsModel,
-//       },
-//     });
+   try {
+     const allDates = await DateModel.findAll({
+       include:{
+         model: ServiceModel,
+         attributes: ["name"],
+         through: {
+           attributes: [],
+         },
+       },
+     });
 
-//     if (categorie) {
-//       //const cat = services.find((c) => p.name.toLowerCase() === name.toLowerCase());
-//       const cat = categories.filter((c) =>
-//         c.categorie.toLowerCase().includes(categorie.toLowerCase())
-//       );
+      if (date) {
+       const foundDate = allDates.filter((d) =>{
+         return d.date.split(',')[0] === date
+       });
 
-//       if (cat.length) {
-//         return res.status(200).json({
-//           ok: true,
-//           cat,
-//         });
-//       }
+         if (foundDate.length) {
+         return res.status(200).json({
+           ok: true,
+           foundDate,
+         });
+        }
 
-//       return res.status(500).json({
-//         ok: false,
-//         msg: "Categorie no encontrado",
-//       });
-//     }
+         return res.status(500).json({
+         ok: false,
+         msg: "Cita no encontrada",
+       });
+     }
 
-//     res.status(200).json({
-//       ok: true,
-//       categories,
-//     });
-//   } catch (error) {
-//     //next(error)
-//     console.log(error);
-//     res.status(500).json({
-//       ok: false,
-//       msg: "Hable con el administrador",
-//     });
-//   }
-// };
-// const getDates = async (req = request, res = response, next) => {
-//   const { categorie } = req.query;
+       res.status(200).json({
+       ok: true,
+       allDates,
+      });
+    } catch (error) {
 
-//   try {
-//     const categories = await CategorieModel.findAll({
-//       attributes: ["categorie", "id"],
-//       include: {
-//         model: ProductsModel,
-//       },
-//     });
+      console.log(error);
+      res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+     });
+     }
+ };
 
-//     if (categorie) {
-//       //const cat = services.find((c) => p.name.toLowerCase() === name.toLowerCase());
-//       const cat = categories.filter((c) =>
-//         c.categorie.toLowerCase().includes(categorie.toLowerCase())
-//       );
-
-//       if (cat.length) {
-//         return res.status(200).json({
-//           ok: true,
-//           cat,
-//         });
-//       }
-
-//       return res.status(500).json({
-//         ok: false,
-//         msg: "Categorie no encontrado",
-//       });
-//     }
-
-//     res.status(200).json({
-//       ok: true,
-//       categories,
-//     });
-//   } catch (error) {
-//     //next(error)
-//     console.log(error);
-//     res.status(500).json({
-//       ok: false,
-//       msg: "Hable con el administrador",
-//     });
-//   }
-// };
 
 /*
 const deleteDate = async(req = request, res = response) => {
@@ -138,6 +108,5 @@ const deleteDate = async(req = request, res = response) => {
 
 module.exports = {
   addDate,
-  // getDate,
-  // getDates,
+  getDates
 };
