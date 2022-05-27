@@ -32,11 +32,7 @@
     <script>
       function handleCredentialResponse(response) {
         const body = { id_token: response.credential };
-<<<<<<< HEAD
-        fetch("https://barber-app-henry.herokuapp.com/api/auth/google", {
-=======
-        fetch("http://barber-app-henry.herokuapp.com/api/auth/google", {
->>>>>>> 23527f7541b950d48ca5162c08ae9ff5c65a84ff
+        fetch("https://barber-app-henry.herokuapp.com/api/auth/google",  {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
