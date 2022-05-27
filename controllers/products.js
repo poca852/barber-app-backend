@@ -114,20 +114,23 @@ const putProduct = async(req = request, res = response) => {
 
   try {
 
-    // verifico que el nombre que queremos actualizar este disponible
-    const verificarNameProduct = await ProductsModel.findOne({
-      where: {
-        name: data.name
-      }
-    })
-
-    // si el nombre ya existe entonces le mando una respuesta indicando que el producto ya existe
-    if(verificarNameProduct){
-      return res.status(400).json({
-        ok: false,
-        msg: `El producto ${data.name} ya existe`
+    if(data.name){
+      // verifico que el nombre que queremos actualizar este disponible
+      const verificarNameProduct = await ProductsModel.findOne({
+        where: {
+          name: data.name
+        }
       })
+  
+      // si el nombre ya existe entonces le mando una respuesta indicando que el producto ya existe
+      if(verificarNameProduct){
+        return res.status(400).json({
+          ok: false,
+          msg: `El producto ${data.name} ya existe`
+        })
+      }
     }
+
     
     await ProductsModel.update(data, {
       where: {
