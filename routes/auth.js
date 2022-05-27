@@ -2,7 +2,7 @@ const {Router} = require('express');
 const {check} = require('express-validator');
 
 // controllers
-const {login, renew} = require('../controllers/auth');
+const {login, renew, signGoogle} = require('../controllers/auth');
 
 // helpers
 const { existeEmail } = require('../helpers/db-validators');
@@ -18,6 +18,11 @@ router.post('/login', [
     check('password', 'El password es obligatorio').not().isEmpty(),
     validarCampos
 ], login)
+
+router.post('/google', [
+    check('id_token', 'el id token es obligatorio').not().isEmpty(),
+    validarCampos
+], signGoogle)
 
 router.get('/renew', [
     validarJWT

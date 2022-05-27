@@ -1,7 +1,7 @@
 const bcryptjs = require("bcryptjs");
 const { request, response } = require("express");
 const { UserModel } = require("../models");
-const { generarJWT } = require("../helpers");
+const { generarJWT, googleVerify } = require("../helpers");
 
 const login = async (req = request, res = response) => {
   const { email, password } = req.body;
@@ -39,6 +39,42 @@ const login = async (req = request, res = response) => {
   }
 };
 
+const signGoogle = async(req = request, res = response) => {
+    const {id_token} = req.body;
+    try {
+      const user = await googleVerify(id_token);
+      
+      const [userModel, isCreate] = await UserModel.findOrCreate({
+        where: {
+          email: user.correo
+        },
+        defaults: {
+          email: user.correo,
+          name: user.nombre,
+          password: ':)',
+          avatar: user.img,
+          google: true
+        }
+      })
+
+      const token = await generarJWT(userModel.id);
+
+      res.status(200).json({
+        ok: true,
+        email: userModel.email,
+        img: userModel.avatar,
+        id: userModel.id,
+        token
+      })
+
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({
+        msg: 'hable con el administrador'
+      })
+    }
+}
+
 const renew = async (req = request, res = response) => {
   const { user } = req;
   try {
@@ -63,4 +99,5 @@ const renew = async (req = request, res = response) => {
 module.exports = {
   login,
   renew,
+  signGoogle
 };

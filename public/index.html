@@ -1,13 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto final</title>
-</head>
-<body>
-    <h1>Acceso denegado</h1>
-    <h2>hola mundo</h2>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Sign In</title>
+  </head>
+  <body>
+    <h1>Google Signin</h1>
+    <hr />
+
+    <!-- <div
+      id="g_id_onload"
+      data-client_id="53723635799-h12nqq7lneb87l2nvtid71he98aoop60.apps.googleusercontent.com"
+      data-auto_prompt="false"
+    ></div>
+
+    <div
+      class="g_id_signin"
+      data-type="standard"
+      data-size="large"
+      data-theme="outline"
+      data-text="sign_in_with"
+      data-shape="rectangular"
+      data-logo_alignment="left"
+    ></div> -->
+
+    <button id="g_id_signout">Sign Out</button>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+      function handleCredentialResponse(response) {
+        const body = { id_token: response.credential };
+        fetch("http://localhost:8080/api/auth/google", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        })
+          .then((r) => r.json())
+          .then((resp) => {
+            localStorage.setItem("email", resp.email);
+          })
+          .catch(console.warn);
+      }
+      window.onload = function () {
+        google.accounts.id.initialize({
+          client_id:
+            "53723635799-h12nqq7lneb87l2nvtid71he98aoop60.apps.googleusercontent.com",
+          callback: handleCredentialResponse,
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("buttonDiv"),
+          { theme: "outline", size: "large" } // customization attributes
+        );
+        google.accounts.id.prompt(); // also display the One Tap dialog
+      };
+
+      const button = document.getElementById("g_id_signout");
+      button.onclick = async () => {
+        console.log(google.accounts.id);
+        google.accounts.id.disableAutoSelect();
+        google.accounts.id.revoke(localStorage.getItem("email"), (done) => {
+          console.log("consent revoked");
+          localStorage.clear();
+          location.reload();
+        });
+      };
+    </script>
+    <div id="buttonDiv"></div>
+  </body>
 </html>

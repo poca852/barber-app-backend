@@ -1,6 +1,4 @@
-const { UserModel, Rolmodel,DateModel, CategorieModel, ProductsModel, EmployeeModel } = require("../models");
-
-const { UserModel, Rolmodel,DateModel, CategorieModel, ProductsModel, ServiceModel } = require("../models");
+const { UserModel, Rolmodel,DateModel, CategorieModel, ProductsModel, EmployeeModel, ServiceModel } = require("../models");
 
 
 //  ================== VERIFICACIONES PARA EL MANEJO DE LOS USUARIOS ==========
