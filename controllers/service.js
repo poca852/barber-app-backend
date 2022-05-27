@@ -50,11 +50,14 @@ const addService = async(req = request, res = response) => {
 
 
 const getServices = async(req = request, res = response, next) => {
-  const {name} = req.query;
+  const {name, state= true} = req.query;
 
   try {
 
     const services = await ServiceModel.findAll({
+      where: {
+        state
+      },
       attributes: ["name", "detail", "price", "time", "img", "id", "state"]
     });
 
@@ -115,12 +118,15 @@ const getService = async(req = request, res = response, next) => {
 
 
 const putService = async(req = request, res = response) => {
+  
   const {id} = req.params;
   
   const { state, ...data} = req.body;
   try {
  
   // verifico que el nombre que queremos actualizar este disponible
+if (data.name){
+  
   const validateName =  await ServiceModel.findOne({
       where: {
         name : data.name
@@ -134,16 +140,13 @@ const putService = async(req = request, res = response) => {
       msg: `El servicio ${data.name} ya existe`
     })
   }
-  
-
+}
     await ServiceModel.update(data, {
       where: {
         id
       }
     });
 
-
-    
     res.status(201).json({
       ok: true,
       msg: 'Cambios realizados correctamente'

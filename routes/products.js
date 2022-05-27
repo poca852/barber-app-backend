@@ -7,6 +7,7 @@ const { verficarCategoria, verificarProduct } = require('../helpers/db-validator
 
 router.post('/', [
     check('name', 'name is required').not().isEmpty().isString(),
+    check("detail","detail is required").not().isEmpty().isString(),
     check('stock', 'stock is required').not().isEmpty().isInt(),
     check('price', 'price is required' ).not().isEmpty().isFloat(),
     check("idCategorie","idCategorie is required").not().isEmpty().isUUID(),
