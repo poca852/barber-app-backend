@@ -1,39 +1,39 @@
 // models
-const UserModel = require('./usuario.js');
-const Rolmodel = require('./rol.js');
-const ServiceModel = require('./services.js');
-const DateModel = require('./date.js');
-const EmployeeModel = require('./employee.js');
-const ProductsModel = require("./products.js")
-const CategorieModel = require ("./categorie.js")
+const UserModel = require("./usuario.js");
+const Rolmodel = require("./rol.js");
+const ServiceModel = require("./services.js");
+const DateModel = require("./date.js");
+const EmployeeModel = require("./employee.js");
+const ProductsModel = require("./products.js");
+const CategorieModel = require("./categorie.js");
 
 // relations rol - user
-Rolmodel.hasMany(UserModel, {foreignKey: 'idRol'});
-UserModel.belongsTo(Rolmodel, {foreignKey: 'idRol'});
+Rolmodel.hasMany(UserModel, { foreignKey: "idRol" });
+UserModel.belongsTo(Rolmodel, { foreignKey: "idRol" });
 
 // relation user - date
-UserModel.hasOne(DateModel, {foreignKey: 'idUser'});
+UserModel.hasOne(DateModel, { foreignKey: "idUser" });
 DateModel.belongsTo(UserModel);
 
 //relation cita - service
-DateModel.belongsToMany(ServiceModel, {through: 'ServiceDate'});
-ServiceModel.belongsToMany(DateModel, {through: 'ServiceDate'});
+DateModel.belongsToMany(ServiceModel, { through: "ServiceDate" });
+ServiceModel.belongsToMany(DateModel, { through: "ServiceDate" });
 
 //relation cita - employee
-EmployeeModel.hasOne(DateModel, {foreignKey: 'idEmployee'});
+EmployeeModel.hasOne(DateModel, { foreignKey: "idEmployee" });
 DateModel.belongsTo(EmployeeModel);
 
 //relation categorie - products
-CategorieModel.hasMany(ProductsModel, {foreignKey: 'idCategorie'})
-ProductsModel.belongsTo(CategorieModel, {foreignKey: 'idCategorie'})
+CategorieModel.hasMany(ProductsModel, { foreignKey: "idCategorie" });
+ProductsModel.belongsTo(CategorieModel, { foreignKey: "idCategorie" });
 
-// models exports 
-module.exports = { 
+// models exports
+module.exports = {
   UserModel,
   Rolmodel,
   ServiceModel,
   DateModel,
   EmployeeModel,
   CategorieModel,
-  ProductsModel
-}
+  ProductsModel,
+};
