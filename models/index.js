@@ -21,7 +21,7 @@ ServiceModel.belongsToMany(DateModel, { through: "ServiceDate" });
 
 //relation cita - employee
 EmployeeModel.hasOne(DateModel, { foreignKey: "idEmployee" });
-DateModel.belongsTo(EmployeeModel);
+DateModel.belongsTo(EmployeeModel, { foreignKey: "idEmployee" });
 
 //relation categorie - products
 CategorieModel.hasMany(ProductsModel, { foreignKey: "idCategorie" });

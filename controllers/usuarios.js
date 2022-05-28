@@ -68,6 +68,11 @@ const getUsers = async (req = request, res = response) => {
         },
         {
           model: DateModel,
+          include: [
+            {
+              model: EmployeeModel,
+            },
+          ],
         },
         // {
         //   model: EmployeeModel,
