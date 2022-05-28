@@ -4,10 +4,10 @@ const validarCampos = require('../middlewares/validar-campos.js');
 const {addPurchaseOrder} = require('../controllers/purchaseOrder');
 
 router.post('/', [ //Validacion da error porque en un "arreglo" de objetos el body
-   /* check('idUser').isUUID(),
-    check('idProduct').isUUID(),
-    check('quantity').isInt(),
-    validarCampos*/
+    check("arr.*.idUser").isUUID(),
+    check("arr.*.idProduct").isUUID(),
+    check("arr.*.quantity").isInt(),
+    validarCampos
 ], addPurchaseOrder);
 
 module.exports = router;
