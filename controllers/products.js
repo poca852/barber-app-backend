@@ -155,7 +155,7 @@ const putProduct = async(req = request, res = response) => {
         id: idProduct
       }
     })
-
+   
     res.status(201).json({
       ok: true,
       msg: 'Producto actualizado correctamente'
