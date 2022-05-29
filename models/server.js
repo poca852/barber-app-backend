@@ -15,7 +15,7 @@ class Server {
       services: "/api/services",
       categories: "/api/categories",
       date: "/api/date",
-      employee: '/api/employee'
+      employee: "/api/employee",
     };
 
     // Conectar a base de datos
@@ -31,7 +31,7 @@ class Server {
   async conectarDB() {
     try {
       await sequelize.authenticate();
-      // await sequelize.sync({ force: true }); //para pruebas descoment
+      await sequelize.sync({ force: true }); //para pruebas descoment
     } catch (error) {
       console.log(error);
     }

@@ -1,5 +1,5 @@
 const { response, request } = require("express");
-const {DateModel, ServiceModel} = require("../models");
+const { DateModel, ServiceModel } = require("../models");
 
 const addDate = async (req = request, res = response) => {
   const { idUser, idEmployee, total, date, service } = req.body;
@@ -7,21 +7,25 @@ const addDate = async (req = request, res = response) => {
 
   try {
     //   // insertamos en la base de datos la cita
-    const newDate = await DateModel.create({total, date});
+    const newDate = await DateModel.create({
+      idUser,
+      idEmployee,
+      total,
+      date,
+    });
 
     const foundService = await ServiceModel.findAll({
       where: {
-        name: service
-      }
+        name: service,
+      },
     });
     await newDate.addService(foundService);
-
 
     res.json({
       ok: true,
       id: newDate.id,
-     // idUser: newDate.idUser,
-     //idEmployee: newDate.idEmployee,
+      // idUser: newDate.idUser,
+      //idEmployee: newDate.idEmployee,
       total: newDate.total,
       date: newDate.date,
     });
@@ -34,55 +38,53 @@ const addDate = async (req = request, res = response) => {
   }
 };
 
- const getDates = async (req = request, res = response, next) => {
-   const { date } = req.query;
+const getDates = async (req = request, res = response, next) => {
+  const { date } = req.query;
 
-   try {
-     const allDates = await DateModel.findAll({
-       include:{
-         model: ServiceModel,
-         attributes: ["name"],
-         through: {
-           attributes: [],
-         },
-       },
-     });
+  try {
+    const allDates = await DateModel.findAll({
+      include: {
+        model: ServiceModel,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        },
+      },
+    });
 
-      if (date) {
-       const foundDate = allDates.filter((d) =>{
-         if(d.date === date){
-           return d
-         }
-         return d.date.split(',')[0] === date
-       });
-
-         if (foundDate.length) {
-         return res.status(200).json({
-           ok: true,
-           foundDate,
-         });
+    if (date) {
+      const foundDate = allDates.filter((d) => {
+        if (d.date === date) {
+          return d;
         }
-
-         return res.status(500).json({
-         ok: false,
-         msg: "Cita no encontrada",
-       });
-     }
-
-       res.status(200).json({
-       ok: true,
-       allDates,
+        return d.date.split(",")[0] === date;
       });
-    } catch (error) {
 
-      console.log(error);
-      res.status(500).json({
+      if (foundDate.length) {
+        return res.status(200).json({
+          ok: true,
+          foundDate,
+        });
+      }
+
+      return res.status(500).json({
+        ok: false,
+        msg: "Cita no encontrada",
+      });
+    }
+
+    res.status(200).json({
+      ok: true,
+      allDates,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
       ok: false,
       msg: "Hable con el administrador",
-     });
-     }
- };
-
+    });
+  }
+};
 
 /*
 const deleteDate = async(req = request, res = response) => {
@@ -110,5 +112,5 @@ const deleteDate = async(req = request, res = response) => {
 
 module.exports = {
   addDate,
-  getDates
+  getDates,
 };
