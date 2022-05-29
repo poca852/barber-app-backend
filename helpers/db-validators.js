@@ -41,6 +41,19 @@ const verificarRol = async(rol = '') => {
    }
 }
 
+const existeRolByName = async(rol = '') => {
+
+   rol = rol.toUpperCase();
+
+   const rolModel = await Rolmodel.findOne({
+      where: {rol}
+   })
+
+   if(!rolModel){
+      throw new Error(`El rol ${rol} no existe en ld db`)
+   }
+}
+
 // =================== VERIFICACIONES PARA CITAS =================
 const checkDates = async(date) =>{
    const allDates = await DateModel.findAll()
@@ -128,6 +141,7 @@ const verificarNameServicio = async(name = '') => {
 
 module.exports = {
    verficarEmail,
+   existeRolByName,
    existeRol,
    verificarRol,
    verificarId,

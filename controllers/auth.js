@@ -1,6 +1,6 @@
 const bcryptjs = require("bcryptjs");
 const { request, response } = require("express");
-const { UserModel } = require("../models");
+const { UserModel, Rolmodel } = require("../models");
 const { generarJWT, googleVerify } = require("../helpers");
 
 const login = async (req = request, res = response) => {
@@ -39,41 +39,40 @@ const login = async (req = request, res = response) => {
   }
 };
 
-const signGoogle = async(req = request, res = response) => {
-    const {id_token} = req.body;
-    try {
-      const user = await googleVerify(id_token);
-      
-      const [userModel, isCreate] = await UserModel.findOrCreate({
-        where: {
-          email: user.correo
-        },
-        defaults: {
-          email: user.correo,
-          name: user.nombre,
-          password: ':)',
-          avatar: user.img,
-          google: true
-        }
-      })
+const signGoogle = async (req = request, res = response) => {
+  const { id_token } = req.body;
+  try {
+    const user = await googleVerify(id_token);
 
-      const token = await generarJWT(userModel.id);
+    const [userModel, isCreate] = await UserModel.findOrCreate({
+      where: {
+        email: user.correo,
+      },
+      defaults: {
+        email: user.correo,
+        name: user.nombre,
+        password: ":)",
+        avatar: user.img,
+        google: true,
+      },
+    });
 
-      res.status(200).json({
-        ok: true,
-        email: userModel.email,
-        img: userModel.avatar,
-        id: userModel.id,
-        token
-      })
+    const token = await generarJWT(userModel.id);
 
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({
-        msg: 'hable con el administrador'
-      })
-    }
-}
+    res.status(200).json({
+      ok: true,
+      email: userModel.email,
+      img: userModel.avatar,
+      id: userModel.id,
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: "hable con el administrador",
+    });
+  }
+};
 
 const renew = async (req = request, res = response) => {
   const { user } = req;
@@ -96,8 +95,88 @@ const renew = async (req = request, res = response) => {
   }
 };
 
+const auth0 = async (req = request, res = response) => {
+  const { email, name, picture, email_verified, rol } = req.body;
+
+  try {
+    const verificarEmail = await UserModel.findOne({
+      where: { email },
+    });
+
+    if (!verificarEmail) {
+      //  si no existe el usuario es porque se debe crear el usuario
+      const password = bcryptjs.hashSync(`${email}${name}`, 10);
+
+      // buscamos el rol en la db
+      const queryRolModel = rol.toUpperCase();
+      const rolModel = await Rolmodel.findOne({where: {rol: queryRolModel}});
+      const idRol = rolModel.id
+
+      // generamos la data que guardaremos
+      const data = {
+        email, name, avatar: picture, email_verified, password, idRol
+      }
+
+      const newUser = await UserModel.create(data);
+
+      if(newUser.email_verified){
+        const token = await generarJWT(newUser.id);
+        return res.status(201).json({
+          ok: true,
+          id: newUser.id,
+          email: newUser.email,
+          name: newUser.name,
+          picture: newUser.avatar,
+          token
+        })
+      }else{
+        return res.status(201).json({
+          ok: false,
+          msg: "Pendiente verificar email"
+        })
+      }
+
+    }else{
+      // caso contrario es porque el usuario ya existe en la db pero debemos verificar que su email_verified este en true
+      if(verificarEmail.email_verified){
+        // comparamos los password
+        const validPass = bcryptjs.compareSync(`${email}${name}`, verificarEmail.password);
+        if(!validPass){
+          return res.status(401).json({
+            ok: true,
+            msg: 'Verifica tus datos'
+          })
+        }
+
+        const token = await generarJWT(verificarEmail.id);
+
+        return res.status(200).json({
+          ok: true,
+          id: verificarEmail.id,
+          email: verificarEmail.email,
+          name: verificarEmail.name,
+          picture: verificarEmail.avatar,
+          token
+        })
+      }else{
+        return res.status(401).json({
+          ok: false,
+          msg: 'Por favor confirma tu email'
+        })
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+    });
+  }
+};
+
 module.exports = {
   login,
   renew,
-  signGoogle
+  signGoogle,
+  auth0,
 };
