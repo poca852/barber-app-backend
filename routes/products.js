@@ -8,7 +8,9 @@ const { verficarCategoria, verificarProduct } = require('../helpers/db-validator
 router.post('/', [
     check('name', 'name is required').not().isEmpty().isString(),
     check("detail","detail is required").not().isEmpty().isString(),
-    check('stock', 'stock is required').not().isEmpty().isInt(),
+    //check('stock', 'stock is required').not().isEmpty().isInt(),
+//consu agrego esta verificacion para que el stock no pueda ser menos a 0
+    check('stock', 'stock must be an integer greater than -1').isInt({ gt: -1 }),
     check('price', 'price is required' ).not().isEmpty().isFloat(),
     check("idCategorie","idCategorie is required").not().isEmpty().isUUID(),
     // david agrego esta verificacion, a la hora que se cree un nuevo producto verifico que la categoria si exista realmente

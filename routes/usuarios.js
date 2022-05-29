@@ -25,8 +25,8 @@ router.post('/', [
     check('email').custom(verficarEmail),
     check('name', 'Name is required').not().isEmpty(),
     check('password', 'password is required').isLength({min: 6}),
-    check('idRol', 'rol debe ser un uuid').isUUID(),
-    check('idRol').custom(verificarRol),
+   /* check('idRol', 'rol debe ser un uuid').isUUID(),
+    check('idRol').custom(verificarRol),*/
     validarCampos
 ], addUser)
 

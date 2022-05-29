@@ -1,5 +1,6 @@
 const {DataTypes}= require("sequelize")
 const sequelize = require('../database/config');
+const PurchaseOrder = require("./purchaseOrder");
 
 const PagoModel = sequelize.define('pago', {
     
@@ -21,11 +22,15 @@ const PagoModel = sequelize.define('pago', {
         type: DataTypes.STRING,
         allowNull: true
     },
-    idOrdCompra:{
+    idPurchaseOrder: {
         type: DataTypes.UUID,
-        allowNull: false
-    }
-
+        allowNull: false,
+        references: {
+            model: PurchaseOrder,
+            key: 'id'
+        }
+   
+    },
 
 }, {timestamps: false})
-modules.export = PagoModel
+module.export = PagoModel

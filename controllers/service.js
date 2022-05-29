@@ -82,6 +82,7 @@ const getServices = async(req = request, res = response, next) => {
     ok: true,
     services
   })
+
 }catch (error) {
       //next(error)
     console.log(error);

@@ -1,25 +1,71 @@
-const {response, require}= require("express")
+const {response, request}= require("express")
 const {PagoModel}= require("../models")
 
-const getPago = async (req= require, res= response)=>{
+//ESTO ES SI POR EL FRONT (PERFIL ADMIN NECESITA SABER INFO DEL PAGO, RELACIONADO CON LA ORDEN DE COMPRA)
 
-    await res.status(200).send("hola")
+const getPago = async (req= request, res= response)=>{
 
-}
-
-const postPago = async (req= require, res= response)=>{
-
-    const{} = req.body
-    await 
+    //const {id} = req.query
+try{    
+const pago = await PagoModel.findAll({
+        where: {
+              pagado
+            },
+            attributes: ["formaPago", "moneda", "idPurchaseOrder","id", "pagado"]
+          });
     
+ res.status(200).json({
+            ok: true, 
+            pago
+        })   
+    } catch (error) {
+            console.log(error);
+            res.status(500).json({
+              ok: false,
+              msg: "Hable con el administrador",
+            });
+          }
+};
     
-    res.status(200).send("hola")
 
-}
+//CADA VEZ QUE SE EFECTUA EL PAGO! ==> DEBERIAMOS VER COMO UNIR CON LA ORDEN DE COMPRA!!
+//VERIFICAR COMO LLEGA ESTA INFO DE MERCADO PAGO
+const addPago = async (req= require, res= response)=>{
+
+    const{formaPago, moneda, idPurchaseOrder} = req.body
+ 
+    try{   
+    const newPago = await PagoModel.create({
+
+        formaPago,
+        moneda,
+        idPurchaseOrder
+    })
+
+  
+    res.status(200).json({
+        ok: true, 
+        id: newPago.id,
+        formaPago: newPago.formaPago,
+        moneda: newPago.moneda,
+        idPurchaseOrder: newPago.idPurchaseOrder
+
+    })
+
+} catch (error) {
+        console.log(error);
+        res.status(500).json({
+          ok: false,
+          msg: "Hable con el administrador",
+        });
+      }
+};
 
 
 
-modules.export={
+
+module.export={
     getPago,
-    postPago
+    addPago
 }
+
