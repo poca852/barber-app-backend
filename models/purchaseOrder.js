@@ -1,4 +1,4 @@
-const {DataTypes} = require('sequelize');
+const {DataTypes, BOOLEAN} = require('sequelize');
 const sequelize = require('../database/config');
 const UserModel = require('../models/usuario');
 
@@ -23,6 +23,11 @@ const PurchaseOrder = sequelize.define('purchaseOrder', {
 
     quantity: {
         type: DataTypes.INTEGER
+    },
+
+    status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
     }
 
 }, {timestamps: false});
