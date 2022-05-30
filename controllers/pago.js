@@ -68,4 +68,3 @@ module.export={
     getPago,
     addPago
 }
-

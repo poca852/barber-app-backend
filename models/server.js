@@ -18,7 +18,6 @@ class Server {
       employee: '/api/employee',
       purchaseOrder: '/api/purchaseOrder',
       pago:"/api/pago",
-
     };
 
     // Conectar a base de datos
@@ -60,7 +59,7 @@ class Server {
     this.app.use(this.paths.date, require("../routes/date"));
     this.app.use(this.paths.employee, require("../routes/employee"));
     this.app.use(this.paths.purchaseOrder, require('../routes/purchaseOrder'));
-    //this.app.use(this.paths.pago, require("../routes/pago"));
+    this.app.use(this.paths.pago, require("../routes/pago") )
 
   }
 
