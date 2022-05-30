@@ -84,7 +84,6 @@ const addDate = async (req = request, res = response) => {
  };
 
 
-/*
 const deleteDate = async(req = request, res = response) => {
   const {id} = req.params;
   try {
@@ -106,7 +105,7 @@ const deleteDate = async(req = request, res = response) => {
     });
   }
 };
-*/
+
 
 module.exports = {
   addDate,

@@ -11,7 +11,7 @@ const pago = await PagoModel.findAll({
         where: {
               pagado
             },
-            attributes: ["formaPago", "moneda", "idPurchaseOrder","id", "pagado"]
+            attributes: ["formaPago", "idPurchaseOrder","id", "pagado"]
           });
     
  res.status(200).json({
@@ -32,13 +32,12 @@ const pago = await PagoModel.findAll({
 //VERIFICAR COMO LLEGA ESTA INFO DE MERCADO PAGO
 const addPago = async (req= require, res= response)=>{
 
-    const{formaPago, moneda, idPurchaseOrder} = req.body
+    const{formaPago, idPurchaseOrder} = req.body
  
     try{   
     const newPago = await PagoModel.create({
 
         formaPago,
-        moneda,
         idPurchaseOrder
     })
 
@@ -47,9 +46,8 @@ const addPago = async (req= require, res= response)=>{
         ok: true, 
         id: newPago.id,
         formaPago: newPago.formaPago,
-        moneda: newPago.moneda,
         idPurchaseOrder: newPago.idPurchaseOrder
-
+       
     })
 
 } catch (error) {
@@ -64,7 +62,7 @@ const addPago = async (req= require, res= response)=>{
 
 
 
-module.export={
+module.exports={
     getPago,
     addPago
 }
