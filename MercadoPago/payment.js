@@ -8,9 +8,9 @@ const url = "https://api.mercadopago.com/checkout/preferences";
             payer_email: "test_user_11278172@testuser.com", //comprador de Mercado Pago de prueba
             items:cart, //<-- carrito [{title,description,picture_url,category_id,quantity,unit_price}]
             back_urls:{
-            succes:"/failure",
-            failure: "/pending",
-            pending: "/success"
+            succes:"/succes",
+            failure: "/failure",
+            pending: "/pending"
             },
             notification_url: "https://www.your-site.com"
         };

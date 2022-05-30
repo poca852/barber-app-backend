@@ -31,11 +31,6 @@ const DateModel = sequelize.define(
       allowNull: true,
     },
 
-    total: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-
     date: {
       type: DataTypes.DATE ,
       get: function() {
