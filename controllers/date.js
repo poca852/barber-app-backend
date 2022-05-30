@@ -87,7 +87,7 @@ const addDate = async (req = request, res = response) => {
 const deleteDate = async(req = request, res = response) => {
   const {id} = req.params;
   try {
-    const user = await UserModel.update({state: false}, {
+    const date = await DateModel.update({state: false}, {
       where: {
         id
       }
@@ -95,7 +95,7 @@ const deleteDate = async(req = request, res = response) => {
 
     res.status(201).json({
       ok: true,
-      msg: 'Usuario desactivado'
+      msg: 'Cita cancelada'
     })
   } catch (error) {
     console.log(error);
@@ -109,5 +109,6 @@ const deleteDate = async(req = request, res = response) => {
 
 module.exports = {
   addDate,
-  getDates
+  getDates,
+  deleteDate
 };
