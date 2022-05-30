@@ -9,7 +9,6 @@ router.post("/", [
      check("date").custom(checkDates),
      //check("idUser").isUUID(),
      //check("idEmployee").isUUID(),
-     check("total", "total is required").not().isEmpty().isFloat(),
      //check("date").custom(validateDateTime),
      validarCampos,
    ],addDate);
