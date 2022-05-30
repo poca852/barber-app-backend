@@ -56,12 +56,16 @@ const addPurchaseOrder = async(req = request, res = response) =>{
    /////////////////
 
     //Actualizando el Stock de products
+
+    if(newOrder.status){//verifica si el proceso de pago se completo satisfactoriamente
+
    for(let i = 0; i < foundProduct.length; i++){
    await ProductsModel.update({stock:foundProduct[i].stock - req.body[i].quantity}, {
     where: {
       id: req.body[i].idProduct
     }
   });
+}
 }
 
     res.json({

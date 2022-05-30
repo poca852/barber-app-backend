@@ -6,8 +6,12 @@ const DateModel = require('./date.js');
 const EmployeeModel = require('./employee.js');
 const ProductsModel = require("./products.js")
 const CategorieModel = require ("./categorie.js")
+<<<<<<< HEAD
 const PagoModel = require("./pago.js")
 const PurchaseOrder = require('./purchaseOrder.js')
+=======
+const PagoModel = requiere("./pago.js")
+>>>>>>> ramaconsu
 
 
 // relations rol - user 1:n
@@ -30,6 +34,7 @@ DateModel.belongsTo(EmployeeModel);
 CategorieModel.hasMany(ProductsModel, {foreignKey: 'idCategorie'})
 ProductsModel.belongsTo(CategorieModel, {foreignKey: 'idCategorie'})
 
+<<<<<<< HEAD
 //relation user - purchaseOrder 1:1
 UserModel.hasOne(PurchaseOrder, {foreignKey: 'idUser'});
 PurchaseOrder.belongsTo(UserModel);
@@ -42,6 +47,11 @@ ProductsModel.belongsToMany(PurchaseOrder, {through: 'PurchaseProducts'});
 // PurchaseOrder.hasOne(PagoModel, {foreignKey: 'idPurchaseOrder'});
 // PagoModel.belongsTo(PurchaseOrder);
 
+=======
+// relation pago - ordenDeCompra
+OrdenCompra.hasOne(PagoModel, {foreignKey: 'idOrdCompra'});
+DateModel.belongsTo(OrdenCompra);
+>>>>>>> ramaconsu
 
 // models exports 
 module.exports = { 
@@ -52,7 +62,11 @@ module.exports = {
   EmployeeModel,
   CategorieModel,
   ProductsModel,
+<<<<<<< HEAD
   PagoModel,
   PurchaseOrder
 
+=======
+  DateModel
+>>>>>>> ramaconsu
 }
