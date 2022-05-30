@@ -41,9 +41,10 @@ const UserModel = sequelize.define('user', {
         defaultValue: true
     },
 
-    email_verified: {
+    google: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        defaultValue: false,
+        allowNull: true
     },
 
     idRol: {

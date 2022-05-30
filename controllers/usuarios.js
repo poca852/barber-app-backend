@@ -4,9 +4,16 @@ const { UserModel, Rolmodel } = require("../models");
 
 const addUser = async(req = request, res = response) => {
 
-    const {email, password, name, phone, avatar, idRol} = req.body;
+    const { email, password, name, phone, avatar, rol } = req.body;
     
     try {
+
+        // buscamos el rol en la base de datos y extraemos el id
+        const queryRol = rol.toUpperCase();
+        const rolModel = await Rolmodel.findOne({
+          where: {rol: queryRol}
+        })
+
         // encriptamos el password
         const hash = bcryptjs.hashSync(password, 10);
 
@@ -17,11 +24,13 @@ const addUser = async(req = request, res = response) => {
           name,
           phone,
           avatar,
-          idRol
+          idRol: rolModel.id
         }
 
         // insertamos en la base de datos el user
         const user = await UserModel.create(data);
+
+        // TODO: aqui pendiente por definir si el usuario tiene que confirmar su email
 
         res.json({
           ok: true,
@@ -29,7 +38,7 @@ const addUser = async(req = request, res = response) => {
           id: user.id,
           email: user.email,
           phone: user.phone,
-          rol: user.idRol
+          rol: queryRol
         })
 
     } catch (error) {
@@ -40,25 +49,6 @@ const addUser = async(req = request, res = response) => {
         });
     }
 };
-
-
-const addRol = async(req = request, res = response) => {
-  const {rol} = req.body;
-  try {
-    const newRol = await Rolmodel.create({rol: rol});
-
-    res.status(201).json({
-      ok: true,
-      newRol
-    })
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador'
-    })
-  }
-}
 
 const getUsers = async(req = request, res = response) => {
   try {
@@ -111,6 +101,21 @@ const putUser = async(req = request, res = response) => {
       resto.password = bcryptjs.hashSync(password, 10)
     }
 
+    // verificamos si mandan otro rol
+    if(resto.rol){
+      const data = resto.rol.toUpperCase();
+      const rolModel = await Rolmodel.findOne({
+        where: {rol: data}
+      })
+
+      if(rolModel){
+        return res.status(400).json({
+          ok: false,
+          msg: `El ${resto.rol} ya existe`
+        })
+      }
+    }
+
     const user = await UserModel.update(resto, {
       where: {
         id
@@ -157,6 +162,5 @@ module.exports = {
   getUsers,
   getUser,
   putUser,
-  deleteUser,
-  addRol
+  deleteUser
 };

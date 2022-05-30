@@ -28,12 +28,4 @@ router.get('/renew', [
     validarJWT
 ], renew)
 
-router.post('/auth0', [
-    check('email', 'No es un email valido').isEmail(),
-    check('name', 'el name es obligatorio').not().isEmpty(),
-    check('email_verified', 'El campo verified es obligatorio').isBoolean(),
-    check('rol').custom(existeRolByName),
-    validarCampos
-], auth0)
-
 module.exports = router;

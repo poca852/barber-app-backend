@@ -11,6 +11,7 @@ class Server {
       // https://barbarapp.herokuapp.com
       auth: "/api/auth",
       usuarios: "/api/users",
+      rol: '/api/rol',
       products: "/api/products",
       services: "/api/services",
       categories: "/api/categories",
@@ -33,7 +34,7 @@ class Server {
   async conectarDB() {
     try {
       await sequelize.authenticate();
-      //await sequelize.sync({ force: true }); //para pruebas descoment
+      // await sequelize.sync({ force: true }); //para pruebas descoment
     } catch (error) {
       console.log(error);
     }
@@ -52,6 +53,7 @@ class Server {
 
   routes() {
     this.app.use(this.paths.auth, require("../routes/auth"));
+    this.app.use(this.paths.rol, require("../routes/roles"));
     this.app.use(this.paths.usuarios, require("../routes/usuarios"));
     this.app.use(this.paths.services, require("../routes/services"));
     this.app.use(this.paths.products, require("../routes/products"));

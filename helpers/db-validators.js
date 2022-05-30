@@ -41,6 +41,7 @@ const verificarRol = async(rol = '') => {
    }
 }
 
+// esta funcion se emplea en crear un rol, verifica que el rol ya no exista en la db
 const existeRolByName = async(rol = '') => {
 
    rol = rol.toUpperCase();
@@ -49,8 +50,20 @@ const existeRolByName = async(rol = '') => {
       where: {rol}
    })
 
+   if(rolModel){
+      throw new Error(`El rol ${rol} ya existe en la db`)
+   }
+}
+
+const checkRolByName = async(rol = '') => {
+   rol = rol.toUpperCase();
+
+   const rolModel = await Rolmodel.findOne({
+      where: {rol}
+   })
+
    if(!rolModel){
-      throw new Error(`El rol ${rol} no existe en ld db`)
+      throw new Error(`El rol ${rol} no existe en la db`)
    }
 }
 
@@ -159,6 +172,7 @@ module.exports = {
    existeRolByName,
    existeRol,
    verificarRol,
+   checkRolByName,
    verificarId,
    existeEmail,
    verficarCategoria,
