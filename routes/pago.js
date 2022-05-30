@@ -1,7 +1,7 @@
 const {Router}= require ("express")
 const {check} = require("express-validator")
 const {validarCampos} = require('../middlewares');
-const {getPago, addPago}= require("../controllers/pago")
+const {getPago, addPago, confirmarPago}= require("../controllers/pago")
 
 const router= Router()
 
@@ -13,5 +13,7 @@ check("formaPago", "forma de pago is required").not().isEmpty().isString(),
 validarCampos
 ],
 addPago)
+
+router.post("/confirmation", confirmarPago)
 
 module.exports = router;

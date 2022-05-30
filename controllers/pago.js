@@ -30,7 +30,7 @@ const pago = await PagoModel.findAll({
 
 //CADA VEZ QUE SE EFECTUA EL PAGO! ==> DEBERIAMOS VER COMO UNIR CON LA ORDEN DE COMPRA!!
 //VERIFICAR COMO LLEGA ESTA INFO DE MERCADO PAGO
-const addPago = async (req= require, res= response)=>{
+const addPago = async (req= request, res= response)=>{
 
     const{formaPago, idPurchaseOrder} = req.body
  
@@ -59,10 +59,25 @@ const addPago = async (req= require, res= response)=>{
       }
 };
 
+const confirmarPago = (req = request, res = response) => {
+  console.log(req.body)
+  try {
 
+    res.json({
+      msg: 'prueba'
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      ok: false,
+      msg: 'Hable con el administrador'
+    })
+  }
+}
 
 
 module.exports={
     getPago,
-    addPago
+    addPago,
+    confirmarPago
 }
