@@ -1,14 +1,10 @@
 const {DataTypes}= require("sequelize")
 const sequelize = require('../database/config');
-<<<<<<< HEAD
 const PurchaseOrder = require("./purchaseOrder");
 
-const PagoModel = sequelize.define('pago', {
-    
-=======
 
 const PagoModel = sequelize.define('pago', {
->>>>>>> ramaconsu
+
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -23,11 +19,7 @@ const PagoModel = sequelize.define('pago', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    moneda:{
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-<<<<<<< HEAD
+
     idPurchaseOrder: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -39,16 +31,7 @@ const PagoModel = sequelize.define('pago', {
     },
 
 }, {timestamps: false})
-module.export = PagoModel
-=======
-    idOrdCompra:{
-        type: DataTypes.UUID,
-        allowNull: false
-    }
 
 
-}, {timestamps: false})
-modules.export = PagoModel
+module.exports = PagoModel
 
-
->>>>>>> ramaconsu

@@ -3,7 +3,7 @@ const { check } = require("express-validator");
 const validarCampos = require("../middlewares/validar-campos.js");
 const {validateDateTime, validateDate} = require('../helpers/customValidators');
 const {checkDates} = require('../helpers/db-validators.js'); 
-const { addDate, getDates } = require("../controllers/date.js");
+const { addDate, getDates, deleteDate } = require("../controllers/date.js");
 
 router.post("/", [
      check("date").custom(checkDates),
@@ -20,4 +20,10 @@ router.get("/", [
    getDates);
 
 // router.get("/:id", [check("id", "Id is not valid").isUUID()], getDate);
+
+router.delete("/:id", 
+[check("id", "Id is not valid").isUUID()], 
+deleteDate);
+
+
 module.exports = router;
