@@ -5,9 +5,9 @@ const {getPago, addPago}= require("../controllers/pago")
 
 const router= Router()
 
-router.get("./",getPago)
+router.get("/",getPago)
 
-router.post("./",[
+router.post("/",[
 check("idPurchaseOrder", "idPurchaseOrder is required").not().isEmpty().isUUID(),
 check("formaPago", "forma de pago is required").not().isEmpty().isString(),
 validarCampos

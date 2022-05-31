@@ -5,7 +5,7 @@ const {PagoModel}= require("../models")
 
 const getPago = async (req= request, res= response)=>{
 
-    //const {id} = req.query
+
 try{    
 const pago = await PagoModel.findAll({
         where: {

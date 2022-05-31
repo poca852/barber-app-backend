@@ -1,8 +1,9 @@
 const { response, request } = require("express");
 const {DateModel, ServiceModel} = require("../models");
 
+
 const addDate = async (req = request, res = response) => {
-  const { idUser, idEmployee, total, date, service } = req.body;
+  const { idUser, idEmployee, date, service, text } = req.body;
   //formato de date: "mm/dd/yyyy, 4:00:00 PM"
 
   try {
@@ -15,7 +16,6 @@ const addDate = async (req = request, res = response) => {
       }
     });
     await newDate.addService(foundService);
-
 
     res.json({
       ok: true,
