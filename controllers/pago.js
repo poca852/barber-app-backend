@@ -60,8 +60,9 @@ const addPago = async (req= request, res= response)=>{
 };
 
 const confirmarPago = (req = request, res = response) => {
-  const data = [...data, req.body];
+  let data = [];
   try {
+    data = [...data, req.body]
     console.log('Primer llamado', data)
     res.send(data)
   } catch (error) {
