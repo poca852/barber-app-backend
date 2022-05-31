@@ -61,7 +61,7 @@ const addPago = async (req= request, res= response)=>{
 
 const confirmarPago = (req = request, res = response) => {
   try {
-    const data = [req.body]
+    const data = [...req.body]
     console.log(data)
     res.send(data)
   } catch (error) {
