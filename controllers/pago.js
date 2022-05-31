@@ -60,9 +60,14 @@ const addPago = async (req= request, res= response)=>{
 };
 
 const confirmarPago = (req = request, res = response) => {
+  const data = [];
+  data.concat(req.body);
   try {
-    const data = [...req.body]
-    console.log(data)
+    
+
+    console.log('Primer llamado', data)
+    console.log('segundo llamado', data[1]?.resource)
+    console.log('tercer llamado', req.body?.__proto__)
     res.send(data)
   } catch (error) {
     console.log(error)
