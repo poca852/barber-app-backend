@@ -60,12 +60,14 @@ const addPago = async (req= request, res= response)=>{
       }
 };
 
-const arreglo = [];
 
 const confirmarPago = async(req = request, res = response) => {
 
-  arreglo.push(req.body)
-  console.log(arreglo)
+  const {id} = req.query;
+  const baseUrl = `https://api.mercadolibre.com/merchant_orders/${id}?acces-token=APP_USR-4436905275905541-052102-a7820d5ba3ecf53131dc3c6b5f912b59-1127725912`
+
+  const resp = await axios(baseUrl)
+  console.log(resp.data)
 
   try {
     res.status(200).json(req.body)
