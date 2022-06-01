@@ -71,7 +71,6 @@ const addDate = async (req = request, res = response) => {
       total: newDate.total,
       date: newDate.date,
       usuario: foundUser,
-      todo: newDate,
     });
   } catch (error) {
     console.log(error);
