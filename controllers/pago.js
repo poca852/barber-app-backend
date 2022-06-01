@@ -61,13 +61,11 @@ const addPago = async (req= request, res= response)=>{
 };
 
 const confirmarPago = async(req = request, res = response) => {
-  const data = req.body
-  console.log('primer llamado', data.resource)
-  const resp = await axios(`${data.resource}?access_token=APP_USR-4436905275905541-052102-a7820d5ba3ecf53131dc3c6b5f912b59-1127725912`)
-  console.log('segundo llamado', resp.data)
-  
+
+  console.log(req.body)
+
   try {
-    res.status(200).json(resp.data)
+    res.status(200).json(resp.body)
   } catch (error) {
     console.log(error)
     res.status(500).json({
