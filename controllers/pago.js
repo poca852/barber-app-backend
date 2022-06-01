@@ -1,6 +1,6 @@
 const {response, request}= require("express")
 const {PagoModel}= require("../models")
-
+const fetch = require('node-fetch');
 //ESTO ES SI POR EL FRONT (PERFIL ADMIN NECESITA SABER INFO DEL PAGO, RELACIONADO CON LA ORDEN DE COMPRA)
 
 const getPago = async (req= request, res= response)=>{
