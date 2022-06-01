@@ -7,7 +7,7 @@ const router= Router()
 
 router.get("/",getPago)
 
-router.post("/",[
+router.post("/confirmation",[
 check("idPurchaseOrder", "idPurchaseOrder is required").not().isEmpty().isUUID(),
 check("formaPago", "forma de pago is required").not().isEmpty().isString(),
 validarCampos
