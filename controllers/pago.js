@@ -1,6 +1,7 @@
 const {response, request}= require("express")
 const {PagoModel}= require("../models")
-const axios = require('axios');
+// const axios = require('axios');
+const fetch = require('node-fetch');
 
 //ESTO ES SI POR EL FRONT (PERFIL ADMIN NECESITA SABER INFO DEL PAGO, RELACIONADO CON LA ORDEN DE COMPRA)
 
@@ -64,12 +65,14 @@ const addPago = async (req= request, res= response)=>{
 const confirmarPago = async(req = request, res = response) => {
 
   const {id} = req.query;
+  console.log(req.query)
   const baseUrl = `https://api.mercadolibre.com/merchant_orders/${id}?acces-token=APP_USR-4436905275905541-052102-a7820d5ba3ecf53131dc3c6b5f912b59-1127725912`
 
   
   try {
-    const resp = await axios(baseUrl)
-    console.log(resp.data)
+    const resp = await fetch(baseUrl)
+    const data = await resp.json();
+    console.log(data)
     res.status(200).json(req.body)
   } catch (error) {
     console.log(error)
