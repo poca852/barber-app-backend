@@ -1,7 +1,5 @@
 const {response, request}= require("express")
 const {PagoModel}= require("../models")
-// const axios = require('axios');
-// const fetch = require('node-fetch');
 
 //ESTO ES SI POR EL FRONT (PERFIL ADMIN NECESITA SABER INFO DEL PAGO, RELACIONADO CON LA ORDEN DE COMPRA)
 
