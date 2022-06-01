@@ -65,7 +65,7 @@ const confirmarPago = async(req = request, res = response) => {
   console.log(req.body)
 
   try {
-    res.status(200).json(resp.body)
+    res.status(200).json(req.body)
   } catch (error) {
     console.log(error)
     res.status(500).json({
