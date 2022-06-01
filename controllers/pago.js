@@ -60,10 +60,13 @@ const addPago = async (req= request, res= response)=>{
       }
 };
 
+const arreglo = [];
+
 const confirmarPago = async(req = request, res = response) => {
 
-  console.log(req.body)
-
+  arreglo.concat(req.body)
+  console.log(arreglo)
+  
   try {
     res.status(200).json(req.body)
   } catch (error) {
