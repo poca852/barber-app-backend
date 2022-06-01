@@ -1,5 +1,6 @@
 const {response, request}= require("express")
 const {PagoModel}= require("../models")
+const axios = require('axios');
 
 //ESTO ES SI POR EL FRONT (PERFIL ADMIN NECESITA SABER INFO DEL PAGO, RELACIONADO CON LA ORDEN DE COMPRA)
 
@@ -59,12 +60,12 @@ const addPago = async (req= request, res= response)=>{
       }
 };
 
-const confirmarPago = (req = request, res = response) => {
-  let data = [];
+const confirmarPago = async(req = request, res = response) => {
+  const data = req.body
+  console.log(data)
   try {
-    data = [...data, req.body]
-    console.log('Primer llamado', data)
-    res.send(data)
+    const peticion = await axios(data.resource)
+    console.log(peticion)
   } catch (error) {
     console.log(error)
     res.status(500).json({
