@@ -1,5 +1,5 @@
 const { response, request } = require("express");
-const { EmployeeModel } = require("../models");
+const { EmployeeModel, DateModel } = require("../models");
 
 // crear un empleado
 const postEmployee = async (req = request, res = response) => {
@@ -49,6 +49,11 @@ const getEmployees = async (req = request, res = response) => {
     // si no mandan el name es porque quieren todos los barbeross
     const employees = await EmployeeModel.findAll({
       where: { availability: state },
+      include: [
+        {
+          model: DateModel,
+        },
+      ],
     });
 
     res.status(200).json({
@@ -69,7 +74,13 @@ const getEmployee = async (req = request, res = response) => {
   const { idEmployee } = req.params;
 
   try {
-    const employee = await EmployeeModel.findByPk(idEmployee);
+    const employee = await EmployeeModel.findByPk(idEmployee, {
+      include: [
+        {
+          model: DateModel,
+        },
+      ],
+    });
 
     res.status(200).json({
       ok: true,

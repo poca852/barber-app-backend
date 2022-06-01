@@ -16,6 +16,7 @@ class Server {
       categories: "/api/categories",
       date: "/api/date",
       employee: "/api/employee",
+      // employees: "/api/employees",
     };
 
     // Conectar a base de datos
@@ -56,6 +57,7 @@ class Server {
     this.app.use(this.paths.categories, require("../routes/categories"));
     this.app.use(this.paths.date, require("../routes/date"));
     this.app.use(this.paths.employee, require("../routes/employee"));
+    // this.app.use(this.paths.employees, require("../routes/employee"));
   }
 
   listen() {

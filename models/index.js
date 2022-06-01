@@ -13,7 +13,7 @@ UserModel.belongsTo(Rolmodel, { foreignKey: "idRol" });
 
 // relation user - date
 UserModel.hasOne(DateModel, { foreignKey: "idUser" });
-DateModel.belongsTo(UserModel);
+DateModel.belongsTo(UserModel, { foreignKey: "idUser" });
 
 //relation cita - service
 DateModel.belongsToMany(ServiceModel, { through: "ServiceDate" });

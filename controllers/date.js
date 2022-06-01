@@ -1,6 +1,11 @@
 const { response, request } = require("express");
-const { DateModel, ServiceModel } = require("../models");
-
+const {
+  DateModel,
+  ServiceModel,
+  UserModel,
+  EmployeeModel,
+} = require("../models");
+const nodemailer = require("nodemailer");
 const addDate = async (req = request, res = response) => {
   const { idUser, idEmployee, total, date, service } = req.body;
   //formato de date: "mm/dd/yyyy, 4:00:00 PM"
@@ -20,6 +25,43 @@ const addDate = async (req = request, res = response) => {
       },
     });
     await newDate.addService(foundService);
+    const foundUser = await UserModel.findByPk(idUser);
+    console.log("-------", foundUser);
+    console.log("-------", foundUser.dataValues);
+    console.log("------- name", foundUser.dataValues.name);
+
+    //----codigo mail
+    let texto = "reserva ok";
+    contentHTML = `<h1>Datos de reserva barberia</h1>
+        <ul>
+            <li>Nombre : ${foundUser.dataValues.name}</li>
+            <li>Mail : ${foundUser.dataValues.email}</li>
+            <li>servicio reservado para la fecha:${date}</li>
+            
+        </ul>
+        <p>${texto}</p>
+        `;
+
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: "barberapphenry@gmail.com", // generated ethereal user
+        pass: "kxztvsoaqzezigsc", // generated ethereal password
+      },
+    });
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: '"Confirmación Cita 👻" <barberapphenry@gmail.com>', // sender address
+      to: `${foundUser.dataValues.email}`, // list of receivers
+      subject: "Hello ✔", // Subject line
+      // text: "Hello world?", // plain text body
+      html: contentHTML, // html body
+    });
+    console.log("Mensaje enviado", info.messageId);
+    //----fin codigo mail
 
     res.json({
       ok: true,
@@ -28,6 +70,8 @@ const addDate = async (req = request, res = response) => {
       //idEmployee: newDate.idEmployee,
       total: newDate.total,
       date: newDate.date,
+      usuario: foundUser,
+      todo: newDate,
     });
   } catch (error) {
     console.log(error);
@@ -41,15 +85,24 @@ const addDate = async (req = request, res = response) => {
 const getDates = async (req = request, res = response, next) => {
   const { date } = req.query;
 
+  console.log("dio click en getDates, con params: ", date);
   try {
     const allDates = await DateModel.findAll({
-      include: {
-        model: ServiceModel,
-        attributes: ["name"],
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: ServiceModel,
+          attributes: ["name"],
+          through: {
+            attributes: [],
+          },
         },
-      },
+        {
+          model: UserModel,
+        },
+        {
+          model: EmployeeModel,
+        },
+      ],
     });
 
     if (date) {
@@ -86,20 +139,29 @@ const getDates = async (req = request, res = response, next) => {
   }
 };
 
-/*
-const deleteDate = async(req = request, res = response) => {
-  const {id} = req.params;
+const deleteDate = async (req = request, res = response) => {
+  const { id } = req.params;
+  // console.log("entro funcion delete date ide es:", idDate);
+  // const dateFound = await DateModel.findByPk(idDate);
+  // console.log("esta es la date encontrada", dateFound);
   try {
-    const user = await UserModel.update({state: false}, {
-      where: {
-        id
-      }
-    })
+    const dateFound = await DateModel.findByPk(id);
+    const date = await dateFound.update({ state: false });
+    // const date = await DateModel.update(
+    //   {
+    //     state: false,
+    //   },
+    //   {
+    //     where: {
+    //       id,
+    //     },
+    //   }
+    // );
 
-    res.status(201).json({
+    res.status(200).json({
       ok: true,
-      msg: 'Usuario desactivado'
-    })
+      msg: `cita ${date.id} cancelada`,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -108,9 +170,8 @@ const deleteDate = async(req = request, res = response) => {
     });
   }
 };
-*/
-
 module.exports = {
   addDate,
   getDates,
+  deleteDate,
 };
