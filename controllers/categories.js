@@ -26,25 +26,8 @@ const addCategorie = async(req = request, res = response) => {
     }
 };
 
-/*
-const addRol = async(req = request, res = response) => {
-  const {rol} = req.body;
-  try {
-    const newRol = await Rolmodel.create({rol: rol});
 
-    res.status(201).json({
-      ok: true,
-      newRol
-    })
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador'
-    })
-  }
-}
-*/
+
 
 const getCategories = async(req = request, res = response, next) => {
   const {categorie} = req.query;

@@ -15,12 +15,12 @@ const sequelize = new Sequelize(
     logging: false,
     native: false,
     // RECORDAR: muy importante esto se debe dejar en produccion, en desarrollo se puede quitar.
-    //   dialectOptions: {
-    //     ssl: {
-    //       require: true,
-    //       rejectUnauthorized: false,
-    //     },
-    //   },
+   /*  dialectOptions: {
+         ssl: {
+         require: true,
+         rejectUnauthorized: false,
+        },
+     },*/
   }
 );
 

@@ -131,27 +131,42 @@ const verificarServicio = async (id = "") => {
 
 // consu: esta funcion verifica que el name no este repetido
 
-const verificarNameServicio = async (name = "") => {
-  const serviceNameModel = await ServiceModel.findOne({
-    where: { name: name },
-  });
-  if (!serviceNameModel) {
-    throw new Error(`El servicio con el id ${name} no existe`);
-  }
-};
+const verificarNameServicio = async(name = '') => {
+   const serviceNameModel = await ServiceModel.findOne({where: {name:name}});
+   if(!serviceNameModel){
+      throw new Error(`El servicio con el id ${name} no existe`)
+   }
+}
+
+// =================== VERIFICACIONES PARA EL STOCK EN PURCHASEORDER =================
+
+const checkStock = async(cart) => {
+
+   let Stock = {};
+   for(let i = 0; i < cart.length; i++){
+      foundProduct = await ProductsModel.findOne({where: {id: cart[i].idProduct}});
+      
+      if((foundProduct.stock - cart[i].quantity) < 0){
+         throw new Error(`El stock del producto ${foundProduct.name} no es suficiente para la cantidad ingresada`)
+      }
+     }
+     
+   }
+
 
 module.exports = {
-  verficarEmail,
-  existeRol,
-  verificarRol,
-  verificarId,
-  existeEmail,
-  verficarCategoria,
-  verificarProduct,
-  checkDates,
-  existeEmploye,
-  existeEmployeById,
-  verificarServicio,
-  verificarNameServicio,
-  verificarCitaId,
-};
+   verficarEmail,
+   existeRol,
+   verificarRol,
+   verificarId,
+   existeEmail,
+   verficarCategoria,
+   verificarProduct,
+   checkDates,
+   existeEmploye,
+   existeEmployeById,
+   verificarServicio,
+   verificarNameServicio,
+   checkStock,
+   verificarCitaId
+}

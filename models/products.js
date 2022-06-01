@@ -14,10 +14,22 @@ const ProductsModel = sequelize.define('products', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    detail:{
+        type: DataTypes.STRING,
+        allowNull: false
 
+    },
     stock: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            min: 0,
+            isEven(value) {
+              if(value <0) {
+                throw new Error('El Stock no puede ser menor a cero!')
+              }
+            }
+          }
     },
 
     price: {

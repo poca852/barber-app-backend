@@ -2,12 +2,29 @@ const { response, request } = require("express");
 const { ProductsModel, CategorieModel } = require("../models");
 
 const addProduct = async (req = request, res = response) => {
-  const { name, stock, price, idCategorie, img } = req.body;
+  const { name, detail,stock, price, idCategorie, img } = req.body;
 
   try {
+
+     // Consu :verifico que el nombre que queremos agregar no este en la base anteriormente
+     const validateName =  await ProductsModel.findOne({
+      where: {
+        name : name
+      }
+    });
+  
+   // si el nombre ya existe entonces le mando una respuesta indicando que el servicio ya existe
+   if(validateName){
+    return res.status(400).json({
+      ok: false,
+      msg: `El producto ${name} ya existe`
+    })
+  }
+
     // insertamos en la base de datos el service
     const product = await ProductsModel.create({
       name,
+      detail,
       stock,
       price,
       img,
@@ -18,6 +35,7 @@ const addProduct = async (req = request, res = response) => {
       ok: true,
       id: product.id,
       name: product.name,
+      detail: product.detail,
       stock: product.stock,
       price: product.price,
       img: product.img,
@@ -41,7 +59,7 @@ const getProducts = async (req = request, res = response) => {
       where: {
         state
       },
-      attributes: ["name", "stock", "price", "idCategorie", "img", "id"],
+      attributes: ["name", "stock", "price", "idCategorie", "img", "id", "detail"],
       include: {
         model: CategorieModel,
         attributes: ["categorie", "id"],
@@ -87,7 +105,7 @@ const getProduct = async (req = request, res = response, next) => {
 
   try {
     const product = await ProductsModel.findByPk(id, {
-      attributes: ["name", "stock", "price", "idCategorie", "img", "id"]
+      attributes: ["name","detail", "stock", "price", "idCategorie", "img", "id"]
     });
 
     res.status(200).json({
@@ -137,7 +155,7 @@ const putProduct = async(req = request, res = response) => {
         id: idProduct
       }
     })
-
+   
     res.status(201).json({
       ok: true,
       msg: 'Producto actualizado correctamente'
