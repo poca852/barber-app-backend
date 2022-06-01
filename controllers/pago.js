@@ -64,9 +64,9 @@ const arreglo = [];
 
 const confirmarPago = async(req = request, res = response) => {
 
-  arreglo.concat(req.body)
+  arreglo.push(req.body)
   console.log(arreglo)
-  
+
   try {
     res.status(200).json(req.body)
   } catch (error) {
