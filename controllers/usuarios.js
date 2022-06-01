@@ -94,8 +94,8 @@ const getUser = async(req = request, res = response) => {
 };
 
 const putUser = async(req = request, res = response) => {
-  const {id} = req.params;
-  const {password, ...resto} = req.body;
+  const {idUser} = req.params;
+  const {id, state, google, password, ...resto} = req.body;
   try {
     if(password){
       resto.password = bcryptjs.hashSync(password, 10)
@@ -118,7 +118,7 @@ const putUser = async(req = request, res = response) => {
 
     const user = await UserModel.update(resto, {
       where: {
-        id
+        id: idUser
       }
     });
     
@@ -136,11 +136,11 @@ const putUser = async(req = request, res = response) => {
 };
 
 const deleteUser = async(req = request, res = response) => {
-  const {id} = req.params;
+  const {idUser} = req.params;
   try {
     const user = await UserModel.update({state: false}, {
       where: {
-        id
+        id: idUser
       }
     })
 

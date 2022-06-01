@@ -3,8 +3,10 @@ const {check} = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos.js');
 const {addPurchaseOrder} = require('../controllers/purchaseOrder');
 const {checkStock} = require('../helpers/db-validators');
+const {validarJWT} = require('../middlewares');
 
 router.post('/', [
+    validarJWT,
     check("arr.*.idUser").isUUID(),
     check("arr.*.idProduct").isUUID(),
     check().custom(checkStock),

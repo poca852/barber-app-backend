@@ -40,15 +40,15 @@ router.get('/:id', [
 ], getUser)
 
 // actualizar un usuario
-router.put('/:id', [
-    check('id', 'id is not valid').isNumeric(),
+router.put('/:idUser', [
+    check('id', 'no es un id valido').isUUID(),
     check('id').custom(verificarId),
     validarCampos
 ], putUser)
 
 // eliminar un usuario, NOTA: solo le cambia el estado a false no lo elimina fisicamente 
-router.delete('/:id', [
-    check('id', 'Id is not valid').isNumeric(),
+router.delete('/:idUser', [
+    check('id', 'No es un id valido').isUUID(),
     check('id').custom(verificarId),
     validarCampos
 ], deleteUser)

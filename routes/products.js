@@ -1,11 +1,13 @@
 const router = require('express').Router()
 const {check} = require('express-validator');
-const validarCampos = require('../middlewares/validar-campos.js');
+const {validarCampos, validarJWT, esAdminRol} = require('../middlewares');
 const {validarImg} = require('../helpers/customValidators.js');
 const {addProduct, getProduct, getProducts, putProduct, deleteProduct} = require('../controllers/products.js');
 const { verficarCategoria, verificarProduct } = require('../helpers/db-validators.js');
 
 router.post('/', [
+    validarJWT,
+    esAdminRol,
     check('name', 'name is required').not().isEmpty().isString(),
     check("detail","detail is required").not().isEmpty().isString(),
     //check('stock', 'stock is required').not().isEmpty().isInt(),
@@ -29,6 +31,8 @@ router.get('/:id', [
 
 // actualizar un producto, 2 validaciones una que sea un uuid y la otra que estemos editando un producto que exista
 router.put('/:idProduct', [
+    validarJWT,
+    esAdminRol,
     check('idProduct', 'No es un id valido').isUUID(),
     check('idProduct').custom(verificarProduct),
     validarCampos
@@ -36,6 +40,8 @@ router.put('/:idProduct', [
 
 // eliminar un producto se validan dos cosas, una que sea un uuid y segundo que estemos eliminando un producto que realmente exista
 router.delete('/:idProduct', [
+    validarJWT,
+    esAdminRol,
     check('idProduct', 'No es un id valido').isUUID(),
     check('idProduct').custom(verificarProduct),
     validarCampos

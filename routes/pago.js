@@ -1,16 +1,16 @@
 const {Router}= require ("express")
 const {check} = require("express-validator")
-const {validarCampos} = require('../middlewares');
+const {validarCampos, validarJWT} = require('../middlewares');
 const {getPago, addPago, confirmarPago}= require("../controllers/pago")
 
 const router= Router()
 
-router.get("./",getPago)
+router.get("/", validarJWT, getPago)
 
-router.post("./",[
-check("idPurchaseOrder", "idPurchaseOrder is required").not().isEmpty().isUUID(),
-check("formaPago", "forma de pago is required").not().isEmpty().isString(),
-validarCampos
+router.post("/",[
+   check("idPurchaseOrder", "idPurchaseOrder is required").not().isEmpty().isUUID(),
+   check("formaPago", "forma de pago is required").not().isEmpty().isString(),
+   validarCampos
 ],
 addPago)
 
