@@ -68,7 +68,7 @@ const confirmarPago = async(req = request, res = response) => {
   console.log(req.query)
   const baseUrl = `https://api.mercadolibre.com/merchant_orders/${id}?acces-token=APP_USR-4436905275905541-052102-a7820d5ba3ecf53131dc3c6b5f912b59-1127725912`
 
-  
+  // hola
   try {
     const resp = await fetch(baseUrl)
     const data = await resp.json();
