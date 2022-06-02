@@ -12,7 +12,7 @@ const { addUser,
 const { verficarEmail, verificarId, existeRol, existeRolByName, checkRolByName } = require('../helpers/db-validators');
 
 // middlewares
-const {validarCampos, validarJWT} = require('../middlewares');
+const {validarCampos, validarJWT, esAdminRol} = require('../middlewares');
 
 const router = Router();
 
@@ -20,6 +20,8 @@ const router = Router();
 
 // crear un usuario
 router.post('/', [
+    validarJWT,
+    esAdminRol,
     check('email', 'Email is required').isEmail(),
     check('email').custom(verficarEmail),
     check('name', 'Name is required').not().isEmpty(),
@@ -41,6 +43,8 @@ router.get('/:id', [
 
 // actualizar un usuario
 router.put('/:idUser', [
+    validarJWT,
+    esAdminRol,
     check('id', 'no es un id valido').isUUID(),
     check('id').custom(verificarId),
     validarCampos
@@ -48,6 +52,8 @@ router.put('/:idUser', [
 
 // eliminar un usuario, NOTA: solo le cambia el estado a false no lo elimina fisicamente 
 router.delete('/:idUser', [
+    validarJWT,
+    esAdminRol,
     check('id', 'No es un id valido').isUUID(),
     check('id').custom(verificarId),
     validarCampos

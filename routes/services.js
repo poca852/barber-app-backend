@@ -1,11 +1,13 @@
 const router = require('express').Router()
 const {check} = require('express-validator');
-const validarCampos = require('../middlewares/validar-campos.js');
+const {validarCampos, validarJWT} = require('../middlewares');
 const {validarHora, validarImg} = require('../helpers/customValidators.js');
 const {addService,getServices, getService,putService ,deleteService} = require('../controllers/service.js');
 const {verificarServicio} = require("../helpers/db-validators")
 
 router.post('/', [
+    validarJWT,
+    esAdminRol,
     check('name', 'name is required').not().isEmpty().isString(),
     check('detail', 'detail is required').not().isEmpty().isString(),
     check('price', 'price is required' ).not().isEmpty().isFloat(),
@@ -24,6 +26,8 @@ router.get('/:id', [
 
 //modificar un servicio
 router.put('/:id', [
+    validarJWT,
+    esAdminRol,
     check('id', 'No es un id valido').isUUID(),
     check('id').custom(verificarServicio),
     validarCampos
@@ -31,6 +35,8 @@ router.put('/:id', [
   
   // eliminar un servicio se validan dos cosas, una que sea un uuid y segundo que estemos eliminando un servicio que realmente exista
   router.delete('/:id', [
+    validarJWT,
+    esAdminRol,
     check('id', 'No es un id valido').isUUID(),
     check('id').custom(verificarServicio),
     validarCampos

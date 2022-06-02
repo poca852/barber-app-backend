@@ -6,12 +6,14 @@ const { postEmployee, getEmployees, getEmployee, putEmployee, deleteEmployee } =
 // helpers
 const { existeEmploye, existeEmployeById } = require('../helpers/db-validators');
 // middlewares
-const {validarCampos} = require('../middlewares');
+const {validarCampos, validarJWT, esAdminRol} = require('../middlewares');
 
 const router = Router();
 
 // crear employee
 router.post('/', [
+   validarJWT,
+   esAdminRol,
    check('name', 'El nombre es requerido').not().isEmpty(),
    check('name').custom(existeEmploye),
    validarCampos
@@ -29,6 +31,8 @@ router.get('/:idEmployee', [
 
 // actualizar un empleado
 router.put('/:idEmployee', [
+   validarJWT,
+   esAdminRol,
    check('idEmployee', 'no es un id valido').isUUID(),
    check('idEmployee').custom(existeEmployeById),
    validarCampos
@@ -36,6 +40,8 @@ router.put('/:idEmployee', [
 
 // eliminar un empleado
 router.delete('/:idEmployee', [
+   validarJWT,
+   esAdminRol,
    check('idEmployee', 'el id no es valido').isUUID(),
    check('idEmployee').custom(existeEmployeById),
    validarCampos
