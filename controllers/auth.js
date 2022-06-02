@@ -10,6 +10,10 @@ const login = async (req = request, res = response) => {
       where: {
         email,
       },
+      include: {
+        model: Rolmodel,
+        attributes: ["rol"],
+      },
     });
 
     // comparamos los passwords
