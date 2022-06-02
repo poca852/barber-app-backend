@@ -32,7 +32,6 @@ router.post('/', [
 // listar todos los usuarios
 router.get('/', [
     validarJWT,
-    esAdminRol,
     validarCampos
 ], getUsers)
 
