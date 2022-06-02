@@ -20,8 +20,6 @@ const router = Router();
 
 // crear un usuario
 router.post('/', [
-    validarJWT,
-    esAdminRol,
     check('email', 'Email is required').isEmail(),
     check('email').custom(verficarEmail),
     check('name', 'Name is required').not().isEmpty(),
@@ -32,10 +30,16 @@ router.post('/', [
 ], addUser)
 
 // listar todos los usuarios
-router.get('/', getUsers)
+router.get('/', [
+    validarJWT,
+    esAdminRol,
+    validarCampos
+], getUsers)
 
 // listar solo un usuario que es pedido por id
 router.get('/:id', [
+    validarJWT,
+    esAdminRol,
     check('id', 'Id is not valid').isNumeric(),
     check('id').custom(verificarId),
     validarCampos
@@ -44,7 +48,6 @@ router.get('/:id', [
 // actualizar un usuario
 router.put('/:idUser', [
     validarJWT,
-    esAdminRol,
     check('id', 'no es un id valido').isUUID(),
     check('id').custom(verificarId),
     validarCampos
@@ -53,7 +56,6 @@ router.put('/:idUser', [
 // eliminar un usuario, NOTA: solo le cambia el estado a false no lo elimina fisicamente 
 router.delete('/:idUser', [
     validarJWT,
-    esAdminRol,
     check('id', 'No es un id valido').isUUID(),
     check('id').custom(verificarId),
     validarCampos

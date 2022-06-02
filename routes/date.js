@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { check } = require("express-validator");
-const validarCampos = require("../middlewares/validar-campos.js");
+const {validarCampos, validarJWT} = require("../middlewares");
 const {validateDateTime, validateDate} = require('../helpers/customValidators');
 const {checkDates} = require('../helpers/db-validators.js'); 
 const { addDate, getDates, deleteDate } = require("../controllers/date.js");
@@ -21,6 +21,7 @@ router.get("/", [
 // router.get("/:id", [check("id", "Id is not valid").isUUID()], getDate);
 
 router.delete("/:id", 
+validarJWT,
 [check("id", "Id is not valid").isUUID()], 
 deleteDate);
 
