@@ -87,6 +87,10 @@ const getUser = async (req = request, res = response) => {
   try {
     const user = await UserModel.findByPk(id, {
       attributes: ["id", "email", "name"],
+      include: {
+        model: Rolmodel,
+        attributes: ["rol"],
+      },
     });
 
     res.status(200).json({
