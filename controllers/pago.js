@@ -191,7 +191,6 @@ const confirmarPago = async (req = request, res = response) => {
 }
 */
 
-
 try {
   
   if (req.query.topic === 'merchant_order') {
@@ -209,23 +208,6 @@ try {
     console.log(idPurchaseOrder)
     
       //Crear pago
-
-      if (!data.cancelled && status === 'approved') {
-        const newPago = await PagoModel.create({
-          transaction_amount,
-          shipping_cost,
-          currency_id,
-          status,
-          date_approved,
-          operation_type,
-          idPurchaseOrder
-        })
-
-        // Modificar Stock
-
-        let foundProduct = []
-        let actualizacion = [];
-
         for (let i = 0; i < data.items.length; i++) {
           foundProduct = [...foundProduct, await ProductsModel.findOne({ where: { id: data.items[i].id } })];
           actualizacion = [...actualizacion, await ProductsModel.update({ stock: foundProduct[i].stock - data.items[i].quantity }, {
