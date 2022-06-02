@@ -27,8 +27,6 @@ const url = "https://api.mercadopago.com/checkout/preferences";
             });
 
             const jsonPayment = await payment.json();
-
-            console.log("Respuesta MercadoPago",jsonPayment)
     
             return jsonPayment.init_point;
         } catch (error) {

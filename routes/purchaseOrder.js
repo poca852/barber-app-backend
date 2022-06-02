@@ -6,7 +6,7 @@ const {checkStock} = require('../helpers/db-validators');
 const {validarJWT} = require('../middlewares');
 
 router.post('/', [
-    validarJWT,
+    /*validarJWT,*/
     check("arr.*.idUser").isUUID(),
     check("arr.*.idProduct").isUUID(),
     check().custom(checkStock),

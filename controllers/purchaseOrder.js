@@ -44,6 +44,7 @@ const addPurchaseOrder = async(req = request, res = response) =>{
    const cart = foundProduct.map((p,index)=>{
      return {
        id: p.id,
+       idPurchaseOrder: newOrder.id,
        title: p.name,
        description: p.detail,
        unit_price: p.price,
@@ -53,20 +54,11 @@ const addPurchaseOrder = async(req = request, res = response) =>{
    })
 
    const urlPayment = await createPayment(cart, res);
-   /////////////////
+ 
 
-    //Actualizando el Stock de products
 
-    if(newOrder.status){//verifica si el proceso de pago se completo satisfactoriamente
 
-   for(let i = 0; i < foundProduct.length; i++){
-   await ProductsModel.update({stock:foundProduct[i].stock - req.body[i].quantity}, {
-    where: {
-      id: req.body[i].idProduct
-    }
-  });
-}
-}
+    
 
     res.json({
     ok: true,
@@ -74,7 +66,8 @@ const addPurchaseOrder = async(req = request, res = response) =>{
     idUser: newOrder.idUser,
     idProduct:join.dataValues.products.map((p)=>p.dataValues.id),
     quantity: newOrder.quantity,
-    urlPayment 
+    urlPayment, 
+    idPurchaseOrder: newOrder.id,
   });
 
 } catch (error) {

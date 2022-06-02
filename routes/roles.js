@@ -11,8 +11,8 @@ router.get('/', getRoles)
 
 // crear roles
 router.post('/', [
-   validarJWT,
-   esAdminRol,
+   /*validarJWT,
+   esAdminRol,*/
    check('rol', 'El rol es obligatorio').not().isEmpty(),
    check('rol').custom(existeRolByName),
    validarCampos

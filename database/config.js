@@ -1,29 +1,29 @@
+// NOTA POR FAVOR NO MODIFICAR ABSOLUTAMENTE NADA
+
 const { Sequelize } = require("sequelize");
 
-// Esto solo se usa en desarrollo de momento se comentara para subir a heroku
-// const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
+const {DB_USER, DB_PASSWORD, DB_HOST, DB_NAME} = process.env;
+const conexion_local = `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
+const conexion_remota = process.env.DATABASE_URL;
 
-// TODO: aqui se debe cambiar a la variable de entorno de DATABASE_URL  PARA QUE PUEDA FUNCIONAR EN PRODUCCION
-// const conexion_local = `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
+const options_local = {
+   logging: false,
+   native: false
+}
 
-// const sequelize = new Sequelize(process.env.DATABASE_URL, {
-// const sequelize = new Sequelize(process.env.DATABASE_URL, {
-
-// const sequelize = new Sequelize(
-//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-//   {
-//const sequelize = new Sequelize(process.env.DATABASE_URL, {
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    logging: false,
-    native: false,
-    // RECORDAR: muy importante esto se debe dejar en produccion, en desarrollo se puede quitar.
-    dialectOptions: {
-         ssl: {
-         require: true,
-         rejectUnauthorized: false,
-        },
+const options_remoto = {
+   logging: false,
+   native: false,
+   dialectOptions: {
+      ssl: {
+      require: true,
+      rejectUnauthorized: false,
      },
-  }
-);
+  },
+}
+
+const sequelize = new Sequelize(
+   conexion_remota || conexion_local,
+   conexion_remota ? options_remoto : options_local);
 
 module.exports = sequelize;

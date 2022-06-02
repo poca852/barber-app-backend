@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const {check} = require('express-validator');
-const {validarCampos, validarJWT} = require('../middlewares');
+const {validarCampos, validarJWT, esAdminRol} = require('../middlewares');
 const {validarHora, validarImg} = require('../helpers/customValidators.js');
 const {addService,getServices, getService,putService ,deleteService} = require('../controllers/service.js');
 const {verificarServicio} = require("../helpers/db-validators")

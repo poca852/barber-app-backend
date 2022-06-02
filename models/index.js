@@ -43,7 +43,7 @@ ProductsModel.belongsToMany(PurchaseOrder, {through: 'PurchaseProducts'});
 
 //relation Pago - purchaseOrder 1:1
 PurchaseOrder.hasOne(PagoModel, {foreignKey: 'idPurchaseOrder'});
-PagoModel.belongsTo(PurchaseOrder);
+PagoModel.belongsTo(PurchaseOrder,);
 
 DateModel.hasOne(Mail, {foreignKey: 'idDate'});
 Mail.belongsTo(DateModel);
