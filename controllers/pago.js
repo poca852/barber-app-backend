@@ -191,21 +191,22 @@ const confirmarPago = async (req = request, res = response) => {
 }
 */
 
-  const { transaction_amount, shipping_cost, currency_id, status, date_approved, operation_type } = req.body.payments[0]
-  const { idPurchaseOrder } = req.body.items[0]
 
-  try {
-
-    if (req.query.topic === 'merchant_order') {
-      const { id } = req.query;
-      const baseUrl = `https://api.mercadolibre.com/merchant_orders/${id}?access_token=APP_USR-4436905275905541-052102-a7820d5ba3ecf53131dc3c6b5f912b59-1127725912`
-
-
-      const resp = await fetch(baseUrl)
-      const data = await resp.json();
-
-      console.log('resp de data', data);
-
+try {
+  
+  if (req.query.topic === 'merchant_order') {
+    const { id } = req.query;
+    const baseUrl = `https://api.mercadolibre.com/merchant_orders/${id}?access_token=APP_USR-4436905275905541-052102-a7820d5ba3ecf53131dc3c6b5f912b59-1127725912`
+    
+    
+    const resp = await fetch(baseUrl)
+    const data = await resp.json();
+    
+    console.log('resp de data', data);
+    
+    const { transaction_amount, shipping_cost, currency_id, status, date_approved, operation_type } = data.payments[0]
+    const { idPurchaseOrder } = data.items[0]
+    
       //Crear pago
 
       if (!data.cancelled && status === 'approved') {
