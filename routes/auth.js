@@ -2,10 +2,10 @@ const {Router} = require('express');
 const {check} = require('express-validator');
 
 // controllers
-const {login, renew, signGoogle} = require('../controllers/auth');
+const {login, renew, signGoogle, auth0} = require('../controllers/auth');
 
 // helpers
-const { existeEmail } = require('../helpers/db-validators');
+const { existeEmail, existeRolByName } = require('../helpers/db-validators');
 
 // middlewares
 const { validarCampos, validarJWT } = require('../middlewares')

@@ -43,12 +43,12 @@ const UserModel = sequelize.define('user', {
 
     google: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
+        allowNull: true
     },
 
     idRol: {
         type: DataTypes.UUID,
-        // defaultValue: '5b62a178-8192-4672-861f-08325a6b3a8c',
         allowNull: true,
         references: {
             model: Rolmodel,

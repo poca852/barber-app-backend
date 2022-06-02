@@ -9,6 +9,11 @@ const RolModel = sequelize.define('rol', {
       allowNull: false
    },
 
+   state: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+   },
+
    rol: {
       type: DataTypes.STRING,
       allowNull: false

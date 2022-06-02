@@ -48,6 +48,32 @@ const verificarRol = async (rol = "") => {
   }
 };
 
+// esta funcion se emplea en crear un rol, verifica que el rol ya no exista en la db
+const existeRolByName = async(rol = '') => {
+
+   rol = rol.toUpperCase();
+
+   const rolModel = await Rolmodel.findOne({
+      where: {rol}
+   })
+
+   if(rolModel){
+      throw new Error(`El rol ${rol} ya existe en la db`)
+   }
+}
+
+const checkRolByName = async(rol = '') => {
+   rol = rol.toUpperCase();
+
+   const rolModel = await Rolmodel.findOne({
+      where: {rol}
+   })
+
+   if(!rolModel){
+      throw new Error(`El rol ${rol} no existe en la db`)
+   }
+}
+
 // =================== VERIFICACIONES PARA CITAS =================
 const checkDates = async (date) => {
   const allDates = await DateModel.findAll();
@@ -156,8 +182,10 @@ const checkStock = async(cart) => {
 
 module.exports = {
    verficarEmail,
+   existeRolByName,
    existeRol,
    verificarRol,
+   checkRolByName,
    verificarId,
    existeEmail,
    verficarCategoria,

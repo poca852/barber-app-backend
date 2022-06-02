@@ -1,7 +1,12 @@
 const {response, request}= require("express")
+<<<<<<< HEAD
 const {PagoModel, PurchaseOrder}= require("../models")
 const nodemailer = require('nodemailer');
 
+=======
+const {PagoModel}= require("../models")
+const fetch = require('node-fetch');
+>>>>>>> b604fea8580167460d6e31b5141b1441ed63d25c
 //ESTO ES SI POR EL FRONT (PERFIL ADMIN NECESITA SABER INFO DEL PAGO, RELACIONADO CON LA ORDEN DE COMPRA)
 
 const getPago = async (req= request, res= response)=>{
@@ -31,7 +36,7 @@ const pago = await PagoModel.findAll({
 
 //CADA VEZ QUE SE EFECTUA EL PAGO! ==> DEBERIAMOS VER COMO UNIR CON LA ORDEN DE COMPRA!!
 //VERIFICAR COMO LLEGA ESTA INFO DE MERCADO PAGO
-const addPago = async (req= require, res= response)=>{
+const addPago = async (req= request, res= response)=>{
 
     const{formaPago, idPurchaseOrder} = req.body
  
@@ -117,9 +122,32 @@ console.log ("Mensaje enviado", info.messageId)
 };
 
 
+const confirmarPago = async(req = request, res = response) => {
+
+  try {
+  if(req.query.topic === 'merchant_order'){
+    const {id} = req.query;
+    console.log(req.query)
+    const baseUrl = `https://api.mercadolibre.com/merchant_orders/${id}?access_token=APP_USR-4436905275905541-052102-a7820d5ba3ecf53131dc3c6b5f912b59-1127725912`
+  
+    // hola
+      const resp = await fetch(baseUrl)
+      const data = await resp.json();
+      console.log(data)
+      return res.status(200).json(req.body)
+  }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      ok: false,
+      msg: 'Hable con el administrador'
+    })
+  }
+}
 
 
 module.exports={
     getPago,
-    addPago
+    addPago,
+    confirmarPago
 }

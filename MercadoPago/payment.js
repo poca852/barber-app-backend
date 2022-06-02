@@ -12,7 +12,8 @@ const url = "https://api.mercadopago.com/checkout/preferences";
             failure: "/failure",
             pending: "/pending"
             },
-            notification_url: "https://www.your-site.com"
+            // https://barber-app-henry.herokuapp.com/api/pago/confirmation
+            notification_url: ""
         };
 
         try {
