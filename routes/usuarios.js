@@ -38,7 +38,6 @@ router.get('/', [
 // listar solo un usuario que es pedido por id
 router.get('/:id', [
     validarJWT,
-    esAdminRol,
     check('id', 'Id is not valid').isNumeric(),
     check('id').custom(verificarId),
     validarCampos
