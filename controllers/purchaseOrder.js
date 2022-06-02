@@ -43,11 +43,11 @@ const addPurchaseOrder = async(req = request, res = response) =>{
    //no se pago la transaccion -> no cambia el stock
    const cart = foundProduct.map((p,index)=>{
      return {
-       id: newOrder.id,
+       id: p.id,
        title: p.name,
        description: p.detail,
        unit_price: p.price,
-       category_id: p.idCategorie,
+       category_id: newOrder.id,
        quantity: req.body[index].quantity
      }
    })
