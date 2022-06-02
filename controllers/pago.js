@@ -66,7 +66,7 @@ const confirmarPago = async(req = request, res = response) => {
   if(req.query.topic === 'merchant_order'){
     const {id} = req.query;
     console.log(req.query)
-    const baseUrl = `https://api.mercadolibre.com/merchant_orders/${id}?acces-token=APP_USR-4436905275905541-052102-a7820d5ba3ecf53131dc3c6b5f912b59-1127725912`
+    const baseUrl = `https://api.mercadolibre.com/merchant_orders/${id}?access_token=APP_USR-4436905275905541-052102-a7820d5ba3ecf53131dc3c6b5f912b59-1127725912`
   
     // hola
       const resp = await fetch(baseUrl)
