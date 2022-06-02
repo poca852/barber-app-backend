@@ -15,9 +15,29 @@ const PagoModel = sequelize.define('pago', {
         type: DataTypes.BOOLEAN,
         defaultValue:true
     },
-    formaPago:{
-        type: DataTypes.STRING,
-        allowNull: false
+
+    transaction_amount:{
+        type: DataTypes.INTEGER
+    },
+
+    shipping_cost:{
+        type: DataTypes.STRING
+    },
+
+    status: {
+        type: DataTypes.STRING
+    },
+
+    operation_type:{
+        type: DataTypes.STRING
+    },
+
+    currency_id:{
+        type: DataTypes.STRING
+    },
+
+    date_approved:{
+        type:DataTypes.STRING
     },
 
     idPurchaseOrder: {

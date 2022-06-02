@@ -6,8 +6,8 @@ const {addProduct, getProduct, getProducts, putProduct, deleteProduct} = require
 const { verficarCategoria, verificarProduct } = require('../helpers/db-validators.js');
 
 router.post('/', [
-    validarJWT,
-    esAdminRol,
+   /* validarJWT,
+    esAdminRol,*/
     check('name', 'name is required').not().isEmpty().isString(),
     check("detail","detail is required").not().isEmpty().isString(),
     //check('stock', 'stock is required').not().isEmpty().isInt(),
