@@ -203,9 +203,9 @@ try {
     const data = await resp.json();
     
     console.log('resp de data', data);
-    
+
     const { transaction_amount, shipping_cost, currency_id, status, date_approved, operation_type } = data.payments[0]
-    const { idPurchaseOrder } = data.items[0]
+    const { idPurchaseOrder } = data.items[0].id
     
       //Crear pago
 
