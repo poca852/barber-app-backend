@@ -4,6 +4,7 @@ const {validarCampos, validarJWT} = require("../middlewares");
 const {validateDateTime, validateDate} = require('../helpers/customValidators');
 const {checkDates} = require('../helpers/db-validators.js'); 
 const { addDate, getDates, deleteDate } = require("../controllers/date.js");
+const { verificarCitaId } = require("../helpers/db-validators");
 
 router.post("/", [
      check("date").custom(checkDates),
@@ -13,10 +14,14 @@ router.post("/", [
      validarCampos,
    ],addDate);
 
-router.get("/", [
-  //check("date").custom(validateDate),
-  validarCampos],
-   getDates);
+router.get(
+  "/",
+  [
+    //check("date").custom(validateDate),
+    validarCampos,
+  ],
+  getDates
+);
 
 // router.get("/:id", [check("id", "Id is not valid").isUUID()], getDate);
 

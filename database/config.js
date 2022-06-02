@@ -6,6 +6,12 @@ const { Sequelize } = require("sequelize");
 // TODO: aqui se debe cambiar a la variable de entorno de DATABASE_URL  PARA QUE PUEDA FUNCIONAR EN PRODUCCION
 // const conexion_local = `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
 
+// const sequelize = new Sequelize(process.env.DATABASE_URL, {
+// const sequelize = new Sequelize(process.env.DATABASE_URL, {
+
+// const sequelize = new Sequelize(
+//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+//   {
 //const sequelize = new Sequelize(process.env.DATABASE_URL, {
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
     logging: false,

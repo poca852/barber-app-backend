@@ -1,9 +1,8 @@
 const { response, request } = require("express");
-const bcryptjs = require('bcryptjs');
-const { UserModel, Rolmodel } = require("../models");
+const bcryptjs = require("bcryptjs");
+const { UserModel, Rolmodel, DateModel, EmployeeModel } = require("../models");
 
-const addUser = async(req = request, res = response) => {
-
+const addUser = async (req = request, res = response) => {
     const { email, password, name, phone, avatar, rol } = req.body;
     
     try {
@@ -27,43 +26,17 @@ const addUser = async(req = request, res = response) => {
           idRol: rolModel.id
         }
 
-        // insertamos en la base de datos el user
-        const user = await UserModel.create(data);
+    // insertamos en la base de datos el user
+    const user = await UserModel.create(data);
 
-        // TODO: aqui pendiente por definir si el usuario tiene que confirmar su email
-
-        res.json({
-          ok: true,
-          name: user.name,
-          id: user.id,
-          email: user.email,
-          phone: user.phone,
-          rol: queryRol
-        })
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: "Hable con el administrador",
-        });
-    }
-};
-
-const getUsers = async(req = request, res = response) => {
-  try {
-    const users = await UserModel.findAll({
-      attributes: ['id', 'name', 'email'],
-      include: {
-        model: Rolmodel,
-        attributes: ['id', 'rol']
-      }
-    });
-
-    res.status(200).json({
+    res.json({
       ok: true,
-      users
-    })
+      name: user.name,
+      id: user.id,
+      email: user.email,
+      phone: user.phone,
+      rol: user.idRol,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -73,17 +46,53 @@ const getUsers = async(req = request, res = response) => {
   }
 };
 
-const getUser = async(req = request, res = response) => {
-  const {id} = req.params;
+const getUsers = async (req = request, res = response) => {
   try {
-    const user = await UserModel.findByPk(id, {
-      attributes: ['id', 'email', 'name']
+    const users = await UserModel.findAll({
+      attributes: ["id", "name", "email"],
+      include: [
+        {
+          model: Rolmodel,
+          attributes: ["id", "rol"],
+        },
+        {
+          model: DateModel,
+          include: [
+            {
+              model: EmployeeModel,
+            },
+          ],
+        },
+        // {
+        //   model: EmployeeModel,
+        // },
+      ],
     });
 
     res.status(200).json({
       ok: true,
-      user
-    })
+      users,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+    });
+  }
+};
+
+const getUser = async (req = request, res = response) => {
+  const { id } = req.params;
+  try {
+    const user = await UserModel.findByPk(id, {
+      attributes: ["id", "email", "name"],
+    });
+
+    res.status(200).json({
+      ok: true,
+      user,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -97,8 +106,8 @@ const putUser = async(req = request, res = response) => {
   const {idUser} = req.params;
   const {id, state, google, password, ...resto} = req.body;
   try {
-    if(password){
-      resto.password = bcryptjs.hashSync(password, 10)
+    if (password) {
+      resto.password = bcryptjs.hashSync(password, 10);
     }
 
     // verificamos si mandan otro rol
@@ -121,11 +130,11 @@ const putUser = async(req = request, res = response) => {
         id: idUser
       }
     });
-    
+
     res.status(201).json({
       ok: true,
-      msg: 'Cambios realizados correctamente'
-    })
+      msg: "Cambios realizados correctamente",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -146,8 +155,8 @@ const deleteUser = async(req = request, res = response) => {
 
     res.status(201).json({
       ok: true,
-      msg: 'Usuario desactivado'
-    })
+      msg: "Usuario desactivado",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({

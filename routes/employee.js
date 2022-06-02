@@ -1,10 +1,19 @@
 // express
-const {Router} = require('express');
-const {check} = require('express-validator');
+const { Router } = require("express");
+const { check } = require("express-validator");
 // controllers
-const { postEmployee, getEmployees, getEmployee, putEmployee, deleteEmployee } = require('../controllers/employee');
+const {
+  postEmployee,
+  getEmployees,
+  getEmployee,
+  putEmployee,
+  deleteEmployee,
+} = require("../controllers/employee");
 // helpers
-const { existeEmploye, existeEmployeById } = require('../helpers/db-validators');
+const {
+  existeEmploye,
+  existeEmployeById,
+} = require("../helpers/db-validators");
 // middlewares
 const {validarCampos, validarJWT, esAdminRol} = require('../middlewares');
 
@@ -20,14 +29,19 @@ router.post('/', [
 ], postEmployee);
 
 // obtener todos los empleados o buscar uno en particular
-router.get('/', getEmployees);
+// router.get("/", getEmployee);
+router.get("/", getEmployees);
 
 // obetener un empleado por id
-router.get('/:idEmployee', [
-   check('idEmployee', 'no es un id valido').isUUID(),
-   check('idEmployee').custom(existeEmployeById),
-   validarCampos
-], getEmployee);
+router.get(
+  "/:idEmployee",
+  [
+    check("idEmployee", "no es un id valido").isUUID(),
+    check("idEmployee").custom(existeEmployeById),
+    validarCampos,
+  ],
+  getEmployee
+);
 
 // actualizar un empleado
 router.put('/:idEmployee', [

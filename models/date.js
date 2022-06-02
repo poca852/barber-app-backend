@@ -18,32 +18,30 @@ const DateModel = sequelize.define(
       allowNull: true,
       references: {
         model: UserModel,
-        key: 'id'
-      }
+        key: "id",
+      },
     },
 
     idEmployee: {
       type: DataTypes.UUID,
+      allowNull: true,
       references: {
         model: EmployeeModel,
-        key: 'id'
+        key: "id",
       },
-      allowNull: true,
     },
 
     date: {
-      type: DataTypes.DATE ,
-      get: function() {
-        return this.getDataValue('date')
-        .toLocaleString('en-US'); //da el formato "mm/dd/yyyy, 12:50:00", de lo contrario trae 2022-01-17T04:33:12.000Z,
-        },
-        allowNull: false,   
+      type: DataTypes.DATE,
+      get: function () {
+        return this.getDataValue("date").toLocaleString("en-US"); //da el formato "mm/dd/yyyy, 12:50:00", de lo contrario trae 2022-01-17T04:33:12.000Z,
       },
-
-      state: {
-        type : DataTypes.BOOLEAN,
-        defaultValue: true
-      }
+      allowNull: false,
+    },
+    state: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
   },
   { timestamps: false }
 );
