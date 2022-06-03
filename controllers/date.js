@@ -137,6 +137,31 @@ const getDates = async (req = request, res = response, next) => {
   }
 };
 
+//Se mandan las citas dependiendo el usuario en su perfil:
+
+const getDate = async(req = request, res = response) => {
+  const {id} = req.params
+
+  try {
+    const foundDates = await DateModel.findAll({
+      where: {
+        idUser: id
+      }
+    });
+
+    res.json({
+      ok: true,
+      foundDates
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+    });
+  }
+}
+
 const deleteDate = async (req = request, res = response) => {
   const { id } = req.params;
   // console.log("entro funcion delete date ide es:", idDate);
@@ -171,5 +196,6 @@ const deleteDate = async (req = request, res = response) => {
 module.exports = {
   addDate,
   getDates,
+  getDate,
   deleteDate,
 };
