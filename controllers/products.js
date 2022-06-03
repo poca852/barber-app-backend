@@ -128,7 +128,7 @@ const putProduct = async(req = request, res = response) => {
   const { idProduct } = req.params;
 
   // se separa el state, idCategorie y el id por si me lo llegaran a mandar y guardo lo que si quiero guardar en data
-  const {state, idCategorie, id,  ...data} = req.body;
+  const {idCategorie, id,  ...data} = req.body;
 
   try {
 
