@@ -37,7 +37,10 @@ const getCategories = async(req = request, res = response, next) => {
     const categories = await CategorieModel.findAll({
       attributes: ["categorie", "id"],
       include: {
-        model: ProductsModel
+        model: ProductsModel,
+        where: {
+          state: true
+        }
       }
     });
 
