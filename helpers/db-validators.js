@@ -110,7 +110,12 @@ const existeEmail = async (email = "") => {
 // =================== validaciones para products ====================
 // david: esta funcion verifica que la categoria exista
 const verficarCategoria = async (categorie = "") => {
-  const categorieModel = await CategorieModel.findByPk(categorie);
+  const categorieModel = await CategorieModel.findOne({
+    where: {
+      categorie
+    }
+  });
+
   if (!categorieModel) {
     throw new Error(`La categoria ${categorie} no existe`);
   }

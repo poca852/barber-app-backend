@@ -2,33 +2,48 @@ const { response, request } = require("express");
 const { ProductsModel, CategorieModel } = require("../models");
 
 const addProduct = async (req = request, res = response) => {
-  const { name, detail,stock, price, idCategorie, img } = req.body;
+
+  const { name, detail, stock, price, categoria, img } = req.body;
 
   try {
 
-     // Consu :verifico que el nombre que queremos agregar no este en la base anteriormente
-     const validateName =  await ProductsModel.findOne({
+    // busco la categoria para asignar un idCategorie
+    const cat = await CategorieModel.findOne({
       where: {
-        name : name
+        categorie: categoria.toLowerCase()
+      }
+    })
+
+    if (!cat) {
+      return res.status(400).json({
+        ok: false,
+        msg: `No existe la categoria ${categoria}`
+      })
+    }
+
+    // Consu :verifico que el nombre que queremos agregar no este en la base anteriormente
+    const validateName = await ProductsModel.findOne({
+      where: {
+        name: name
       }
     });
-  
-   // si el nombre ya existe entonces le mando una respuesta indicando que el servicio ya existe
-   if(validateName){
-    return res.status(400).json({
-      ok: false,
-      msg: `El producto ${name} ya existe`
-    })
-  }
 
-    // insertamos en la base de datos el service
+    // si el nombre ya existe entonces le mando una respuesta indicando que el servicio ya existe
+    if (validateName) {
+      return res.status(400).json({
+        ok: false,
+        msg: `El producto ${name} ya existe`
+      })
+    }
+
+    // insertamos en la base de datos el producto
     const product = await ProductsModel.create({
       name,
       detail,
       stock,
       price,
       img,
-      idCategorie,
+      idCategorie: cat.id,
     });
 
     res.json({
@@ -105,7 +120,7 @@ const getProduct = async (req = request, res = response, next) => {
 
   try {
     const product = await ProductsModel.findByPk(id, {
-      attributes: ["name","detail", "stock", "price", "idCategorie", "img", "id"]
+      attributes: ["name", "detail", "stock", "price", "idCategorie", "img", "id"]
     });
 
     res.status(200).json({
@@ -122,26 +137,26 @@ const getProduct = async (req = request, res = response, next) => {
   }
 };
 
-const putProduct = async(req = request, res = response) => {
+const putProduct = async (req = request, res = response) => {
 
   // el id del producto lo extraemos de los params
   const { idProduct } = req.params;
 
   // se separa el state, idCategorie y el id por si me lo llegaran a mandar y guardo lo que si quiero guardar en data
-  const {idCategorie, id,  ...data} = req.body;
+  const { idCategorie, id, ...data } = req.body;
 
   try {
 
-    if(data.name){
+    if (data.name) {
       // verifico que el nombre que queremos actualizar este disponible
       const verificarNameProduct = await ProductsModel.findOne({
         where: {
           name: data.name
         }
       })
-  
+
       // si el nombre ya existe entonces le mando una respuesta indicando que el producto ya existe
-      if(verificarNameProduct){
+      if (verificarNameProduct) {
         return res.status(400).json({
           ok: false,
           msg: `El producto ${data.name} ya existe`
@@ -149,13 +164,13 @@ const putProduct = async(req = request, res = response) => {
       }
     }
 
-    
+
     await ProductsModel.update(data, {
       where: {
         id: idProduct
       }
     })
-   
+
     res.status(201).json({
       ok: true,
       msg: 'Producto actualizado correctamente'
@@ -170,13 +185,13 @@ const putProduct = async(req = request, res = response) => {
   }
 };
 
-const deleteProduct = async(req = request, res = response) => {
+const deleteProduct = async (req = request, res = response) => {
 
   const { idProduct } = req.params;
 
   try {
-    
-    await ProductsModel.update({state: false}, {
+
+    await ProductsModel.update({ state: false }, {
       where: {
         id: idProduct
       }

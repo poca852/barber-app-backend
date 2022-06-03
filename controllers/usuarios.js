@@ -1,5 +1,6 @@
 const { response, request } = require("express");
 const bcryptjs = require("bcryptjs");
+const {generarJWT} = require('../helpers');
 const { UserModel, Rolmodel, DateModel, EmployeeModel } = require("../models");
 
 const addUser = async (req = request, res = response) => {
@@ -29,6 +30,8 @@ const addUser = async (req = request, res = response) => {
     // insertamos en la base de datos el user
     const user = await UserModel.create(data);
 
+    const token = await generarJWT(user.id);
+
     res.json({
       ok: true,
       name: user.name,
@@ -36,7 +39,9 @@ const addUser = async (req = request, res = response) => {
       email: user.email,
       phone: user.phone,
       rol: user.idRol,
+      token
     });
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
