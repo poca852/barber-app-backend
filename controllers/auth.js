@@ -49,6 +49,12 @@ const signGoogle = async (req = request, res = response) => {
   try {
     const user = await googleVerify(id_token);
 
+    const rolModel = await Rolmodel.findOne({
+      where: {
+        rol: 'CLIENT'
+      }
+    });
+
     const [userModel, isCreate] = await UserModel.findOrCreate({
       where: {
         email: user.correo,
@@ -59,6 +65,7 @@ const signGoogle = async (req = request, res = response) => {
         password: ":)",
         avatar: user.img,
         google: true,
+        idRol: rolModel.id
       },
     });
 
@@ -69,6 +76,7 @@ const signGoogle = async (req = request, res = response) => {
       email: userModel.email,
       img: userModel.avatar,
       id: userModel.id,
+      rol: rolModel.rol,
       token,
     });
   } catch (error) {
