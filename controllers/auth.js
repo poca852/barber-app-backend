@@ -89,6 +89,7 @@ const renew = async (req = request, res = response) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      rol: user.rol.rol,
       token,
     });
   } catch (error) {
