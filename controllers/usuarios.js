@@ -38,10 +38,10 @@ const addUser = async (req = request, res = response) => {
       id: user.id,
       email: user.email,
       phone: user.phone,
-      rol: user.idRol,
+      rol: rolModel.rol,
       token
     });
-    
+
   } catch (error) {
     console.log(error);
     res.status(500).json({
