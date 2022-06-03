@@ -70,7 +70,7 @@ const checkRolByName = async(rol = '') => {
    })
 
    if(!rolModel){
-      throw new Error(`El rol ${rol} no existe en la db`)
+      throw new Error(`El rol ${rol} no existe.`)
    }
 }
 

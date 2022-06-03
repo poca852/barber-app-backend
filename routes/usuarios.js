@@ -20,11 +20,10 @@ const router = Router();
 
 // crear un usuario
 router.post('/', [
-    check('email', 'Email is required').isEmail(),
+    check('email', 'No es un email valido').isEmail(),
     check('email').custom(verficarEmail),
-    check('name', 'Name is required').not().isEmpty(),
-    check('password', 'password is required').isLength({min: 6}),
-    // check('idRol', 'rol debe ser un uuid').isUUID(),
+    check('name', 'Nombre requerido').not().isEmpty(),
+    check('password', 'La contraseña tiene que tener minimo 6 caracteres').isLength({min: 6}),
     check('rol').custom(checkRolByName),
     validarCampos
 ], addUser)
