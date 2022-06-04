@@ -39,6 +39,7 @@ const addUser = async (req = request, res = response) => {
       email: user.email,
       phone: user.phone,
       rol: rolModel.rol,
+      img: user.avatar,
       token
     });
 

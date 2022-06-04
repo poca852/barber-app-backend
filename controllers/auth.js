@@ -33,6 +33,8 @@ const login = async (req = request, res = response) => {
       name: user.name,
       email: user.email,
       rol: user.rol.rol,
+      phone: user.phone,
+      img: user.avatar,
       token,
     });
   } catch (error) {
@@ -62,6 +64,7 @@ const signGoogle = async (req = request, res = response) => {
       defaults: {
         email: user.correo,
         name: user.nombre,
+        phone: '',
         password: ":)",
         avatar: user.img,
         google: true,
@@ -76,8 +79,9 @@ const signGoogle = async (req = request, res = response) => {
       email: userModel.email,
       name: userModel.name,
       img: userModel.avatar,
-      id: userModel.id,
       rol: rolModel.rol,
+      phone: userModel.phone,
+      img: userModel.avatar,
       token,
     });
   } catch (error) {
@@ -99,6 +103,8 @@ const renew = async (req = request, res = response) => {
       name: user.name,
       email: user.email,
       rol: user.rol.rol,
+      phone: user.phone,
+      img: user.avatar,
       token,
     });
   } catch (error) {
