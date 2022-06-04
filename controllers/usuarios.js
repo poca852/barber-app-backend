@@ -1,6 +1,12 @@
 const { response, request } = require("express");
 const bcryptjs = require("bcryptjs");
-const { UserModel, Rolmodel, DateModel, EmployeeModel } = require("../models");
+const {
+  UserModel,
+  Rolmodel,
+  DateModel,
+  EmployeeModel,
+  FavoriteModel,
+} = require("../models");
 
 const addUser = async (req = request, res = response) => {
   const { email, password, name, phone, avatar, idRol } = req.body;
@@ -74,9 +80,12 @@ const getUsers = async (req = request, res = response) => {
             },
           ],
         },
-        // {
-        //   model: EmployeeModel,
-        // },
+        {
+          model: FavoriteModel,
+          attributes: {
+            exclude: ["FavoriteUser"],
+          },
+        },
       ],
     });
 
