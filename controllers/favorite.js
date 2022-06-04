@@ -1,19 +1,11 @@
 const { response, request } = require("express");
-const {
-  DateModel,
-  ServiceModel,
-  UserModel,
-  EmployeeModel,
-  ProductsModel,
-  FavoriteModel,
-} = require("../models");
-const nodemailer = require("nodemailer");
+const { UserModel, ProductsModel, FavoriteModel } = require("../models");
 //-------------------------------addFavorite -------------------
 const addFavorite = async (req = request, res = response) => {
   const { idUser, idProduct } = req.body;
   try {
     const foundUser = await UserModel.findByPk(idUser);
-    const foundProduct = await ProductsModel.findByPk(idProduct);
+    // const foundProduct = await ProductsModel.findByPk(idProduct);
     const FavoriteModelfoun = await FavoriteModel.findOne({
       where: { idProduct: idProduct },
       include: [
@@ -53,18 +45,6 @@ const addFavorite = async (req = request, res = response) => {
       msg: "Hable con el administrador",
     });
   }
-
-  //-----
-  // // console.log(foundProduct);
-  // if (!foundProduct || foundProduct === null) {
-  //   return console.log("no hay nada");
-  // } else {
-  // }
-  //   res.json({
-  //     ok: false,
-  //     msj: "no hay producto",
-  //   });
-  // }
 };
 //-------------------------------getFavorite -------------------
 const getFavorite = async (req = request, res = response, next) => {
@@ -89,18 +69,14 @@ const deleteFavorite = async (req = request, res = response) => {
   try {
     const { idUser, idProduct } = req.body;
     const foundUser = await UserModel.findByPk(idUser);
-    const foundProduct = await ProductsModel.findByPk(idProduct);
     //-----
     const eliminaFavorite = await FavoriteModel.findOne({
       where: {
         idProduct: idProduct,
       },
     });
-    // console.log(foundUser.__proto__);
     await foundUser.removeFavorite(eliminaFavorite);
-
     //-----
-
     res.status(200).json({
       ok: true,
       msg: `producto con id ${idProduct} borrado de favorito `,
@@ -117,7 +93,6 @@ const deleteFavoriteParams = async (req = request, res = response) => {
   try {
     const { idUser, idProduct } = req.params;
     const foundUser = await UserModel.findByPk(idUser);
-    const foundProduct = await ProductsModel.findByPk(idProduct);
     //-----
     const eliminaFavorite = await FavoriteModel.findOne({
       where: {
