@@ -1,11 +1,12 @@
 const { response, request } = require("express")
-const { PagoModel, PurchaseOrder, ProductsModel } = require("../models")
-const nodemailer = require('nodemailer');
+const { PagoModel, PurchaseOrder, ProductsModel, UserModel } = require("../models")
+const {sendMail} = require('../helpers/functionSendMail');
 const fetch = require('node-fetch');
+
+
 //ESTO ES SI POR EL FRONT (PERFIL ADMIN NECESITA SABER INFO DEL PAGO, RELACIONADO CON LA ORDEN DE COMPRA)
 
 const getPago = async (req = request, res = response) => {
-
 
   try {
     const pago = await PagoModel.findAll({
@@ -28,85 +29,35 @@ const getPago = async (req = request, res = response) => {
   }
 };
 
-
-//CADA VEZ QUE SE EFECTUA EL PAGO! ==> DEBERIAMOS VER COMO UNIR CON LA ORDEN DE COMPRA!!
-//VERIFICAR COMO LLEGA ESTA INFO DE MERCADO PAGO
-const addPago = async (req = request, res = response) => {
-
-  const { formaPago, idPurchaseOrder } = req.body
+const getPagoId = async (req = request, res = response) => {
+  const {idUser} = req.params
 
   try {
-    const newPago = await PagoModel.create({
-
-      formaPago,
-      idPurchaseOrder
-    })
-
-    //Actualizar estado de la orden
-
-    const newOrder = await PurchaseOrder.update({ status: true }, {
+    const dataPurchase = await PurchaseOrder.findAll({
       where: {
-        id: idPurchaseOrder
+        idUser
       }
     });
 
-    //cambiar stock 
+    let listPayments = [];
 
-    if (newOrder.status) {//verifica si el proceso de pago se completo satisfactoriamente
+    for(let i = 0; i < dataPurchase.length; i++){
 
-      for (let i = 0; i < foundProduct.length; i++) {
-        await ProductsModel.update({ stock: foundProduct[i].stock - req.body[i].quantity }, {
-          where: {
-            id: req.body[i].idProduct
-          }
-        });
-      }
+        listPayments = [...listPayments, await PagoModel.findOne({
+        where:{
+          idPurchaseOrder: dataPurchase[i].id
+        }
+      })]
+
+      console.log(listPayments);
+
     }
 
-    //mail
-
-    contentHTML =
-      `<h1>Orden de Compra</h1>
-        <ul>
-            <li>Numero de Orden : ${nombre}</li>
-            <li>Productos : ${email}</li>
-            <li>Cantidad de articulos : ${email}</li>
-            <li>Precio Total : ${email}</li>
-        </ul>
-        
-        `
-
-    let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true, // true for 465, false for other ports
-      auth: {
-        user: "barberapphenry@gmail.com", // generated ethereal user
-        pass: "kxztvsoaqzezigsc", // generated ethereal password
-      },
-    });
-
-    // send mail with defined transport object
-    let info = await transporter.sendMail({
-      from: '"Compra realizada con exito 👻" <barberapphenry@gmail.com>', // sender address
-      to: "consudiazc@gmail.com", // list of receivers
-      subject: "Pago realizado ✔", // Subject line
-      // text: "Hello world?", // plain text body
-      html: contentHTML
-      , // html body
-    });
-    console.log("Mensaje enviado", info.messageId)
-
-
+    
 
     res.status(200).json({
       ok: true,
-      id: newPago.id,
-      formaPago: newPago.formaPago,
-      idPurchaseOrder: newPago.idPurchaseOrder
-
     })
-
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -117,9 +68,10 @@ const addPago = async (req = request, res = response) => {
 };
 
 
+
 const confirmarPago = async (req = request, res = response) => {
 
-  /*let pruebaData = {
+  let pruebaData = {
     "id": 4877016187,
     "status": "closed",
     "external_reference": "",
@@ -162,70 +114,122 @@ const confirmarPago = async (req = request, res = response) => {
         "email": ""
     },
     "items": [
+        
         {
-            "id": "334182a4-65ec-4856-b496-8224b60f0823",
-            "category_id": "17ce48a7-ff80-4a0d-8e90-55e42abeb1b1",
-            "idPurchaseOrder": "20ce48a7-ff80-4a0d-8e90-55e42abeb1f1",
+            "id": "f527ca1f-4db8-49a6-a819-20a31b9f8c18",
+            "category_id": "f4abe336-f086-4428-81b6-49227cc8a3c3",
             "currency_id": "MXN",
             "description": "pelo",
             "picture_url": null,
-            "title": "crema bigote",
-            "quantity": 5,
+            "title": "crema bigotes",
+            "quantity": 15,
             "unit_price": 50
         },
         {
-            "id": "8e8c44cb-aa01-4dc8-9ea6-7dae067911f5",
-            "category_id": "17ce48a7-ff80-4a0d-8e90-55e42abeb1b1",
-            "currency_id": "MXN",
-            "description": "pelo",
-            "picture_url": null,
-            "title": "crema calva",
-            "quantity": 15,
-            "unit_price": 50
-        }
+          "id": "9f02c36b-eb9f-4964-88a1-47a411d5e537",
+          "category_id": "f4abe336-f086-4428-81b6-49227cc8a3c3",
+          "currency_id": "MXN",
+          "description": "pelo",
+          "picture_url": null,
+          "title": "shampoo",
+          "quantity": 15,
+          "unit_price": 50
+      },
+      {
+        "id": "56911ed2-7731-419d-9374-cffd27f942f0",
+        "category_id": "f4abe336-f086-4428-81b6-49227cc8a3c3",
+        "currency_id": "MXN",
+        "description": "pelo",
+        "picture_url": null,
+        "title": "gel",
+        "quantity": 15,
+        "unit_price": 50
+    }
     ],
     "cancelled": false,
     "additional_info": "",
     "application_id": null,
     "order_status": "paid"
 }
-*/
+
 
 try {
   
-  if (req.query.topic === 'merchant_order') {
+  /*if (pruebaData.topic === 'merchant_order') {
     const { id } = req.query;
     const baseUrl = `https://api.mercadolibre.com/merchant_orders/${id}?access_token=APP_USR-4436905275905541-052102-a7820d5ba3ecf53131dc3c6b5f912b59-1127725912`
-    
-    
+    */
+    /*
     const resp = await fetch(baseUrl)
     const data = await resp.json();
     
     console.log('resp de data', data);
+    */
 
-    const { transaction_amount, shipping_cost, currency_id, status, date_approved, operation_type } = data.payments[0]
-    const idPurchaseOrder  = data.items[0].category_id
-    console.log(idPurchaseOrder)
+    const { transaction_amount, shipping_cost, currency_id, status, date_approved, operation_type } = pruebaData.payments[0]
+    const idPurchaseOrder  = pruebaData.items[0].category_id
+  
     
-      //Crear pago
-        for (let i = 0; i < data.items.length; i++) {
-          foundProduct = [...foundProduct, await ProductsModel.findOne({ where: { id: data.items[i].id } })];
-          actualizacion = [...actualizacion, await ProductsModel.update({ stock: foundProduct[i].stock - data.items[i].quantity }, {
+      //Generar Pago en la base de datos
+
+      if (!pruebaData.cancelled && status === 'approved') {
+        const newPago = await PagoModel.create({
+          transaction_amount,
+          shipping_cost,
+          currency_id,
+          status,
+          date_approved,
+          operation_type,
+          idPurchaseOrder
+        })
+
+        // Modificar Stock
+
+        let foundProduct = []
+        let actualizacion = [];
+
+        for (let i = 0; i < pruebaData.items.length; i++) {
+          foundProduct = [...foundProduct, await ProductsModel.findOne({ where: { id: pruebaData.items[i].id } })];
+          actualizacion = [...actualizacion, await ProductsModel.update({ stock: foundProduct[i].stock - pruebaData.items[i].quantity }, {
             where: {
-              id: data.items[i].id
+              id: pruebaData.items[i].id
             }
           })];
         }
 
-        return res.json(newPago);
+        //Actualizar estado de la orden de compra
+        const updateStatus = await PurchaseOrder.update({status: true},{
+          where:{
+            id: idPurchaseOrder
+          }
+        });
 
-        //Email:
+        //Notificar al usuario por email con toda la informacion
 
+        //Busca el id del usuario en el modelo de PurchseOrder
+        const datosOrden = await PurchaseOrder.findByPk(idPurchaseOrder);
+        
+        // extraemos al usuario con el id dentro de datosOrden
+        const findUser = await UserModel.findByPk(datosOrden.idUser);
+
+        const {email, name} = findUser;
+        
+        
+       
+        sendMail(name.toUpperCase(), email,idPurchaseOrder, date_approved, transaction_amount, pruebaData);
+
+
+        //Mandar Notificacion ---> Sockets --> perfil
+
+
+        const json = await response.json();
+
+        return res.json({
+          ok: true
+        });
 
       }
-
-
-      //return res.status(200).json(req.body)
+    
     } catch (error) {
       console.log(error)
       res.status(500).json({
@@ -238,6 +242,6 @@ try {
 
 module.exports = {
     getPago,
-    addPago,
-    confirmarPago
+    confirmarPago,
+    getPagoId
   }

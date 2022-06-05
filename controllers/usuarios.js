@@ -1,31 +1,36 @@
 const { response, request } = require("express");
 const bcryptjs = require("bcryptjs");
-const {generarJWT} = require('../helpers');
-const { UserModel, Rolmodel, DateModel, EmployeeModel } = require("../models");
+const { generarJWT } = require("../helpers");
+const {
+  UserModel,
+  Rolmodel,
+  DateModel,
+  EmployeeModel,
+  FavoriteModel,
+} = require("../models");
 
 const addUser = async (req = request, res = response) => {
-    const { email, password, name, phone, avatar, rol } = req.body;
-    
-    try {
+  const { email, password, name, phone, avatar, rol } = req.body;
 
-        // buscamos el rol en la base de datos y extraemos el id
-        const queryRol = rol.toUpperCase();
-        const rolModel = await Rolmodel.findOne({
-          where: {rol: queryRol}
-        })
+  try {
+    // buscamos el rol en la base de datos y extraemos el id
+    const queryRol = rol.toUpperCase();
+    const rolModel = await Rolmodel.findOne({
+      where: { rol: queryRol },
+    });
 
-        // encriptamos el password
-        const hash = bcryptjs.hashSync(password, 10);
+    // encriptamos el password
+    const hash = bcryptjs.hashSync(password, 10);
 
-        // armamos el body
-        const data = {
-          email,
-          password: hash,
-          name,
-          phone,
-          avatar,
-          idRol: rolModel.id
-        }
+    // armamos el body
+    const data = {
+      email,
+      password: hash,
+      name,
+      phone,
+      avatar,
+      idRol: rolModel.id,
+    };
 
     // insertamos en la base de datos el user
     const user = await UserModel.create(data);
@@ -40,9 +45,8 @@ const addUser = async (req = request, res = response) => {
       phone: user.phone,
       rol: rolModel.rol,
       img: user.avatar,
-      token
+      token,
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -69,9 +73,12 @@ const getUsers = async (req = request, res = response) => {
             },
           ],
         },
-        // {
-        //   model: EmployeeModel,
-        // },
+        {
+          model: FavoriteModel,
+          attributes: {
+            exclude: ["FavoriteUser"],
+          },
+        },
       ],
     });
 
@@ -112,33 +119,33 @@ const getUser = async (req = request, res = response) => {
   }
 };
 
-const putUser = async(req = request, res = response) => {
-  const {idUser} = req.params;
-  const {id, state, google, password, ...resto} = req.body;
+const putUser = async (req = request, res = response) => {
+  const { idUser } = req.params;
+  const { id, state, google, password, ...resto } = req.body;
   try {
     if (password) {
       resto.password = bcryptjs.hashSync(password, 10);
     }
 
     // verificamos si mandan otro rol
-    if(resto.rol){
+    if (resto.rol) {
       const data = resto.rol.toUpperCase();
       const rolModel = await Rolmodel.findOne({
-        where: {rol: data}
-      })
+        where: { rol: data },
+      });
 
-      if(rolModel){
+      if (rolModel) {
         return res.status(400).json({
           ok: false,
-          msg: `El ${resto.rol} ya existe`
-        })
+          msg: `El ${resto.rol} ya existe`,
+        });
       }
     }
 
     const user = await UserModel.update(resto, {
       where: {
-        id: idUser
-      }
+        id: idUser,
+      },
     });
 
     res.status(201).json({
@@ -154,14 +161,17 @@ const putUser = async(req = request, res = response) => {
   }
 };
 
-const deleteUser = async(req = request, res = response) => {
-  const {idUser} = req.params;
+const deleteUser = async (req = request, res = response) => {
+  const { idUser } = req.params;
   try {
-    const user = await UserModel.update({state: false}, {
-      where: {
-        id: idUser
+    const user = await UserModel.update(
+      { state: false },
+      {
+        where: {
+          id: idUser,
+        },
       }
-    })
+    );
 
     res.status(201).json({
       ok: true,
@@ -181,5 +191,5 @@ module.exports = {
   getUsers,
   getUser,
   putUser,
-  deleteUser
+  deleteUser,
 };

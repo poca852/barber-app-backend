@@ -30,13 +30,13 @@ router.post('/', [
 
 // listar todos los usuarios
 router.get('/', [
-    validarJWT,
-    validarCampos
+    /*validarJWT,
+    validarCampos*/
 ], getUsers)
 
 // listar solo un usuario que es pedido por id
 router.get('/:id', [
-    validarJWT,
+   /* validarJWT,*/
     check('id', 'Id is not valid').isUUID(),
     check('id').custom(verificarId),
     validarCampos
@@ -44,7 +44,7 @@ router.get('/:id', [
 
 // actualizar un usuario
 router.put('/:idUser', [
-    validarJWT,
+    /*validarJWT,*/
     check('id', 'no es un id valido').isUUID(),
     check('id').custom(verificarId),
     validarCampos
@@ -52,7 +52,7 @@ router.put('/:idUser', [
 
 // eliminar un usuario, NOTA: solo le cambia el estado a false no lo elimina fisicamente 
 router.delete('/:idUser', [
-    validarJWT,
+    /*validarJWT,*/
     check('id', 'No es un id valido').isUUID(),
     check('id').custom(verificarId),
     validarCampos
