@@ -19,7 +19,6 @@ class Server {
       employee: "/api/employee",
       purchaseOrder: "/api/purchaseOrder",
       pago: "/api/pago",
-      mail: "/api/mail",
       favorite: "/api/favorite",
     };
 
@@ -36,7 +35,7 @@ class Server {
   async conectarDB() {
     try {
       await sequelize.authenticate();
-      // await sequelize.sync({ force: true }); //para pruebas descoment!!!
+      //await sequelize.sync({ force: true }); //para pruebas descoment!!!
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +63,6 @@ class Server {
     this.app.use(this.paths.employee, require("../routes/employee"));
     this.app.use(this.paths.purchaseOrder, require("../routes/purchaseOrder"));
     this.app.use(this.paths.pago, require("../routes/pago"));
-    this.app.use(this.paths.mail, require("../routes/mail"));
     this.app.use(this.paths.favorite, require("../routes/favorite"));
   }
 

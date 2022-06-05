@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Purchase Order!</title>
+  </head>
+  <body>
+    <h1 style="color: blueviolet;">Purchase Order</h1>
+    <p>Numero de Orden: {{this.idPurchaseOrder}}</p>
+    <p>Fecha: {{this.date_approved}}</p>
+    <ul>
+      {{#each datesProducts}}
+      <li>Name: {{this.name}}</li>
+      <li>Cantidad: {{this.quantity}}</li>
+      <li>Precio: {{this.price}}</li>
+      <br />
+      {{/each}}
+      <p>Total de compra: {{this.transaction_amount}}</p>
+    </ul>
+  </body>
+</html>

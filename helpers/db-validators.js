@@ -172,12 +172,9 @@ const verificarNameServicio = async(name = '') => {
 // =================== VERIFICACIONES PARA EL STOCK EN PURCHASEORDER =================
 
 const checkStock = async(cart) => {
-
-   let Stock = {};
    for(let i = 0; i < cart.length; i++){
       foundProduct = await ProductsModel.findOne({where: {id: cart[i].idProduct}});
-      
-      if((foundProduct.stock - cart[i].quantity) < 0){
+      if((foundProduct.stock - cart[i].quantity) < 1){
          throw new Error(`El stock del producto ${foundProduct.name} no es suficiente para la cantidad ingresada`)
       }
      }

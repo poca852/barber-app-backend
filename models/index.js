@@ -9,7 +9,6 @@ const CategorieModel = require("./categorie.js");
 const PurchaseOrder = require("./purchaseOrder.js");
 const PagoModel = require("./pago.js");
 const FavoriteModel = require("./favorito.js");
-const Mail = require("./mail.js");
 
 // relations rol - user 1:n
 Rolmodel.hasMany(UserModel, { foreignKey: "idRol" });
@@ -46,9 +45,6 @@ ProductsModel.belongsToMany(PurchaseOrder, { through: "PurchaseProducts" });
 PurchaseOrder.hasOne(PagoModel, {foreignKey: 'idPurchaseOrder'});
 PagoModel.belongsTo(PurchaseOrder,);
 
-DateModel.hasOne(Mail, { foreignKey: "idDate" });
-Mail.belongsTo(DateModel);
-
 // models exports
 module.exports = {
   UserModel,
@@ -60,6 +56,5 @@ module.exports = {
   ProductsModel,
   PagoModel,
   PurchaseOrder,
-  Mail,
   FavoriteModel,
 };

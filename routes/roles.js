@@ -20,8 +20,8 @@ router.post('/', [
 
 // listar un rol
 router.get('/:idRol', [
-   validarJWT,
-   esAdminRol,
+   /*validarJWT,
+   esAdminRol,*/
    check('idRol', 'No es un id valido').isUUID(),
    check('idRol').custom(verificarRol),
    validarCampos
@@ -29,8 +29,8 @@ router.get('/:idRol', [
 
 // actualizar role
 router.put('/:idRol', [
-   validarJWT,
-   esAdminRol,
+  /* validarJWT,
+   esAdminRol,*/
    check('idRol', 'no es un id valido').isUUID(),
    check('idRol').custom(verificarRol),
    validarCampos
@@ -38,8 +38,8 @@ router.put('/:idRol', [
 
 // eliminar role
 router.delete('/:idRol', [
-   validarJWT,
-   esAdminRol,
+  /* validarJWT,
+   esAdminRol,*/
    check('idRol', 'No es un id valido').isUUID(),
    check('idRol').custom(verificarRol),
    validarCampos

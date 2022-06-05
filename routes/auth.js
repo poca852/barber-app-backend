@@ -25,7 +25,7 @@ router.post('/google', [
 ], signGoogle)
 
 router.get('/renew', [
-    validarJWT
+    /*validarJWT*/
 ], renew)
 
 module.exports = router;
