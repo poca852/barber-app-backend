@@ -6,7 +6,8 @@ const { addUser,
         getUsers,
         getUser,
         putUser,
-        deleteUser } = require('../controllers/usuarios');
+        deleteUser, 
+        pathUser} = require('../controllers/usuarios');
 
 // helpers
 const { verficarEmail, verificarId, existeRol, existeRolByName, checkRolByName } = require('../helpers/db-validators');
@@ -44,18 +45,26 @@ router.get('/:id', [
 
 // actualizar un usuario
 router.put('/:idUser', [
-    /*validarJWT,*/
-    check('id', 'no es un id valido').isUUID(),
-    check('id').custom(verificarId),
+    validarJWT,
+    check('idUser', 'no es un id valido').isUUID(),
+    check('idUser').custom(verificarId),
     validarCampos
 ], putUser)
 
 // eliminar un usuario, NOTA: solo le cambia el estado a false no lo elimina fisicamente 
 router.delete('/:idUser', [
-    /*validarJWT,*/
-    check('id', 'No es un id valido').isUUID(),
-    check('id').custom(verificarId),
+    validarJWT,
+    check('idUser', 'No es un id valido').isUUID(),
+    check('idUser').custom(verificarId),
     validarCampos
 ], deleteUser)
+
+
+router.patch('/:idUser', [
+    validarJWT,
+    check('idUser', 'No es un id valido').isUUID(),
+    check('idUser').custom(verificarId),
+    validarCampos
+], pathUser)
 
 module.exports = router;

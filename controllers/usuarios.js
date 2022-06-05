@@ -1,23 +1,18 @@
 const { response, request } = require("express");
 const bcryptjs = require("bcryptjs");
-const { generarJWT } = require("../helpers");
-const {
-  UserModel,
-  Rolmodel,
-  DateModel,
-  EmployeeModel,
-  FavoriteModel,
-} = require("../models");
+const { generarJWT } = require('../helpers');
+const { UserModel, Rolmodel, DateModel, EmployeeModel, FavoriteModel } = require("../models");
 
 const addUser = async (req = request, res = response) => {
   const { email, password, name, phone, avatar, rol } = req.body;
 
   try {
+
     // buscamos el rol en la base de datos y extraemos el id
     const queryRol = rol.toUpperCase();
     const rolModel = await Rolmodel.findOne({
-      where: { rol: queryRol },
-    });
+      where: { rol: queryRol }
+    })
 
     // encriptamos el password
     const hash = bcryptjs.hashSync(password, 10);
@@ -29,8 +24,8 @@ const addUser = async (req = request, res = response) => {
       name,
       phone,
       avatar,
-      idRol: rolModel.id,
-    };
+      idRol: rolModel.id
+    }
 
     // insertamos en la base de datos el user
     const user = await UserModel.create(data);
@@ -59,7 +54,7 @@ const addUser = async (req = request, res = response) => {
 const getUsers = async (req = request, res = response) => {
   try {
     const users = await UserModel.findAll({
-      attributes: ["id", "name", "email"],
+      attributes: ["id", "name", "email", "phone", 'state', 'google'],
       include: [
         {
           model: Rolmodel,
@@ -99,7 +94,6 @@ const getUser = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const user = await UserModel.findByPk(id, {
-      attributes: ["id", "email", "name"],
       include: {
         model: Rolmodel,
         attributes: ["rol"],
@@ -108,7 +102,12 @@ const getUser = async (req = request, res = response) => {
 
     res.status(200).json({
       ok: true,
-      user,
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      phone: user.phone,
+      img: user.avatar,
+      rol: user.rol.rol
     });
   } catch (error) {
     console.log(error);
@@ -142,15 +141,27 @@ const putUser = async (req = request, res = response) => {
       }
     }
 
-    const user = await UserModel.update(resto, {
+    await UserModel.update(resto, {
       where: {
         id: idUser,
       },
     });
 
+    const user = await UserModel.findByPk(idUser, {
+      include: {
+        model: Rolmodel,
+        attributes: ["rol"],
+      },
+    });
+
     res.status(201).json({
       ok: true,
-      msg: "Cambios realizados correctamente",
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      phone: user.phone,
+      rol: user.rol.rol,
+      img: user.avatar
     });
   } catch (error) {
     console.log(error);
@@ -164,18 +175,79 @@ const putUser = async (req = request, res = response) => {
 const deleteUser = async (req = request, res = response) => {
   const { idUser } = req.params;
   try {
-    const user = await UserModel.update(
-      { state: false },
-      {
-        where: {
-          id: idUser,
-        },
+    await UserModel.update({ state: false }, {
+      where: {
+        id: idUser
       }
-    );
+    });
 
-    res.status(201).json({
+    const user = await UserModel.findByPk(idUser, {
+      attributes: ["id", "name", "email", "phone", 'state', 'google'],
+      include: [
+        {
+          model: Rolmodel,
+          attributes: ["id", "rol"],
+        },
+        {
+          model: DateModel,
+          include: [
+            {
+              model: EmployeeModel,
+            },
+          ],
+        },
+        // {
+        //   model: EmployeeModel,
+        // },
+      ],
+    });
+
+    res.status(200).json({
       ok: true,
-      msg: "Usuario desactivado",
+      user
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+    });
+  }
+};
+
+const pathUser = async (req = request, res = response) => {
+  const { idUser } = req.params;
+  try {
+    await UserModel.update({ state: true }, {
+      where: {
+        id: idUser
+      }
+    })
+
+    const user = await UserModel.findByPk(idUser, {
+      attributes: ["id", "name", "email", "phone", 'state', 'google'],
+      include: [
+        {
+          model: Rolmodel,
+          attributes: ["id", "rol"],
+        },
+        {
+          model: DateModel,
+          include: [
+            {
+              model: EmployeeModel,
+            },
+          ],
+        },
+        // {
+        //   model: EmployeeModel,
+        // },
+      ],
+    });
+
+    res.status(200).json({
+      ok: true,
+      user
     });
   } catch (error) {
     console.log(error);
@@ -192,4 +264,5 @@ module.exports = {
   getUser,
   putUser,
   deleteUser,
+  pathUser
 };

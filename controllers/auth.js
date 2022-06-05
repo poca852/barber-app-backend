@@ -76,6 +76,7 @@ const signGoogle = async (req = request, res = response) => {
 
     res.status(200).json({
       ok: true,
+      id: userModel.id,
       email: userModel.email,
       name: userModel.name,
       img: userModel.avatar,
