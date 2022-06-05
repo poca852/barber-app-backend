@@ -6,6 +6,7 @@ const {
   EmployeeModel,
 } = require("../models");
 const nodemailer = require("nodemailer");
+
 const addDate = async (req = request, res = response) => {
   const { idUser, idEmployee, date, service, text } = req.body;
   //formato de date: "mm/dd/yyyy, 4:00:00 PM"
@@ -30,15 +31,18 @@ const addDate = async (req = request, res = response) => {
     console.log("------- name", foundUser.dataValues.name);
 
     //----codigo mail
-    let texto = "reserva ok";
-    contentHTML = `<h1>Datos de reserva barberia</h1>
+
+    
+    
+    contentHTML = `<h1>Confirmación reserva Cita</h1>
         <ul>
             <li>Nombre : ${foundUser.dataValues.name}</li>
             <li>Mail : ${foundUser.dataValues.email}</li>
-            <li>servicio reservado para la fecha:${date}</li>
+            <li>Servicio :${service}</li>
+            <li>Fecha:${date}</li>
             
         </ul>
-        <p>${texto}</p>
+        <p></p>
         `;
 
     let transporter = nodemailer.createTransport({
@@ -53,9 +57,9 @@ const addDate = async (req = request, res = response) => {
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-      from: '"Confirmación Cita 👻" <barberapphenry@gmail.com>', // sender address
+      from: '"Confirmación Cita 👍" <barberapphenry@gmail.com>', // sender address
       to: `${foundUser.dataValues.email}`, // list of receivers
-      subject: "Hello ✔", // Subject line
+      subject: `Hello ${foundUser.dataValues.name} ✔`, // Subject line
       // text: "Hello world?", // plain text body
       html: contentHTML, // html body
     });
