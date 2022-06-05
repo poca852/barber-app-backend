@@ -48,13 +48,18 @@ const addProduct = async (req = request, res = response) => {
 
     res.json({
       ok: true,
-      id: product.id,
-      name: product.name,
-      detail: product.detail,
-      stock: product.stock,
-      price: product.price,
-      img: product.img,
-      idCategorie: product.idCategorie,
+      producto: {
+        name: product.name,
+        stock: product.stock,
+        price: product.price,
+        idCategorie: product.idCategorie,
+        img: product.img,
+        id: product.id,
+        detail: product.detail,
+        category: {
+          categorie: categoria
+        }
+      }
     });
   } catch (error) {
     console.log(error);
@@ -67,19 +72,33 @@ const addProduct = async (req = request, res = response) => {
 
 const getProducts = async (req = request, res = response) => {
 
-  const { name, state = true } = req.query;
+  const { name, state = true, all = false } = req.query;
 
   try {
-    const products = await ProductsModel.findAll({
-      where: {
-        state
-      },
-      attributes: ["name", "stock", "price", "idCategorie", "img", "id", "detail"],
-      include: {
-        model: CategorieModel,
-        attributes: ["categorie", "id"],
-      },
-    });
+
+    let products
+
+    if(all){
+      products = await ProductsModel.findAll({
+        attributes: ["name", "stock", "price", "idCategorie", "img", "id", "detail", 'state'],
+        include: {
+          model: CategorieModel,
+          attributes: ["categorie", "id"],
+        },
+      });
+    }else{
+      products = await ProductsModel.findAll({
+        where: {
+          state
+        },
+        attributes: ["name", "stock", "price", "idCategorie", "img", "id", "detail", 'state'],
+        include: {
+          model: CategorieModel,
+          attributes: ["categorie", "id"],
+        },
+      });
+    }
+
 
     if (name) {
       //const product = services.find((p) => p.name.toLowerCase() === name.toLowerCase());
@@ -171,9 +190,16 @@ const putProduct = async (req = request, res = response) => {
       }
     })
 
-    res.status(201).json({
+    const producto = await ProductsModel.findByPk(idProduct, {
+      include: {
+        model: CategorieModel,
+        attributes: ["categorie", "id"],
+      },
+    })
+
+    res.status(200).json({
       ok: true,
-      msg: 'Producto actualizado correctamente'
+      producto
     })
 
   } catch (error) {
