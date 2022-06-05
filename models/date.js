@@ -15,7 +15,7 @@ const DateModel = sequelize.define(
 
     idUser: {
       type: DataTypes.UUID,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: UserModel,
         key: "id",

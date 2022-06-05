@@ -3,10 +3,26 @@ const { EmployeeModel, DateModel } = require("../models");
 
 // crear un empleado
 const postEmployee = async (req = request, res = response) => {
-  const { name } = req.body;
+  const { name, dni} = req.body;
 
   try {
-    const newEmployee = await EmployeeModel.create({ name });
+
+    const validateDni = await EmployeeModel.findOne({
+      where: {
+        dni: dni
+      }
+    });
+
+    // si el dni ya existe entonces le mando una respuesta indicando que el empleado ya existe
+    if (validateDni) {
+      return res.status(400).json({
+        ok: false,
+        msg: `El employee con dni ${dni} ya existe`
+      })
+    }
+
+
+    const newEmployee = await EmployeeModel.create({ name, dni });
 
     res.status(201).json({
       ok: true,

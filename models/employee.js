@@ -11,6 +11,15 @@ const EmployeeModel = sequelize.define(
       allowNull: false,
     },
 
+    dni:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [6, 10]
+      },
+      unique: true,
+    },
+
     name: {
       type: DataTypes.STRING,
       allowNull: false,

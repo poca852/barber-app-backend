@@ -11,16 +11,15 @@ class Server {
       // https://barbarapp.herokuapp.com
       auth: "/api/auth",
       usuarios: "/api/users",
-      rol: '/api/rol',
+      rol: "/api/rol",
       products: "/api/products",
       services: "/api/services",
       categories: "/api/categories",
       date: "/api/date",
-      employee: '/api/employee',
-      purchaseOrder: '/api/purchaseOrder',
-      pago:"/api/pago",
-      mail: "/api/mail",
-   
+      employee: "/api/employee",
+      purchaseOrder: "/api/purchaseOrder",
+      pago: "/api/pago",
+      favorite: "/api/favorite",
     };
 
     // Conectar a base de datos
@@ -36,7 +35,7 @@ class Server {
   async conectarDB() {
     try {
       await sequelize.authenticate();
-      // await sequelize.sync({ force: true }); //para pruebas descoment!!!
+      //await sequelize.sync({ force: true }); //para pruebas descoment!!!
     } catch (error) {
       console.log(error);
     }
@@ -62,13 +61,9 @@ class Server {
     this.app.use(this.paths.categories, require("../routes/categories"));
     this.app.use(this.paths.date, require("../routes/date"));
     this.app.use(this.paths.employee, require("../routes/employee"));
-    this.app.use(this.paths.purchaseOrder, require('../routes/purchaseOrder'));
-    this.app.use(this.paths.pago, require("../routes/pago") )
-    this.app.use(this.paths.mail, require("../routes/mail") );
-    
-
-
-
+    this.app.use(this.paths.purchaseOrder, require("../routes/purchaseOrder"));
+    this.app.use(this.paths.pago, require("../routes/pago"));
+    this.app.use(this.paths.favorite, require("../routes/favorite"));
   }
 
   listen() {

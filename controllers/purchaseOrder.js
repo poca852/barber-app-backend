@@ -4,7 +4,7 @@ const createPayment = require('../MercadoPago/payment.js');
 
 const addPurchaseOrder = async(req = request, res = response) =>{
   //req --> carrito que me llega del front [{idUser,idProducto,cantidad},{idUser,idProducto,cantidad}]
-
+    console.log("PurachseOrder",req.user)
     try{
     //Creando la orden
     
@@ -46,6 +46,7 @@ const addPurchaseOrder = async(req = request, res = response) =>{
        id: p.id,
        title: p.name,
        description: p.detail,
+       picture_url: p.img,
        unit_price: p.price,
        category_id: newOrder.id,
        quantity: req.body[index].quantity
