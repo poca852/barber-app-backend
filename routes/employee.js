@@ -21,10 +21,11 @@ const router = Router();
 
 // crear employee
 router.post('/', [
-  /* validarJWT,
-   esAdminRol,*/
+   validarJWT,
+   esAdminRol,
    check('name', 'El nombre es requerido').not().isEmpty(),
    check('name').custom(existeEmploye),
+   check('dni', 'el dni es obligatorio').isString().isLength({min: 6}),
    validarCampos
 ], postEmployee);
 
@@ -45,8 +46,8 @@ router.get(
 
 // actualizar un empleado
 router.put('/:idEmployee', [
-  /* validarJWT,
-   esAdminRol,*/
+   validarJWT,
+   esAdminRol,
    check('idEmployee', 'no es un id valido').isUUID(),
    check('idEmployee').custom(existeEmployeById),
    validarCampos
@@ -54,8 +55,8 @@ router.put('/:idEmployee', [
 
 // eliminar un empleado
 router.delete('/:idEmployee', [
-  /* validarJWT,
-   esAdminRol,*/
+   validarJWT,
+   esAdminRol,
    check('idEmployee', 'el id no es valido').isUUID(),
    check('idEmployee').custom(existeEmployeById),
    validarCampos

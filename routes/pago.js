@@ -5,11 +5,11 @@ const {getPago, getPagoId, confirmarPago}= require("../controllers/pago");
 const router= Router()
 
 router.get("/", [
-   /*validarJWT*/
+   validarJWT
 ], getPago)
 
 router.get("/:idUser", [
-   /*validarJWT*/
+   validarJWT
 ], getPagoId)
 
 router.post("/confirmation", confirmarPago)

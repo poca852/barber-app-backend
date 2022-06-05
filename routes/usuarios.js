@@ -31,13 +31,13 @@ router.post('/', [
 
 // listar todos los usuarios
 router.get('/', [
-    /*validarJWT,
-    validarCampos*/
+    validarJWT,
+    validarCampos
 ], getUsers)
 
 // listar solo un usuario que es pedido por id
 router.get('/:id', [
-   /* validarJWT,*/
+    validarJWT,
     check('id', 'Id is not valid').isUUID(),
     check('id').custom(verificarId),
     validarCampos

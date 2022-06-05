@@ -211,30 +211,50 @@ const putProduct = async (req = request, res = response) => {
   }
 };
 
-const deleteProduct = async (req = request, res = response) => {
-
+const deleteProduct = async(req, res) => {
   const { idProduct } = req.params;
+  await ProductsModel.update({ state: false }, {
+    where: {
+      id: idProduct
+    }
+  })
 
-  try {
+  const producto = await ProductsModel.findByPk(idProduct, {
+    attributes: ["name", "stock", "price", "idCategorie", "img", "id", "detail", 'state'],
+    include: {
+      model: CategorieModel,
+      attributes: ["categorie", "id"],
+    },
+  });
 
-    await ProductsModel.update({ state: false }, {
-      where: {
-        id: idProduct
-      }
-    })
+  res.status(200).json({
+    ok: true,
+    producto
+  })
 
-    res.status(200).json({
-      ok: true,
-      msg: 'El producto ha sido eliminado'
-    })
+}
 
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador'
-    })
-  }
+const patchProducto = async(req, res) => {
+  const { idProduct } = req.params;
+  await ProductsModel.update({ state: true }, {
+    where: {
+      id: idProduct
+    }
+  })
+
+  const producto = await ProductsModel.findByPk(idProduct, {
+    attributes: ["name", "stock", "price", "idCategorie", "img", "id", "detail", 'state'],
+    include: {
+      model: CategorieModel,
+      attributes: ["categorie", "id"],
+    },
+  });
+
+  res.status(200).json({
+    ok: true,
+    producto
+  })
+
 }
 
 module.exports = {
@@ -242,5 +262,6 @@ module.exports = {
   getProducts,
   getProduct,
   putProduct,
-  deleteProduct
+  deleteProduct,
+  patchProducto
 };

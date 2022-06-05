@@ -6,8 +6,8 @@ const { validarCampos,
 const { getCategories, addCategorie } = require('../controllers/categories.js');
 
 router.post('/', [
-    /*validarJWT,
-    esAdminRol,*/
+    validarJWT,
+    esAdminRol,
     check('categorie', 'Categorie is required').not().isEmpty().isString(),
     validarCampos
 ], addCategorie)
