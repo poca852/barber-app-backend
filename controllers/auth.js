@@ -16,6 +16,10 @@ const login = async (req = request, res = response) => {
       },
     });
 
+    if(!user.state){
+      return res.status(400).json({ok:false,msg:"Acceso denegado"});
+    }
+
     // comparamos los passwords
     const validPass = bcryptjs.compareSync(password, user.password);
     if (!validPass) {
@@ -71,6 +75,10 @@ const signGoogle = async (req = request, res = response) => {
         idRol: rolModel.id
       },
     });
+
+    if(!userModel.state){
+      return res.status(400).json({ok:false,msg:"Acceso denegado"});
+    }
 
     const token = await generarJWT(userModel.id);
 

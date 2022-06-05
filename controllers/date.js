@@ -8,8 +8,7 @@ const {
 const nodemailer = require("nodemailer");
 
 const addDate = async (req = request, res = response) => {
-  const { idUser, idEmployee, date, service, text } = req.body;
-  //formato de date: "mm/dd/yyyy, 4:00:00 PM"
+  const { idUser, idEmployee, date, service } = req.body;
 
   try {
     //   // insertamos en la base de datos la cita
@@ -25,14 +24,14 @@ const addDate = async (req = request, res = response) => {
       },
     });
     await newDate.addService(foundService);
-    const foundUser = await UserModel.findByPk(idUser);
-    console.log("-------", foundUser);
-    console.log("-------", foundUser.dataValues);
-    console.log("------- name", foundUser.dataValues.name);
+
+    const foundUser = await UserModel.findByPk(idUser,{
+      attributes: ["id", "name", "email"],
+    });
 
     //----codigo mail
 
-    const url = "https://barber-app-henry.herokuapp.com/profile";
+    const url = "https://barber-app-henry.herokuapp.com";
     
     contentHTML = `<h1>Confirmación reserva Cita</h1>
         <ul>
@@ -64,20 +63,14 @@ const addDate = async (req = request, res = response) => {
       from: '"Confirmación Cita 👍" <barberapphenry@gmail.com>', // sender address
       to: `${foundUser.dataValues.email}`, // list of receivers
       subject: `Hello ${foundUser.dataValues.name} ✔`, // Subject line
-      // text: "Hello world?", // plain text body
       html: contentHTML, // html body
     });
-    console.log("Mensaje enviado", info.messageId);
-    //----fin codigo mail
+
 
     res.json({
       ok: true,
-      id: newDate.id,
-      // idUser: newDate.idUser,
-      //idEmployee: newDate.idEmployee,
-      total: newDate.total,
-      date: newDate.date,
-      usuario: foundUser,
+      idDate: newDate.id,
+      idUser: foundUser.id
     });
   } catch (error) {
     console.log(error);
@@ -104,6 +97,7 @@ const getDates = async (req = request, res = response, next) => {
         },
         {
           model: UserModel,
+          attributes: ["name", "id", "email"],
         },
         {
           model: EmployeeModel,

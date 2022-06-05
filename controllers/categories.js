@@ -16,7 +16,7 @@ const addCategorie = async (req = request, res = response) => {
       where :{categorie:query }});
 
 if (iscreate){
-  res.status(500).json({
+  return res.status(500).json({
     ok: false,
     msg: `Categoria ${categorie} ya existe`})
 }

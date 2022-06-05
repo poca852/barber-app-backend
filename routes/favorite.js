@@ -1,4 +1,7 @@
 const router = require("express").Router();
+const {check} = require('express-validator');
+const {validarCampos} = require('../middlewares');
+const {verificarId} = require('../helpers/db-validators');
 
 const {
   addFavorite,
@@ -8,15 +11,19 @@ const {
 } = require("../controllers/favorite.js");
 
 router.post("/", addFavorite);
-router.get("/", getFavorite);
-// router.get("/:id", [check("id", "Id is not valid").isUUID()], getDate);
+
+router.get("/:idUser",[
+  check('idUser',"No es un id valido").isUUID().not().isEmpty(),
+  check('idUser').custom(verificarId),
+  validarCampos
+], getFavorite);
+
 router.delete(
-  "/", // [check("id", "Id is not valid").isUUID()],
+  "/", 
   deleteFavorite
 );
 router.delete(
   "/:idUser/:idProduct",
-  // [check("id", "Id is not valid").isUUID()],
   deleteFavoriteParams
 );
 

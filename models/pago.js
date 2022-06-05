@@ -40,6 +40,10 @@ const PagoModel = sequelize.define('pago', {
         type:DataTypes.STRING
     },
 
+    dataProducts:{
+        type: DataTypes.ARRAY(DataTypes.JSON)
+    },
+
     idPurchaseOrder: {
         type: DataTypes.UUID,
         allowNull: false,

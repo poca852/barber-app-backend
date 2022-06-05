@@ -29,6 +29,7 @@ const getPago = async (req = request, res = response) => {
   }
 };
 
+//Notificaciones al front
 const getPagoId = async (req = request, res = response) => {
   const {idUser} = req.params
 
@@ -47,16 +48,13 @@ const getPagoId = async (req = request, res = response) => {
         where:{
           idPurchaseOrder: dataPurchase[i].id
         }
-      })]
-
-      console.log(listPayments);
+      })] 
 
     }
 
-    
-
     res.status(200).json({
       ok: true,
+      notification: listPayments
     })
   } catch (error) {
     console.log(error);
@@ -116,8 +114,8 @@ const confirmarPago = async (req = request, res = response) => {
     "items": [
         
         {
-            "id": "f527ca1f-4db8-49a6-a819-20a31b9f8c18",
-            "category_id": "f4abe336-f086-4428-81b6-49227cc8a3c3",
+            "id":  "514e1814-8067-4dca-b24f-b7d67a4bba74",
+            "category_id": "1b1f7a3e-74d1-4968-a051-1afa294fa478",
             "currency_id": "MXN",
             "description": "pelo",
             "picture_url": null,
@@ -126,8 +124,8 @@ const confirmarPago = async (req = request, res = response) => {
             "unit_price": 50
         },
         {
-          "id": "9f02c36b-eb9f-4964-88a1-47a411d5e537",
-          "category_id": "f4abe336-f086-4428-81b6-49227cc8a3c3",
+          "id": "98de366f-cf01-4733-b7ad-24d0f828a805",
+          "category_id": "1b1f7a3e-74d1-4968-a051-1afa294fa478",
           "currency_id": "MXN",
           "description": "pelo",
           "picture_url": null,
@@ -136,8 +134,8 @@ const confirmarPago = async (req = request, res = response) => {
           "unit_price": 50
       },
       {
-        "id": "56911ed2-7731-419d-9374-cffd27f942f0",
-        "category_id": "f4abe336-f086-4428-81b6-49227cc8a3c3",
+        "id": "8980690c-f723-4973-998c-bb1d02a14da2",
+        "category_id": "1b1f7a3e-74d1-4968-a051-1afa294fa478",
         "currency_id": "MXN",
         "description": "pelo",
         "picture_url": null,
@@ -180,7 +178,8 @@ try {
           status,
           date_approved,
           operation_type,
-          idPurchaseOrder
+          idPurchaseOrder,
+          dataProducts: pruebaData.items
         })
 
         // Modificar Stock
@@ -196,7 +195,7 @@ try {
             }
           })];
         }
-
+        console.log(idPurchaseOrder)
         //Actualizar estado de la orden de compra
         const updateStatus = await PurchaseOrder.update({status: true},{
           where:{
@@ -222,7 +221,7 @@ try {
         //Mandar Notificacion ---> Sockets --> perfil
 
 
-        const json = await response.json();
+        //const json = await response.json();
 
         return res.json({
           ok: true

@@ -3,7 +3,7 @@ const pdf = require("pdf-creator-node");
 const fs = require("fs");
 
 
-const sendMail = async(name, email,idPurchaseOrder, date_approved, transaction_amount, pruebaData)=>{
+const sendMail = async(name, email ,idPurchaseOrder, date_approved, transaction_amount, pruebaData)=>{
 
     const datesProducts = [];
 
@@ -15,7 +15,7 @@ const sendMail = async(name, email,idPurchaseOrder, date_approved, transaction_a
           })
         })
 
-  const url = "https://barber-app-henry.herokuapp.com/profile";
+  const url = "https://barber-app-henry.herokuapp.com";
 
   const contentHTML =
   `
@@ -47,6 +47,7 @@ const sendMail = async(name, email,idPurchaseOrder, date_approved, transaction_a
     }
 };
 
+//cambiar en deploy
 const html = fs.readFileSync("/home/arch-warrior/SoyHenry/ProyectoGrupal/barber-app-backend/helpers/template.html", "utf8");
 
 const document =  {
@@ -57,7 +58,7 @@ const document =  {
     transaction_amount: transaction_amount,
     date_approved:date_approved
   } ,
-  path: "/home/arch-warrior/Archivo.pdf",
+  path: "/home/arch-warrior/Archivo.pdf", //<---- cambiar en deploy
   type: "",
 };
 
@@ -85,11 +86,11 @@ const transporter =  nodemailer.createTransport({
    // send mail with defined transport object
 const info = await transporter.sendMail({
 from: '"Compra realizada con exito 😎" <barberapphenry@gmail.com>', // sender address
-  to: 'consudiazc@gmail.com', // list of receivers //`${email}`
+  to: `${email}`,
   subject: "Pago realizado ✔", // Subject line
   attachments: [{
     filename: 'Archivo.pdf',
-    path: '/home/arch-warrior/Archivo.pdf',
+    path: '/home/arch-warrior/Archivo.pdf', //<---- cambiar en deploy
     contentType: 'application/pdf'
   }],
   

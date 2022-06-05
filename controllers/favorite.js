@@ -4,7 +4,8 @@ const { UserModel, ProductsModel, FavoriteModel } = require("../models");
 const addFavorite = async (req = request, res = response) => {
   const { idUser, idProduct } = req.body;
   try {
-    const foundUser = await UserModel.findByPk(idUser);
+    const foundUser = await UserModel.findByPk(idUser,{
+    });
     // const foundProduct = await ProductsModel.findByPk(idProduct);
     const FavoriteModelfoun = await FavoriteModel.findOne({
       where: { idProduct: idProduct },
@@ -35,7 +36,6 @@ const addFavorite = async (req = request, res = response) => {
 
     res.json({
       ok: true,
-      foundUser: foundUser,
     });
     //-----
   } catch (error) {
@@ -48,10 +48,15 @@ const addFavorite = async (req = request, res = response) => {
 };
 //-------------------------------getFavorite -------------------
 const getFavorite = async (req = request, res = response, next) => {
-  const { date } = req.query;
-  console.log("dio click en getDates, con params: ", date);
+ const {idUser} = req.params
+ 
   try {
-    const allFavorites = await FavoriteModel.findAll();
+    const allFavorites = await FavoriteModel.findAll({
+      where:{
+        idUser
+      }
+    });
+
     res.status(200).json({
       ok: true,
       allFavorites,
