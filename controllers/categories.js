@@ -55,9 +55,9 @@ const getCategories = async (req = request, res = response, next) => {
       attributes: ["categorie", "id"],
       include: {
         model: ProductsModel,
-        where: {
-          state: true
-        }
+        // where: {
+        //   state: true
+        // }
       }
     });
 
