@@ -61,7 +61,8 @@ const document =  {
     transaction_amount: transaction_amount,
     date_approved:date_approved
   } ,
-  path: path.join(__dirname, './pdf/Archivo.pdf'),
+  // path: path.join(__dirname, './pdf/Archivo.pdf'),
+  path: './pdf/Archivo.pdf',
   type: "",
 };
 
@@ -93,7 +94,7 @@ from: '"Compra realizada con exito 😎" <barberapphenry@gmail.com>', // sender 
   subject: "Pago realizado ✔", // Subject line
   attachments: [{
     filename: 'Archivo.pdf',
-    path: path.join(__dirname, './pdf/Archivo.pdf'), 
+    path: './pdf/Archivo.pdf',
     contentType: 'application/pdf'
   }],
   
