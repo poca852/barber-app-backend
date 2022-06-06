@@ -50,7 +50,8 @@ const sendMail = async(name, email ,idPurchaseOrder, date_approved, transaction_
 
 //cambiar en deploy
 // const html = fs.readFileSync("/home/arch-warrior/SoyHenry/ProyectoGrupal/barber-app-backend/helpers/template.html", "utf8");
-const template = path.join(__dirname, '/template.html')
+const template = path.join('./template.html')
+console.log('Este es el path del archivo');
 const html = fs.readFileSync(template, 'utf-8');
 
 const document =  {
@@ -62,7 +63,7 @@ const document =  {
     date_approved:date_approved
   } ,
   // path: path.join(__dirname, './pdf/Archivo.pdf'),
-  path: path.join(__dirname, '/pdf/Archivo.pdf'), 
+  path: path.join('./pdf/Archivo.pdf'), 
   type: "",
 };
 
@@ -94,7 +95,7 @@ from: '"Compra realizada con exito 😎" <barberapphenry@gmail.com>', // sender 
   subject: "Pago realizado ✔", // Subject line
   attachments: [{
     filename: 'Archivo.pdf',
-    path: path.join(__dirname, '/pdf/Archivo.pdf'), 
+    path: path.join('./pdf/Archivo.pdf'), 
     contentType: 'application/pdf'
   }],
   
