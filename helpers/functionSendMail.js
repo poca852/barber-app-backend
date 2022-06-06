@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer")
 const pdf = require("pdf-creator-node");
 const fs = require("fs");
+const path = require('path');
 
 
 const sendMail = async(name, email ,idPurchaseOrder, date_approved, transaction_amount, pruebaData)=>{
@@ -48,7 +49,9 @@ const sendMail = async(name, email ,idPurchaseOrder, date_approved, transaction_
 };
 
 //cambiar en deploy
-const html = fs.readFileSync("/home/arch-warrior/SoyHenry/ProyectoGrupal/barber-app-backend/helpers/template.html", "utf8");
+// const html = fs.readFileSync("/home/arch-warrior/SoyHenry/ProyectoGrupal/barber-app-backend/helpers/template.html", "utf8");
+const template = path.join(__dirname, './template.html')
+const html = fs.readFileSync(template, 'utf-8');
 
 const document =  {
   html: html,
@@ -58,7 +61,7 @@ const document =  {
     transaction_amount: transaction_amount,
     date_approved:date_approved
   } ,
-  path: "/home/arch-warrior/Archivo.pdf", //<---- cambiar en deploy
+  path: path.join(__dirname, '../pdf/Archivo.pdf'),
   type: "",
 };
 
@@ -90,7 +93,7 @@ from: '"Compra realizada con exito 😎" <barberapphenry@gmail.com>', // sender 
   subject: "Pago realizado ✔", // Subject line
   attachments: [{
     filename: 'Archivo.pdf',
-    path: '/home/arch-warrior/Archivo.pdf', //<---- cambiar en deploy
+    path: path.join(__dirname, '../pdf/Archivo.pdf'), 
     contentType: 'application/pdf'
   }],
   
