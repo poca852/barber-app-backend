@@ -8,12 +8,12 @@ const addCategorie = async (req = request, res = response) => {
   try {
     // insertamos en la base de datos el service
     const query = categorie.toLowerCase()
-
-    
-    const [categories, iscreate] = 
-    
-    await CategorieModel.findOrCreate({
-      where :{categorie:query }});
+    const [categories, iscreate] = await CategorieModel.findOrCreate({
+      where :{categorie:query },
+      defaults: {
+        categorie: query
+      }
+    });
 
 if (iscreate){
   return res.status(500).json({
