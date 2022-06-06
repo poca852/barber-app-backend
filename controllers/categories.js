@@ -6,24 +6,29 @@ const addCategorie = async (req = request, res = response) => {
   const { categorie } = req.body;
 
   try {
+
     // insertamos en la base de datos el service
     const query = categorie.toLowerCase()
-    const [categories, iscreate] = await CategorieModel.findOrCreate({
-      where :{categorie:query },
-      defaults: {
+    const categoryModel = await CategorieModel.findOne({
+      where: {
         categorie: query
       }
-    });
+    })
 
-if (iscreate){
-  return res.status(500).json({
-    ok: false,
-    msg: `Categoria ${categorie} ya existe`})
-}
+    if(categoryModel){
+      return res.status(400).json({
+        ok: false,
+        msg: `Ya exise la categoria ${query}`
+      })
+    }
+
+    const newCategoria = await CategorieModel.create({categorie: query})
+
+
     res.json({
       ok: true,
-      id: categories.id,
-      categorie: categories.categorie,
+      id: newCategoria.id,
+      categorie: newCategoria.categorie,
     })
 
 
