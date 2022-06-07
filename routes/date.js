@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { check } = require("express-validator");
 const { validarCampos, validarJWT } = require("../middlewares");
 const { checkDates } = require('../helpers/db-validators.js');
-const { addDate, getDates, deleteDate, getDate } = require("../controllers/date.js");
+const { addDate, getDates, deleteDate, getDate, dateFinished } = require("../controllers/date.js");
 const { verificarCitaId } = require("../helpers/db-validators");
 
 router.post("/", [
@@ -20,6 +20,11 @@ router.delete("/:id",
   validarJWT,
   [check("id", "Id is not valid").isUUID()],
   deleteDate);
+
+router.put("/:id",
+  validarJWT,
+  [check("id", "Id is not valid").isUUID()],
+  dateFinished);
 
 
 module.exports = router;

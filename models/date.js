@@ -42,6 +42,10 @@ const DateModel = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    finished: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    }
   },
   { timestamps: false }
 );

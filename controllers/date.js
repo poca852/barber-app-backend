@@ -195,9 +195,42 @@ const deleteDate = async (req = request, res = response) => {
     });
   }
 };
+
+
+const dateFinished = async (req = request, res = response) => {
+  const { id } = req.params;
+
+  try {
+
+    const dateFound = await DateModel.findByPk(id);
+
+  if (dateFound){
+    const date = await dateFound.update({ finished: true });
+
+    res.status(200).json({
+      ok: true,
+      msg: `cita ${date.id} terminada`,
+    });
+  } res.status(500).json({
+    ok: false,
+    msg: `No existe la cita ${date.id}`,
+  });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+    });
+  }
+};
+
+
+
 module.exports = {
   addDate,
   getDates,
   getDate,
   deleteDate,
+  dateFinished
 };
