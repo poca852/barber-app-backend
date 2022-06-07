@@ -145,16 +145,32 @@ const getDate = async(req = request, res = response) => {
   const {id} = req.params
 
   try {
-    const foundDates = await DateModel.findAll({
+
+    const foundDatesEmployee = await DateModel.findAll({
       where: {
-        idUser: id
+        idEmployee: id
       }
+
     });
+
+    if(!foundDatesEmployee){
+      const foundDatesUser = await DateModel.findAll({
+        where: {
+          idUser: id
+        }
+      });
+
+      return res.json({
+        ok: true,
+        foundDatesUser
+      })
+    }
 
     res.json({
       ok: true,
-      foundDates
+      foundDatesEmployee
     })
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
