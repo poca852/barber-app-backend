@@ -49,10 +49,10 @@ const sendMail = async(name, email ,idPurchaseOrder, date_approved, transaction_
 };
 
 //cambiar en deploy
-// const html = fs.readFileSync("/home/arch-warrior/SoyHenry/ProyectoGrupal/barber-app-backend/helpers/template.html", "utf8");
-const template = path.resolve(__dirname, 'template.html')
-console.log('path', template)
-const html = fs.readFileSync(template, 'utf-8');
+
+
+const template = path.join(__dirname, './template.html');
+const html = fs.readFileSync(template, "utf8");
 
 const document =  {
   html: html,
@@ -62,8 +62,8 @@ const document =  {
     transaction_amount: transaction_amount,
     date_approved:date_approved
   } ,
-  // path: path.join(__dirname, './pdf/Archivo.pdf'),
-  path: path.resolve(__dirname, 'pdf', 'Archivo.pdf'), 
+
+  path: path.join(__dirname,'../pdf/Archivo.pdf'),
   type: "",
 };
 
