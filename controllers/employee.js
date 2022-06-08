@@ -40,9 +40,18 @@ const postEmployee = async (req = request, res = response) => {
 
 // listar empleados
 const getEmployees = async (req = request, res = response) => {
-  const { name, state = true } = req.query;
+  const { name, state = true, all = false } = req.query;
 
   try {
+    if(all){
+      const allEmployes = await EmployeeModel.findAll()
+
+      return res.status(200).json({
+        ok: true,
+        allEmployes
+      })
+    }
+
     // si viene el name buscamos el barbero por el nombre
     if (name) {
       const employe = await EmployeeModel.findOne({
