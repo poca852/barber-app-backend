@@ -26,7 +26,6 @@ router.post('/', [
     check('name', 'Nombre requerido').not().isEmpty(),
     check('password', 'La contraseña tiene que tener minimo 6 caracteres').isLength({min: 6}),
     check('rol').custom(checkRolByName),
-    check("address", "adress no valido").isString(),
     validarCampos
 ], addUser)
 
