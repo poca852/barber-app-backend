@@ -139,7 +139,11 @@ const getProduct = async (req = request, res = response, next) => {
 
   try {
     const product = await ProductsModel.findByPk(id, {
-      attributes: ["name", "detail", "stock", "price", "idCategorie", "img", "id"]
+      attributes: ["name", "detail", "stock", "price", "idCategorie", "img", "id"],
+      include: {
+        model: CategorieModel,
+        attributes: ["categorie", "id"],
+      }
     });
 
     res.status(200).json({
