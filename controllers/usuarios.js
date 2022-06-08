@@ -31,7 +31,7 @@ const addUser = async (req = request, res = response) => {
     // insertamos en la base de datos el user
     const user = await UserModel.create(data);
 
-    //const token = await generarJWT(user.id);
+    const token = await generarJWT(user.id);
 
     res.json({
       ok: true,
@@ -41,8 +41,8 @@ const addUser = async (req = request, res = response) => {
       phone: user.phone,
       rol: rolModel.rol,
       img: user.avatar,
-      address: user.address
-      //token,
+      address: user.address,
+      token,
     });
   } catch (error) {
     console.log(error);
