@@ -23,7 +23,6 @@ const sendMail = async(name, email ,idPurchaseOrder, date_approved, transaction_
    <p>HOLA ${name}<p>
    <p style= "color: red"> Tu compra se ha realizado con exito!! Para mas información clickea aqui 👇: </p>
    <a href="${url}"> ${url}</a>
-
   `;
   
 
@@ -43,7 +42,6 @@ const info = await transporter.sendMail({
 from: '"Compra realizada con exito 😎" <barberapphenry@gmail.com>', // sender address
   to: `${email}`,
   subject: "Pago realizado ✔", // Subject line
-  }],
   
  //text: "HOLAAA", // plain text body
   html: contentHTML

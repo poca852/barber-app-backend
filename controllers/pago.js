@@ -112,36 +112,27 @@ const confirmarPago = async (req = request, res = response) => {
       "email": ""
     },
     "items": [
+        
+        {
+            "id":  "c9d70ba9-0443-42f9-97ea-9d84b706bd64",
+            "category_id": "25dafa7d-9eb9-4aad-971f-573e63f1f712",
+            "currency_id": "MXN",
+            "description": "pelo",
+            "picture_url": null,
+            "title": "crema bigotes",
+            "quantity": 15,
+            "unit_price": 50
+        },
+        {
+          "id": "32a38e31-33e3-46a5-bb5d-3ddb1dad0ccd",
+          "category_id": "25dafa7d-9eb9-4aad-971f-573e63f1f712",
+          "currency_id": "MXN",
+          "description": "pelo",
+          "picture_url": null,
+          "title": "shampoo",
+          "quantity": 15,
+          "unit_price": 50
 
-      {
-        "id": "514e1814-8067-4dca-b24f-b7d67a4bba74",
-        "category_id": "1b1f7a3e-74d1-4968-a051-1afa294fa478",
-        "currency_id": "MXN",
-        "description": "pelo",
-        "picture_url": null,
-        "title": "crema bigotes",
-        "quantity": 15,
-        "unit_price": 50
-      },
-      {
-        "id": "98de366f-cf01-4733-b7ad-24d0f828a805",
-        "category_id": "1b1f7a3e-74d1-4968-a051-1afa294fa478",
-        "currency_id": "MXN",
-        "description": "pelo",
-        "picture_url": null,
-        "title": "shampoo",
-        "quantity": 15,
-        "unit_price": 50
-      },
-      {
-        "id": "8980690c-f723-4973-998c-bb1d02a14da2",
-        "category_id": "1b1f7a3e-74d1-4968-a051-1afa294fa478",
-        "currency_id": "MXN",
-        "description": "pelo",
-        "picture_url": null,
-        "title": "gel",
-        "quantity": 15,
-        "unit_price": 50
       }
     ],
     "cancelled": false,

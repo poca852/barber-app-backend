@@ -47,6 +47,12 @@ const UserModel = sequelize.define('user', {
         allowNull: true
     },
 
+  
+    address:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
     idRol: {
         type: DataTypes.UUID,
         allowNull: true,

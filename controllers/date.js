@@ -5,12 +5,31 @@ const {
   UserModel,
   EmployeeModel,
 } = require("../models");
+
+
 const nodemailer = require("nodemailer");
 
 const addDate = async (req = request, res = response) => {
   const { idUser, idEmployee, date, service } = req.body;
 
   try {
+
+  if (date){
+   const controlDate= await DateModel.findOne({
+     where:{date}})
+
+     //console.log(controlDate)
+   
+  if (controlDate){  
+
+      return res.status(500).json({
+        ok: false,
+        msg: `Fecha ${date} ya reservada`,
+      });
+
+
+   }
+  
     //   // insertamos en la base de datos la cita
     const newDate = await DateModel.create({
       idUser,
@@ -23,6 +42,10 @@ const addDate = async (req = request, res = response) => {
         name: service,
       },
     });
+
+
+   
+    if (foundService.length){
     await newDate.addService(foundService);
 
     const foundUser = await UserModel.findByPk(idUser,{
@@ -67,12 +90,21 @@ const addDate = async (req = request, res = response) => {
     });
 
 
-    res.json({
+ res.status(200).json({
       ok: true,
       idDate: newDate.id,
       idUser: foundUser.id
+    });}
+  
+    else {
+    res.status(404).json({
+      ok: false,
+      msg: "Servicio no encontrado",
     });
-  } catch (error) {
+  }
+
+  }
+} catch (error) {
     console.log(error);
     res.status(500).json({
       ok: false,
@@ -107,15 +139,14 @@ const getDates = async (req = request, res = response, next) => {
       ],
     });
 
-    if (date) {
-      const foundDate = allDates.filter((d) => {
-        if (d.date === date) {
-          return d;
-        }
-        return d.date.split(",")[0] === date;
-      });
+    // console.log(allDates)
 
-      if (foundDate.length) {
+    if (date) {
+      const foundDate = await DateModel.findByPk(date)
+      console.log(foundDate)
+  
+      
+      if (foundDate) {
         return res.status(200).json({
           ok: true,
           foundDate,
@@ -128,7 +159,8 @@ const getDates = async (req = request, res = response, next) => {
       });
     }
 
-    res.status(200).json({
+
+  res.status(200).json({
       ok: true,
       allDates,
     });
@@ -147,16 +179,32 @@ const getDate = async(req = request, res = response) => {
   const {id} = req.params
 
   try {
-    const foundDates = await DateModel.findAll({
+
+    const foundDatesEmployee = await DateModel.findAll({
       where: {
-        idUser: id
+        idEmployee: id
       }
+
     });
+
+    if(!foundDatesEmployee){
+      const foundDatesUser = await DateModel.findAll({
+        where: {
+          idUser: id
+        }
+      });
+
+      return res.json({
+        ok: true,
+        foundDatesUser
+      })
+    }
 
     res.json({
       ok: true,
-      foundDates
+      foundDatesEmployee
     })
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -197,9 +245,47 @@ const deleteDate = async (req = request, res = response) => {
     });
   }
 };
+
+
+const dateFinished = async (req = request, res = response) => {
+  const { id } = req.params;
+
+  try {
+
+    const dateFound = await DateModel.findByPk(id);
+ 
+
+if (dateFound){
+    const date = await dateFound.update({ finished: true });
+
+    res.status(200).json({
+      ok: true,
+      date,
+      msg: `cita ${id} terminada`,
+    });
+  } 
+
+
+ res.status(500).json({
+    ok: false,
+    msg: `No existe la cita ${id}`,
+  });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: `Hable con el administrador`,
+    });
+  }
+};
+
+
+
 module.exports = {
   addDate,
   getDates,
   getDate,
   deleteDate,
+  dateFinished
 };
