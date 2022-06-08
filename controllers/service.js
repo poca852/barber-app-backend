@@ -50,9 +50,20 @@ const addService = async(req = request, res = response) => {
 
 
 const getServices = async(req = request, res = response, next) => {
-  const {name, state= true} = req.query;
+  const {name, state= true, all = false} = req.query;
 
   try {
+
+    if(all){
+      const allServices = await ServiceModel.findAll({
+        attributes: ['name', 'detail', 'price', 'time', 'img', 'id', 'state']
+      })
+
+      return res.status(200).json({
+        ok: true,
+        allServices
+      })
+    }
 
     const services = await ServiceModel.findAll({
       where: {
