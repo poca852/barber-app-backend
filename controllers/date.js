@@ -82,11 +82,13 @@ const addDate = async (req = request, res = response) => {
 };
 
 const getDates = async (req = request, res = response, next) => {
-  const { date } = req.query;
+  const { date, state = true } = req.query;
 
-  console.log("dio click en getDates, con params: ", date);
   try {
     const allDates = await DateModel.findAll({
+      where: {
+        state
+      },
       include: [
         {
           model: ServiceModel,
