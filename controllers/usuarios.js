@@ -4,7 +4,7 @@ const { generarJWT } = require('../helpers');
 const { UserModel, Rolmodel, DateModel, EmployeeModel, FavoriteModel } = require("../models");
 
 const addUser = async (req = request, res = response) => {
-  const { email, password, name, phone, avatar, rol } = req.body;
+  const { email, password, name, phone, avatar, rol, address} = req.body;
 
   try {
 
@@ -24,13 +24,14 @@ const addUser = async (req = request, res = response) => {
       name,
       phone,
       avatar,
-      idRol: rolModel.id
+      idRol: rolModel.id,
+      address
     }
 
     // insertamos en la base de datos el user
     const user = await UserModel.create(data);
 
-    const token = await generarJWT(user.id);
+    //const token = await generarJWT(user.id);
 
     res.json({
       ok: true,
@@ -40,7 +41,8 @@ const addUser = async (req = request, res = response) => {
       phone: user.phone,
       rol: rolModel.rol,
       img: user.avatar,
-      token,
+      address: user.address
+      //token,
     });
   } catch (error) {
     console.log(error);
@@ -54,7 +56,7 @@ const addUser = async (req = request, res = response) => {
 const getUsers = async (req = request, res = response) => {
   try {
     const users = await UserModel.findAll({
-      attributes: ["id", "name", "email", "phone", 'state', 'google'],
+      attributes: ["id", "name", "email", "phone", 'state', 'google', "address"],
       include: [
         {
           model: Rolmodel,
@@ -107,7 +109,8 @@ const getUser = async (req = request, res = response) => {
       name: user.name,
       phone: user.phone,
       img: user.avatar,
-      rol: user.rol.rol
+      rol: user.rol.rol,
+      address:user.address
     });
   } catch (error) {
     console.log(error);
@@ -120,7 +123,7 @@ const getUser = async (req = request, res = response) => {
 
 const putUser = async (req = request, res = response) => {
   const { idUser } = req.params;
-  const { id, state, google, password, ...resto } = req.body;
+  const { id, state, google, address, password, ...resto } = req.body;
   try {
     if (password) {
       resto.password = bcryptjs.hashSync(password, 10);
@@ -161,7 +164,8 @@ const putUser = async (req = request, res = response) => {
       name: user.name,
       phone: user.phone,
       rol: user.rol.rol,
-      img: user.avatar
+      img: user.avatar,
+      address: user.address
     });
   } catch (error) {
     console.log(error);

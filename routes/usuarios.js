@@ -26,18 +26,19 @@ router.post('/', [
     check('name', 'Nombre requerido').not().isEmpty(),
     check('password', 'La contraseña tiene que tener minimo 6 caracteres').isLength({min: 6}),
     check('rol').custom(checkRolByName),
+    check("address", "adress no valido").isString(),
     validarCampos
 ], addUser)
 
 // listar todos los usuarios
 router.get('/', [
-    validarJWT,
-    validarCampos
+    //validarJWT,
+    //validarCampos
 ], getUsers)
 
 // listar solo un usuario que es pedido por id
 router.get('/:id', [
-    validarJWT,
+    //validarJWT,
     check('id', 'Id is not valid').isUUID(),
     check('id').custom(verificarId),
     validarCampos
@@ -45,7 +46,7 @@ router.get('/:id', [
 
 // actualizar un usuario
 router.put('/:idUser', [
-    validarJWT,
+    //validarJWT,
     check('idUser', 'no es un id valido').isUUID(),
     check('idUser').custom(verificarId),
     validarCampos
@@ -61,7 +62,7 @@ router.delete('/:idUser', [
 
 
 router.patch('/:idUser', [
-    validarJWT,
+    //validarJWT,
     check('idUser', 'No es un id valido').isUUID(),
     check('idUser').custom(verificarId),
     validarCampos
