@@ -166,7 +166,7 @@ const putProduct = async (req = request, res = response) => {
   const { idProduct } = req.params;
 
   // se separa el state, idCategorie y el id por si me lo llegaran a mandar y guardo lo que si quiero guardar en data
-  const { idCategorie, id, ...data } = req.body;
+  const { id, ...data } = req.body;
 
   try {
 
@@ -187,6 +187,25 @@ const putProduct = async (req = request, res = response) => {
       }
     }
 
+    // si mandan categoria
+    if(data.categoria){
+      const queryCategoria = data.categoria.toLowerCase();
+      const categoriaModel = await CategorieModel.findOne({
+        where: {
+          categorie: queryCategoria
+        }
+      })
+
+      if(!categoriaModel){
+        return res.status(404).json({
+          ok: false,
+          msg: `La categoria ${data.categoria} no existe`
+        })
+      }
+
+      data.idCategorie = categoriaModel.id;
+    }
+
 
     await ProductsModel.update(data, {
       where: {
@@ -197,7 +216,7 @@ const putProduct = async (req = request, res = response) => {
     const producto = await ProductsModel.findByPk(idProduct, {
       include: {
         model: CategorieModel,
-        attributes: ["categorie", "id"],
+        attributes: ["categorie"],
       },
     })
 
