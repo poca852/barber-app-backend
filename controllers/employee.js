@@ -1,5 +1,5 @@
 const { response, request } = require("express");
-const { EmployeeModel, DateModel } = require("../models");
+const { EmployeeModel, DateModel, ServiceModel } = require("../models");
 
 // crear un empleado
 const postEmployee = async (req = request, res = response) => {
@@ -99,6 +99,9 @@ const getEmployee = async (req = request, res = response) => {
   const { idEmployee } = req.params;
 
   try {
+
+
+
     const employee = await EmployeeModel.findByPk(idEmployee, {
       include: [
         {
@@ -106,6 +109,13 @@ const getEmployee = async (req = request, res = response) => {
         },
       ],
     });
+
+    // const idDate = employee.date.id
+    // // console.log(idDate)
+
+    // const buscarServ =  await DateModel.findByPk(idDate)
+    // console.log(buscarServ)
+
 
     res.status(200).json({
       ok: true,
@@ -123,22 +133,24 @@ const getEmployee = async (req = request, res = response) => {
 // actualizar un empleado
 const putEmployee = async (req = request, res = response) => {
   const { idEmployee } = req.params;
-  const { name } = req.body;
+  const { ...data } = req.body;
 
   try {
+
+  if (data.name){
+
     const existeEmployee = await EmployeeModel.findOne({
-      where: { name },
+      where: { name: data.name },
     });
 
     if (existeEmployee) {
       return res.status(400).json({
         ok: false,
-        msg: `El empleado ${name} ya existe`,
+        msg: `El empleado ${data.name} ya existe`,
       });
     }
-
-    await EmployeeModel.update(
-      { name },
+  }
+    await EmployeeModel.update(data,
       {
         where: { id: idEmployee },
       }
@@ -148,6 +160,7 @@ const putEmployee = async (req = request, res = response) => {
       ok: true,
       msg: "Empleado actualizado",
     });
+
   } catch (error) {
     console.log(error);
     res.status(500).json({

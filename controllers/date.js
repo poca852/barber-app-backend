@@ -39,12 +39,11 @@ const addDate = async (req = request, res = response) => {
 
     const foundService = await ServiceModel.findAll({
       where: {
-        name: service,
-      },
+        name: service
+          },
     });
 
 
-   
     if (foundService.length){
     await newDate.addService(foundService);
 
@@ -93,7 +92,8 @@ const addDate = async (req = request, res = response) => {
  res.status(200).json({
       ok: true,
       idDate: newDate.id,
-      idUser: foundUser.id
+      idUser: foundUser.id,
+      time: foundService.time
     });}
   
     else {
@@ -114,7 +114,7 @@ const addDate = async (req = request, res = response) => {
 };
 
 const getDates = async (req = request, res = response, next) => {
-  const { date, state = true } = req.query;
+  const { idDate, state = true, date } = req.query;
 
   try {
     const allDates = await DateModel.findAll({
@@ -124,7 +124,7 @@ const getDates = async (req = request, res = response, next) => {
       include: [
         {
           model: ServiceModel,
-          attributes: ["name"],
+          attributes: ["name", "time"],
           through: {
             attributes: [],
           },
@@ -141,8 +141,8 @@ const getDates = async (req = request, res = response, next) => {
 
     // console.log(allDates)
 
-    if (date) {
-      const foundDate = await DateModel.findByPk(date)
+    if (idDate) {
+      const foundDate = await DateModel.findByPk(idDate)
       console.log(foundDate)
   
       
@@ -159,11 +159,33 @@ const getDates = async (req = request, res = response, next) => {
       });
     }
 
+     if (date) {
+      const foundFecha = await DateModel.findAll({where:{date}})
+      console.log(foundFecha)
+  
+      
+      if (foundFecha) {
+        return res.status(200).json({
+          ok: true,
+          foundFecha,
+        });
+      }
+
+      return res.status(500).json({
+        ok: false,
+        msg: "Fecha no encontrada",
+      });
+    }
+
+
 
   res.status(200).json({
       ok: true,
       allDates,
     });
+
+
+
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -183,7 +205,15 @@ const getDate = async(req = request, res = response) => {
     const foundDatesEmployee = await DateModel.findAll({
       where: {
         idEmployee: id
-      }
+      },
+      include: [
+        {
+          model: ServiceModel,
+          attributes: ["name", "time"],
+          through: {
+            attributes: [],
+          },
+        },]
 
     });
 
@@ -191,7 +221,15 @@ const getDate = async(req = request, res = response) => {
       const foundDatesUser = await DateModel.findAll({
         where: {
           idUser: id
-        }
+        },
+        include: [
+          {
+            model: ServiceModel,
+            attributes: ["name", "time"],
+            through: {
+              attributes: [],
+            },
+          },]
       });
 
       return res.json({
