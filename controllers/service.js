@@ -59,6 +59,11 @@ const getServices = async(req = request, res = response, next) => {
         attributes: ['name', 'detail', 'price', 'time', 'img', 'id', 'state']
       })
 
+
+    allServices.forEach(
+      ((t)=>{const newTime= ( parseInt(String(t.time).slice(1,2)* 60) + parseInt(String(t.time).slice(3,5))); t.time = newTime }))
+
+
       return res.status(200).json({
         ok: true,
         allServices
@@ -72,10 +77,18 @@ const getServices = async(req = request, res = response, next) => {
       attributes: ["name", "detail", "price", "time", "img", "id", "state"]
     });
 
+
+
+    services.forEach(
+    ((t)=>{const newTime= ( parseInt(String(t.time).slice(1,2)* 60) + parseInt(String(t.time).slice(3,5))); t.time = newTime }))
+    
+
     if (name){
 
     
-    const service = services.filter((s) => s.name.toLowerCase().includes(name.toLowerCase()));
+    const service = 
+    services.filter((s) => s.name.toLowerCase().includes(name.toLowerCase()));
+
 
     if (service.length>0){
     return res.status(200).json({

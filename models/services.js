@@ -26,10 +26,6 @@ const ServiceModel = sequelize.define('services', {
 
     time: {
         type: DataTypes.TIME,
-        get: function () { //Retorna los minutos unicamente
-            let minutes = parseInt(this.getDataValue("time").slice(1,2)) * 60 + parseInt(this.getDataValue("time").slice(3,5),10)
-            return minutes
-          },
         allowNull: false
     },
 
