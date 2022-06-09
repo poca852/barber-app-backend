@@ -42,6 +42,11 @@ const ProductsModel = sequelize.define('products', {
         defaultValue: true
     },
 
+    stateFavourites:{
+        type:DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+
     idCategorie: {
         type: DataTypes.UUID,
         allowNull: false,
