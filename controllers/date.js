@@ -114,9 +114,37 @@ const addDate = async (req = request, res = response) => {
 };
 
 const getDates = async (req = request, res = response, next) => {
-  const { idDate, state = true, date } = req.query;
+
+  const { date, state = true, all = false, idDate } = req.query;
 
   try {
+
+    if(all){
+      const allDates = await DateModel.findAll({
+        include: [
+          {
+            model: ServiceModel,
+            attributes: ["name"],
+            through: {
+              attributes: [],
+            },
+          },
+          {
+            model: UserModel,
+            attributes: ["name", "id", "email"],
+          },
+          {
+            model: EmployeeModel,
+          },
+        ],
+      })
+
+      return res.status(200).json({
+        ok: true,
+        allDates
+      })
+    }
+
     const allDates = await DateModel.findAll({
       where: {
         state
