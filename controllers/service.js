@@ -146,7 +146,7 @@ const putService = async(req = request, res = response) => {
   
   const {id} = req.params;
   
-  const { state, ...data} = req.body;
+  const {...data} = req.body;
   try {
  
   // verifico que el nombre que queremos actualizar este disponible
