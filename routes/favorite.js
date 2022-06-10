@@ -22,9 +22,6 @@ router.delete(
   "/", 
   deleteFavorite
 );
-router.delete(
-  "/:idUser/:idProduct",
-  deleteFavoriteParams
-);
+
 
 module.exports = router;

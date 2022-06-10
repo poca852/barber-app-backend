@@ -73,19 +73,25 @@ const getFavorite = async (req = request, res = response, next) => {
 const deleteFavorite = async (req = request, res = response) => {
   try {
     const { idUser, idProduct } = req.body;
-    const foundUser = await UserModel.findByPk(idUser);
-    //-----
-    const eliminaFavorite = await FavoriteModel.findOne({
+
+    const eliminaFavorite = await FavoriteModel.destroy({
       where: {
-        idProduct: idProduct,
+        idUser,
+        idProduct
       },
     });
-    await foundUser.removeFavorite(eliminaFavorite);
-    //-----
-    res.status(200).json({
+
+    if(eliminaFavorite === 1){
+      return res.status(200).json({
+        ok: true,
+        msg: `Producto con id ${idProduct} borrado de favorito con exito `,
+      });
+    }
+    res.status(500).json({
       ok: true,
-      msg: `producto con id ${idProduct} borrado de favorito `,
+      msg: `Producto con id ${idProduct} no fue borrado de favorito con exito `,
     });
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -94,36 +100,9 @@ const deleteFavorite = async (req = request, res = response) => {
     });
   }
 };
-const deleteFavoriteParams = async (req = request, res = response) => {
-  try {
-    const { idUser, idProduct } = req.params;
-    const foundUser = await UserModel.findByPk(idUser);
-    //-----
-    const eliminaFavorite = await FavoriteModel.findOne({
-      where: {
-        idProduct: idProduct,
-      },
-    });
-    // console.log(foundUser.__proto__);
-    await foundUser.removeFavorite(eliminaFavorite);
 
-    //-----
-
-    res.status(200).json({
-      ok: true,
-      msg: `producto con id ${idProduct} borrado de favorito `,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: "Hable con el administrador",
-    });
-  }
-};
 module.exports = {
   addFavorite,
   getFavorite,
-  deleteFavorite,
-  deleteFavoriteParams,
+  deleteFavorite
 };
