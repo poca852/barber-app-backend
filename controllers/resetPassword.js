@@ -25,8 +25,8 @@ console.log("Controller",email)
             })
         };
     
-        //const link = `${process.env.URL_BASE}/resetPassword/${user.id}/${token}`;
-        const link = `http://localhost:3000/#/resetPassword/${user.id}/${token}`
+        const link = `${process.env.URL_BASE}/resetPassword/${user.id}/${token}`;
+        //const link = `http://localhost:3000/#/resetPassword/${user.id}/${token}`
         await sendMailResetPassword(email,"Cambio de Contraseña", `Da clic al siguiente enlace
         para modificar tu contraseña -> ${link}`);
 
@@ -62,6 +62,7 @@ const resetPassword =  async(req = request, res = response) =>{
         if(token){
  
             const decode = jwt.verify(token,process.env.SECRETORPRIVATEKEY);
+            console.log("Entre")
             console.log(decode)
             if(!decode){
                 return res.status(401).json({
