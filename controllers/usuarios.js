@@ -4,7 +4,7 @@ const { generarJWT } = require('../helpers');
 const { UserModel, Rolmodel, DateModel, EmployeeModel, FavoriteModel } = require("../models");
 
 const addUser = async (req = request, res = response) => {
-  const { email, password, name, phone, avatar, rol, address} = req.body;
+  const { email, password, name, phone, avatar, rol, address } = req.body;
 
   try {
 
@@ -54,7 +54,52 @@ const addUser = async (req = request, res = response) => {
 };
 
 const getUsers = async (req = request, res = response) => {
+
+  const { all = false, name } = req.query
+
   try {
+
+    if (name) {
+      const user = await UserModel.findOne({
+        where: {
+          name: name.toLowerCase()
+        },
+        attributes: ["id", "name", "email", "phone", 'state', 'google', "address"],
+        include: [
+          {
+            model: Rolmodel,
+            attributes: ["rol"]
+          },
+          {
+            model: DateModel,
+            include: [
+              {
+                model: EmployeeModel,
+              },
+            ],
+          },
+          {
+            model: FavoriteModel,
+            attributes: {
+              exclude: ["FavoriteUser"],
+            },
+          },
+        ],
+      })
+
+      if (!user) {
+        return res.status(404).json({
+          ok: false,
+          msg: `No existe el usuario ${name}`
+        })
+      }
+
+      return res.status(200).json({
+        ok: true,
+        user
+      })
+    }
+
     const users = await UserModel.findAll({
       attributes: ["id", "name", "email", "phone", 'state', 'google', "address"],
       include: [
@@ -110,7 +155,7 @@ const getUser = async (req = request, res = response) => {
       phone: user.phone,
       img: user.avatar,
       rol: user.rol.rol,
-      address:user.address
+      address: user.address
     });
   } catch (error) {
     console.log(error);
