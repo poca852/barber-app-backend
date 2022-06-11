@@ -21,11 +21,11 @@ const addUser = async (req = request, res = response) => {
     const data = {
       email,
       password: hash,
-      name,
+      name: name.toLowerCase(),
       phone,
       avatar,
       idRol: rolModel.id,
-      address
+      address: address.toLowerCase()
     }
 
     // insertamos en la base de datos el user

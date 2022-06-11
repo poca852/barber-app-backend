@@ -8,7 +8,7 @@ const login = async (req = request, res = response) => {
   try {
     const user = await UserModel.findOne({
       where: {
-        email,
+        email: email.toLowerCase(),
       },
       include: {
         model: Rolmodel,
@@ -67,7 +67,7 @@ const signGoogle = async (req = request, res = response) => {
       },
       defaults: {
         email: user.correo,
-        name: user.nombre,
+        name: user.nombre.toLowerCase(),
         phone: '',
         password: ":)",
         avatar: user.img,
