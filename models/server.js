@@ -20,6 +20,7 @@ class Server {
       purchaseOrder: "/api/purchaseOrder",
       pago: "/api/pago",
       favorite: "/api/favorite",
+      resetPassword: "/api/resetPassword"
     };
 
     // Conectar a base de datos
@@ -66,6 +67,7 @@ class Server {
     this.app.use(this.paths.purchaseOrder, require("../routes/purchaseOrder"));
     this.app.use(this.paths.pago, require("../routes/pago"));
     this.app.use(this.paths.favorite, require("../routes/favorite"));
+    this.app.use(this.paths.resetPassword, require("../routes/resetPassword"));
   }
 
   listen() {
