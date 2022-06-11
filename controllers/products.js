@@ -72,7 +72,7 @@ const addProduct = async (req = request, res = response) => {
 
 const getProducts = async (req = request, res = response) => {
 
-  const { name, state = true, all = false } = req.query;
+  const { name, state = true, all = false, category } = req.query;
 
   try {
 
@@ -97,6 +97,37 @@ const getProducts = async (req = request, res = response) => {
           attributes: ["categorie", "id"],
         },
       });
+    }
+
+    if(category){
+      const categoria = await CategorieModel.findOne({
+        where: {
+          categorie: category.toLowerCase()
+        }
+      })
+
+      if(!categoria){
+        return res.status(404).json({
+          ok: false,
+          msg: `No existe la categoria ${category}`
+        })
+      }
+
+      const product = products.filter(p => p.idCategorie === categoria.id)
+
+      if(product.length > 0){
+        return res.status(200).json({
+          ok: true,
+          product
+        })
+      }
+
+      if(product.length === 0){
+        return res.status(404).json({
+          ok: false,
+          msg: `No hay productos de la categoria ${category}`
+        })
+      }
     }
 
 
