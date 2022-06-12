@@ -2,6 +2,7 @@ const { response, request } = require("express");
 const bcryptjs = require("bcryptjs");
 const { generarJWT } = require('../helpers');
 const { UserModel, Rolmodel, DateModel, EmployeeModel, FavoriteModel } = require("../models");
+const RolModel = require("../models/rol");
 
 const addUser = async (req = request, res = response) => {
   const { email, password, name, phone, avatar, rol, address } = req.body;
@@ -55,9 +56,98 @@ const addUser = async (req = request, res = response) => {
 
 const getUsers = async (req = request, res = response) => {
 
-  const { all = false, name } = req.query
+  const { all = false, name, rol, state } = req.query
 
   try {
+
+    if(rol){
+      const rolModel = await RolModel.findOne({
+        where: {rol: rol.toUpperCase()}
+      })
+
+      const users = await UserModel.findAll({
+        where: {idRol: rolModel.id},
+        attributes: ["id", "name", "email", "phone", 'state', 'google', "address"],
+        include: [
+          {
+            model: Rolmodel,
+            attributes: ["rol"]
+          },
+          {
+            model: DateModel,
+            include: [
+              {
+                model: EmployeeModel,
+              },
+            ],
+          },
+          {
+            model: FavoriteModel,
+            attributes: {
+              exclude: ["FavoriteUser"],
+            },
+          },
+        ],
+      })
+
+      
+
+      if(!users){
+        return res.status(404).json({
+          ok: false,
+          msg: `No hay usuarios con el rol ${rol}`
+        })
+      }
+
+      return res.status(200).json({
+        ok: true,
+        users
+      })
+    }
+
+    if(state){
+
+      const users = await UserModel.findAll({
+        where: {state},
+        attributes: ["id", "name", "email", "phone", 'state', 'google', "address"],
+        include: [
+          {
+            model: Rolmodel,
+            attributes: ["rol"]
+          },
+          {
+            model: DateModel,
+            include: [
+              {
+                model: EmployeeModel,
+              },
+            ],
+          },
+          {
+            model: FavoriteModel,
+            attributes: {
+              exclude: ["FavoriteUser"],
+            },
+          },
+        ],
+      })
+
+      
+
+      if(users.length === 0){
+        return res.status(404).json({
+          ok: false,
+          msg: `No hay usuarios con el estado ${state}`
+        })
+      }
+
+      return res.status(200).json({
+        ok: true,
+        users
+      })
+    }
+
+    
 
     if (name) {
       const user = await UserModel.findOne({
