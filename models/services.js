@@ -30,13 +30,7 @@ const ServiceModel = sequelize.define('services', {
     },
 
     img: {
-        type: DataTypes.STRING,
-        defaultValue:'https://img2.freepng.es/20180405/pww/kisspng-hair-cutting-shears-scissors-computer-icons-scissor-5ac5cbedcb8877.1228515315229122378337.jpg',
-        allowNull: true,
-        // validate: {
-        //     isUrl: true,
-
-        //   }
+        type: DataTypes.STRING
     },
     state:{
         type: DataTypes.BOOLEAN,

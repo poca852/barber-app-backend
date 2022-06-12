@@ -10,7 +10,7 @@ router.post('/:coleccion/:id', [
   validarJWT,
   validarArchivoSubir,
   check('id', 'No es un id valido').isUUID(),
-  check('coleccion').custom(c => coleccionesPermitidas(c, ['usuarios', 'productos'])),
+  check('coleccion').custom(c => coleccionesPermitidas(c, ['usuarios', 'productos', 'servicios'])),
   validarCampos
 ], uploadImg)
 

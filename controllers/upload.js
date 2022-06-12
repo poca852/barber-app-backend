@@ -1,7 +1,7 @@
 const { request, response } = require('express');
 const cloudinary = require('cloudinary').v2;
 cloudinary.config(process.env.CLOUDINARY_URL)
-const { UserModel, ProductsModel, CategorieModel } = require('../models');
+const { UserModel, ProductsModel, CategorieModel, ServiceModel } = require('../models');
 
 const uploadImg = async (req = request, res = response) => {
   const { coleccion, id } = req.params;
@@ -36,6 +36,18 @@ const uploadImg = async (req = request, res = response) => {
         }
         break;
 
+      case 'servicios':
+        modelo = await ServiceModel.findByPk(id, {
+          attributes: ['name', 'detail', 'price', 'time', 'img', 'id', 'state']
+        })
+        if(!modelo){
+          return res.status(400).json({
+            ok: false,
+            msg: `No existe un servicio con el id ${id}`
+          })
+        }
+      break;
+
       default:
         return res.status(500).json({
           msg: 'Hable con el administrador'
@@ -50,7 +62,6 @@ const uploadImg = async (req = request, res = response) => {
     }
 
     const { tempFilePath } = req.files.archivo
-    console.log(tempFilePath)
     const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
 
     await modelo.update({ img: secure_url })

@@ -12,7 +12,7 @@ router.post('/', [
     check('detail', 'detail is required').not().isEmpty().isString(),
     check('price', 'price is required' ).not().isEmpty().isFloat(),
     check('time').custom(validarHora),
-    check('img').custom(validarImg),
+    // check('img').custom(validarImg),
     validarCampos
 ], addService)
 

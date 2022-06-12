@@ -3,7 +3,7 @@ const {ServiceModel} = require('../models');
 
 const addService = async(req = request, res = response) => {
 
-    const {name, detail, price, time, img, state} = req.body;
+    const {name, detail, price, time, state} = req.body;
     
     try {
 
@@ -23,7 +23,7 @@ const addService = async(req = request, res = response) => {
   }
 
   // insertamos en la base de datos el service
-    const service = await ServiceModel.create({name, detail, price, time, img, state});
+    const service = await ServiceModel.create({name, detail, price, time, state});
   
 
      return res.json({
@@ -33,7 +33,7 @@ const addService = async(req = request, res = response) => {
           detail: service.detail,
           price: service.price,
           time: service.time,
-          img: service.img,
+          // img: service.img,
           state: service.state
         })
 
