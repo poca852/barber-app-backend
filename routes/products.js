@@ -17,7 +17,7 @@ router.post('/', [
     check("categoria","La categoria es obligatoria").not().isEmpty(),
     check("categoria").custom(verficarCategoria),
     // david agrego esta verificacion, a la hora que se cree un nuevo producto verifico que la categoria si exista realmente
-    check('img').custom(validarImg),
+    // check('img').custom(validarImg),
     validarCampos
 ], addProduct)
 

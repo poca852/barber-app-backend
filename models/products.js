@@ -59,12 +59,6 @@ const ProductsModel = sequelize.define('products', {
 
     img: {
         type: DataTypes.STRING,
-        defaultValue:'https://m.media-amazon.com/images/I/71HMYf1sp1L._SX355_.jpg',
-        allowNull: true,
-        // validate: {
-        //     isUrl: true,
-
-        //   }
     }
 }, {timestamps: false});
 

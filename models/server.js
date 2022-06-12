@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const sequelize = require("../database/config");
+const fileUpload = require('express-fileupload');
 
 class Server {
   constructor() {
@@ -20,7 +21,8 @@ class Server {
       purchaseOrder: "/api/purchaseOrder",
       pago: "/api/pago",
       favorite: "/api/favorite",
-      resetPassword: "/api/resetPassword"
+      resetPassword: "/api/resetPassword",
+      upload: '/api/upload'
     };
 
     // Conectar a base de datos
@@ -37,7 +39,7 @@ class Server {
     try {
       await sequelize.authenticate();
 
-      //await sequelize.sync({ force: true }); //para pruebas descoment!!!
+      // await sequelize.sync({ force: true }); //para pruebas descoment!!!
 
     } catch (error) {
       console.log(error);
@@ -53,6 +55,12 @@ class Server {
 
     // Directorio Público
     this.app.use(express.static("public"));
+
+    this.app.use(fileUpload({
+      useTempFiles: true,
+      tempFileDir: '/tmp/',
+      createParentPath: true
+    }));
   }
 
   routes() {
@@ -68,6 +76,7 @@ class Server {
     this.app.use(this.paths.pago, require("../routes/pago"));
     this.app.use(this.paths.favorite, require("../routes/favorite"));
     this.app.use(this.paths.resetPassword, require("../routes/resetPassword"));
+    this.app.use(this.paths.upload, require("../routes/upload"));
   }
 
   listen() {

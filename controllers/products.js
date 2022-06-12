@@ -3,7 +3,7 @@ const { ProductsModel, CategorieModel } = require("../models");
 
 const addProduct = async (req = request, res = response) => {
 
-  const { name, detail, stock, price, categoria, img } = req.body;
+  const { name, detail, stock, price, categoria } = req.body;
 
   try {
 
@@ -42,7 +42,6 @@ const addProduct = async (req = request, res = response) => {
       detail,
       stock,
       price,
-      img,
       idCategorie: cat.id,
     });
 
@@ -53,7 +52,6 @@ const addProduct = async (req = request, res = response) => {
         stock: product.stock,
         price: product.price,
         idCategorie: product.idCategorie,
-        img: product.img,
         id: product.id,
         detail: product.detail,
         category: {
