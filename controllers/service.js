@@ -172,9 +172,13 @@ if (data.name){
       }
     });
 
+    const service = await ServiceModel.findByPk(id, {
+      attributes: ["name", "detail", "price", "time", "img", "id", "state"]
+    })
+
     res.status(201).json({
       ok: true,
-      msg: 'Cambios realizados correctamente'
+      service
     })
   } catch (error) {
     console.log(error);
