@@ -9,25 +9,59 @@ const fetch = require('node-fetch');
 const getPago = async (req = request, res = response) => {
 
   try {
-    const pago = await PagoModel.findAll({
-      where: {
-        pagado
-      },
-      attributes: ["formaPago", "idPurchaseOrder", "id", "pagado"]
-    });
+    const pago = await PagoModel.findAll();
 
-    res.status(200).json({
-      ok: true,
-      pago
-    })
+    let purchaseOrder = [];
+
+    for (let i = 0; i < pago.length; i++) {
+       purchaseOrder = [...purchaseOrder, await PurchaseOrder.findOne({
+      where:{
+        id: pago[i].idPurchaseOrder
+      },
+      include: [
+        {
+          model: PagoModel
+        },
+    ],
+  })]
+}
+let user = []
+for (let i = 0; i < purchaseOrder.length; i++) {
+    user = [...user, await UserModel.findOne({
+      where:{
+        id:purchaseOrder[i].idUser
+      },
+      attributes: ["name"]
+    })]
+    }
+
+   let order = purchaseOrder.map((p,i)=>{
+     const {transaction_amount, date_approved } = p.pago
+     const {name} = user[i]
+    return{
+      name,
+      transaction_amount,
+      date_approved
+    }
+   })
+    
+
+
+
+res.json({
+  ok:true,
+  order
+})
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: "Hable con el administrador",
-    });
+    res.json({
+      ok:false,
+      msg:"Hable con el administrador"
+    })
   }
-};
+    
+
+  }
 
 //Notificaciones al front
 const getPagoId = async (req = request, res = response) => {
@@ -69,7 +103,7 @@ const getPagoId = async (req = request, res = response) => {
 
 const confirmarPago = async (req = request, res = response) => {
 
-  let data = {
+  /*let data = {
     "id": 4877016187,
     "status": "closed",
     "external_reference": "",
@@ -139,7 +173,7 @@ const confirmarPago = async (req = request, res = response) => {
     "additional_info": "",
     "application_id": null,
     "order_status": "paid"
-  }
+  }*/
 
 
   try {
