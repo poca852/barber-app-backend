@@ -15,7 +15,7 @@ const ProductsModel = sequelize.define('products', {
         allowNull: false
     },
     detail:{
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
 
     },

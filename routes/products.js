@@ -9,7 +9,7 @@ router.post('/', [
     validarJWT,
     esAdminRol,
     check('name', 'name is required').not().isEmpty().isString(),
-    check("detail","detail is required").not().isEmpty().isString(),
+    check("detail","detail is required").not().isEmpty(),
     //check('stock', 'stock is required').not().isEmpty().isInt(),
 //consu agrego esta verificacion para que el stock no pueda ser menos a 0
     check('stock', 'stock must be an integer greater than -1').isInt({ gt: -1 }),

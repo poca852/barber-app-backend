@@ -15,7 +15,7 @@ const ServiceModel = sequelize.define('services', {
     },
 
     detail: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
 
