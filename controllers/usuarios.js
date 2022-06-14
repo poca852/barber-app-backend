@@ -26,11 +26,7 @@ const addUser = async (req = request, res = response) => {
       phone,
       avatar,
       idRol: rolModel.id,
-<<<<<<< HEAD
-      //address: address.toLowerCase()
-=======
       address
->>>>>>> 663394b476721acfd3d4dd6875bd9a3094857a99
     }
 
     // insertamos en la base de datos el user

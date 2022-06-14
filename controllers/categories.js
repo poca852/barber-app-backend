@@ -95,7 +95,7 @@ const getCategories = async (req = request, res = response, next) => {
   }
 };
 
-const putCategories = async (req = request, res = response) => {
+const patchCategories = async (req = request, res = response) => {
 
   // el id de la  categoria lo extraemos de los params
   const { idCategorie } = req.params;
@@ -115,7 +115,7 @@ const putCategories = async (req = request, res = response) => {
       
     const verificarNameCategorie  = allCategories.filter((c) => c.categorie.toLowerCase().includes(categorie.toLowerCase()));
   
-    console.log(verificarNameCategorie)
+
 
 
       // si el nombre ya existe entonces le mando una respuesta indicando que la categoria ya existe
@@ -158,5 +158,5 @@ const putCategories = async (req = request, res = response) => {
 module.exports = {
   addCategorie,
   getCategories,
-  putCategories
+  patchCategories
 };
