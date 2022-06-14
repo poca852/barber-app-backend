@@ -38,11 +38,17 @@ for (let i = 0; i < purchaseOrder.length; i++) {
    let order = purchaseOrder.map((p,i)=>{
      const {transaction_amount, date_approved } = p.pago
      const {name} = user[i]
+     let dia = date_approved.slice(5,7)
+     let mes = date_approved.slice(8,10)
+     let año = date_approved.slice(0,4)
+     let hora = date_approved.slice(11,-10)
+
+    let formatDate = dia +"-"+ mes +"-"+ año +" "+ hora
 
     return{
       name,
       total:transaction_amount,
-      date : date_approved
+      date : formatDate
     }
    })
     
