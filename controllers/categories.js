@@ -100,48 +100,24 @@ const patchCategories = async (req = request, res = response) => {
   // el id de la  categoria lo extraemos de los params
   const { idCategorie } = req.params;
 
-  console.log(idCategorie)
-
   const { categorie } = req.body;
 
   try {
 
-    const allCategories = await CategorieModel.findAll({
-      attributes: ["categorie", "id"]
-    })
-
-    if (categorie) {
-      // verifico que la categorie que queremos actualizar este disponible
-      
-    const verificarNameCategorie  = allCategories.filter((c) => c.categorie.toLowerCase().includes(categorie.toLowerCase()));
   
-
-
-
-      // si el nombre ya existe entonces le mando una respuesta indicando que la categoria ya existe
-      if (verificarNameCategorie.length) {
-        return res.status(400).json({
-          ok: false,
-          msg: `La categoria ${categorie} ya existe`
-        })
-      }
-    }
-
-
     await CategorieModel.update({categorie}, {
       where: {
         id: idCategorie
       }
     })
 
-    const categoria = 
-    await CategorieModel.findByPk(idCategorie, {
-      attributes: ["categorie"]})
+    const categoria = await CategorieModel.findByPk(idCategorie, {
+      attributes: ["categorie"]
+    })
 
     res.status(200).json({
       ok: true,
       categoria
-     
     })
 
   } catch (error) {

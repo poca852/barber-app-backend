@@ -121,6 +121,13 @@ const verficarCategoria = async (categorie = "") => {
   }
 };
 
+const existeCategoriaPorId = async(categoria = '') => {
+  const validacion = await CategorieModel.findByPk(categoria);
+  if(!validacion){
+    throw new Error(`La categoria con el id ${categoria} no existe`)
+  }
+}
+
 // david: esta funcion verifica que el producto exista
 const verificarProduct = async (idProduct = "") => {
   const productModel = await ProductsModel.findByPk(idProduct);
@@ -198,5 +205,6 @@ module.exports = {
    verificarServicio,
    verificarNameServicio,
    checkStock,
-   verificarCitaId
+   verificarCitaId,
+   existeCategoriaPorId
 }
