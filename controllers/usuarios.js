@@ -299,7 +299,7 @@ const putUser = async (req = request, res = response) => {
       name: user.name,
       phone: user.phone,
       rol: user.rol.rol,
-      img: user.avatar,
+      img: user.img,
       address: user.address
     });
   } catch (error) {
