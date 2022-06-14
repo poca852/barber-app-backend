@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const { validarCampos, 
         validarJWT,
         esAdminRol } = require('../middlewares');
-const { getCategories, addCategorie } = require('../controllers/categories.js');
+const { getCategories, addCategorie, putCategories } = require('../controllers/categories.js');
 
 router.post('/', [
     validarJWT,
@@ -19,6 +19,11 @@ router.get('/', [
 // router.get('/:id', [
 //     check('id', 'Id is not valid').isUUID(),
 // ], getCategorie)
+
+router.put('/:idCategorie', [
+    check('categorie', 'Categorie is not valid').isString(),
+], putCategories)
+
 
 
 
