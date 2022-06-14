@@ -35,19 +35,14 @@ for (let i = 0; i < purchaseOrder.length; i++) {
     })]
     }
 
-    const formatDate = (date)=>{
-      let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()+ " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-       return formatted_date;
-      }
-
    let order = purchaseOrder.map((p,i)=>{
      const {transaction_amount, date_approved } = p.pago
      const {name} = user[i]
-     let date = formatDate(date_approved)
+
     return{
       name,
       total:transaction_amount,
-      date
+      date : date_approved
     }
    })
     
