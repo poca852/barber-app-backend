@@ -4,6 +4,7 @@ const { validarCampos,
         validarJWT,
         esAdminRol } = require('../middlewares');
 const { getCategories, addCategorie, patchCategories } = require('../controllers/categories.js');
+const { existeCategoriaPorId } = require('../helpers/db-validators');
 
 router.post('/', [
     validarJWT,
@@ -21,7 +22,12 @@ router.get('/', [
 // ], getCategorie)
 
 router.patch('/:idCategorie', [
+    validarJWT,
+    esAdminRol,
+    check('idCategorie', 'No es un id valido').isUUID(),
+    check('idCategorie').custom(existeCategoriaPorId),
     check('categorie', 'Categorie is not valid').isString(),
+    validarCampos
 ], patchCategories)
 
 
