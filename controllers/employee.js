@@ -133,24 +133,22 @@ const getEmployee = async (req = request, res = response) => {
 // actualizar un empleado
 const putEmployee = async (req = request, res = response) => {
   const { idEmployee } = req.params;
-  const { ...data } = req.body;
+  const { name } = req.body;
 
   try {
 
-  if (data.name){
+  //   const existeEmployee = await EmployeeModel.findOne({
+  //     where: { name: data.name },
+  //   });
 
-    const existeEmployee = await EmployeeModel.findOne({
-      where: { name: data.name },
-    });
-
-    if (existeEmployee) {
-      return res.status(400).json({
-        ok: false,
-        msg: `El empleado ${data.name} ya existe`,
-      });
-    }
-  }
-    await EmployeeModel.update(data,
+  //   if (existeEmployee) {
+  //     return res.status(400).json({
+  //       ok: false,
+  //       msg: `El empleado ${data.name} ya existe`,
+  //     });
+  //   }
+  // }
+    await EmployeeModel.update({name},
       {
         where: { id: idEmployee },
       }
