@@ -133,10 +133,20 @@ const getEmployee = async (req = request, res = response) => {
 // actualizar un empleado
 const putEmployee = async (req = request, res = response) => {
   const { idEmployee } = req.params;
-  const { name } = req.body;
+  const { name, availability } = req.body;
 
   try {
 
+    if(availability){
+      await EmployeeModel.update({availability}, {
+        where: {id: idEmployee}
+      })
+
+      return res.status(200).json({
+        ok: true,
+        msg: 'Empleado Actualizado'
+      })
+    }
   //   const existeEmployee = await EmployeeModel.findOne({
   //     where: { name: data.name },
   //   });
