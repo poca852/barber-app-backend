@@ -6,7 +6,7 @@ const { addDate, getDates, deleteDate, getDate, dateFinished } = require("../con
 const { verificarCitaId } = require("../helpers/db-validators");
 
 router.post("/", [
-  check("date").custom(checkDates),
+  // check("date").custom(checkDates),
   check("idUser").isUUID(),
   check("idEmployee").isUUID(),
   check ("service").isString().not().isEmpty(),
