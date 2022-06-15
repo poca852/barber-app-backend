@@ -6,7 +6,7 @@ const {
   EmployeeModel,
 } = require("../models");
 
-//const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
 
 
 const addDate = async (req = request, res = response) => {
@@ -58,40 +58,40 @@ const addDate = async (req = request, res = response) => {
 
     //----codigo mail
 
-    // const url = "https://barber-app-henry.herokuapp.com";
+    const url = "https://barber-app-henry.herokuapp.com";
     
-    // contentHTML = `<h1>Confirmación reserva Cita</h1>
-    //     <ul>
+    contentHTML = `<h1>Confirmación reserva Cita</h1>
+        <ul>
 
-    //     <p style= "color: red"> Tu reserva se ha realizado con exito!! Para mas información clickea aqui 👇: </p>
-    //     <a href="${url}"> ${url}</a>
+        <p style= "color: red"> Tu reserva se ha realizado con exito!! Para mas información clickea aqui 👇: </p>
+        <a href="${url}"> ${url}</a>
 
-    //         <li>Nombre : ${foundUser.dataValues.name}</li>
-    //         <li>Mail : ${foundUser.dataValues.email}</li>
-    //         <li>Servicio :${service}</li>
-    //         <li>Fecha:${date}</li>
+            <li>Nombre : ${foundUser.dataValues.name}</li>
+            <li>Mail : ${foundUser.dataValues.email}</li>
+            <li>Servicio :${service}</li>
+            <li>Fecha:${date}</li>
             
-    //     </ul>
-    //     <p></p>
-    //     `;
+        </ul>
+        <p></p>
+        `;
 
-    // let transporter = nodemailer.createTransport({
-    //   host: "smtp.gmail.com",
-    //   port: 465,
-    //   secure: true, // true for 465, false for other ports
-    //   auth: {
-    //     user: "barberapphenry@gmail.com", // generated ethereal user
-    //     pass: "kxztvsoaqzezigsc", // generated ethereal password
-    //   },
-    // });
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: "barberapphenry@gmail.com", // generated ethereal user
+        pass: "kxztvsoaqzezigsc", // generated ethereal password
+      },
+    });
 
-    // // send mail with defined transport object
-    // let info = await transporter.sendMail({
-    //   from: '"Confirmación Cita 👍" <barberapphenry@gmail.com>', // sender address
-    //   to: `${foundUser.dataValues.email}`, // list of receivers
-    //   subject: `Hello ${foundUser.dataValues.name} ✔`, // Subject line
-    //   html: contentHTML, // html body
-    // });
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: '"Confirmación Cita 👍" <barberapphenry@gmail.com>', // sender address
+      to: `${foundUser.dataValues.email}`, // list of receivers
+      subject: `Hello ${foundUser.dataValues.name} ✔`, // Subject line
+      html: contentHTML, // html body
+    });
 
 
  res.status(200).json({
