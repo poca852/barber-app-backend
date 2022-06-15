@@ -80,14 +80,14 @@ const addDate = async (req = request, res = response) => {
       port: 465,
       secure: true, // true for 465, false for other ports
       auth: {
-        user: "barberapphenry@gmail.com", // generated ethereal user
-        pass: "kxztvsoaqzezigsc", // generated ethereal password
+        user: "hbarberapp@gmail.com", // generated ethereal user
+        pass: "kgndpwcodkeytdiv", // generated ethereal password
       },
     });
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-      from: '"Confirmación Cita 👍" <barberapphenry@gmail.com>', // sender address
+      from: '"Confirmación Cita 👍" <hbarberapp@gmail.com>', // sender address
       to: `${foundUser.dataValues.email}`, // list of receivers
       subject: `Hello ${foundUser.dataValues.name} ✔`, // Subject line
       html: contentHTML, // html body

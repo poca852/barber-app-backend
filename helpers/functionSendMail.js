@@ -31,15 +31,15 @@ const transporter =  nodemailer.createTransport({
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-              user: "barberapphenry@gmail.com", // generated ethereal user
-              pass: "kxztvsoaqzezigsc", // generated ethereal password
+              user: "hbarberapp@gmail.com", // generated ethereal user
+              pass: "kgndpwcodkeytdiv", // generated ethereal password
             },
           });                                             
 
 
    // send mail with defined transport object
 const info = await transporter.sendMail({
-from: '"Compra realizada con exito 😎" <barberapphenry@gmail.com>', // sender address
+from: '"Compra realizada con exito 😎" <hbarberapp@gmail.com>', // sender address
   to: `${email}`,
   subject: "Pago realizado ✔", // Subject line
   

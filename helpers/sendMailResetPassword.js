@@ -8,13 +8,13 @@ const sendEmailresetPass = async (email, subject, text) => {
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-              user: "barberapphenry@gmail.com", // generated ethereal user
-              pass: "kxztvsoaqzezigsc", // generated ethereal password
+              user: "hbarberapp@gmail.com", // generated ethereal user
+              pass: "kgndpwcodkeytdiv", // generated ethereal password
             },
           });  
 
        const isSend = await transporter.sendMail({
-            from: "barberapphenry@gmail.com",
+            from: "hbarberapp@gmail.com",
             to: email,
             subject: subject,
             text: text,
