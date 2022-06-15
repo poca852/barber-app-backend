@@ -26,8 +26,8 @@ router.get('/:id', [
 
 //modificar un servicio
 router.put('/:id', [
-    //validarJWT,
-    //esAdminRol,
+    validarJWT,
+    esAdminRol,
     check('id', 'No es un id valido').isUUID(),
     check('id').custom(verificarServicio),
     validarCampos
@@ -35,8 +35,8 @@ router.put('/:id', [
   
   // eliminar un servicio se validan dos cosas, una que sea un uuid y segundo que estemos eliminando un servicio que realmente exista
   router.delete('/:id', [
-    //validarJWT,
-    //esAdminRol, 
+    validarJWT,
+    esAdminRol, 
     check('id', 'No es un id valido').isUUID(),
     check('id').custom(verificarServicio),
     validarCampos

@@ -76,7 +76,7 @@ const getEmployees = async (req = request, res = response) => {
       where: { availability: state },
       include: [
         {
-          model: DateModel,
+          model: DateModel
         },
       ],
     });

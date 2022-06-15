@@ -26,7 +26,7 @@ UserModel.belongsToMany(FavoriteModel, { through: "FavoriteUser" });
 FavoriteModel.belongsToMany(UserModel, { through: "FavoriteUser" });
 
 //relation cita - employee 1:1
-EmployeeModel.hasOne(DateModel, { foreignKey: "idEmployee" });
+EmployeeModel.hasMany(DateModel, { foreignKey: "idEmployee" });
 DateModel.belongsTo(EmployeeModel, { foreignKey: "idEmployee" });
 
 //relation categorie - products 1:n

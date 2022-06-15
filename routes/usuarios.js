@@ -61,7 +61,7 @@ router.delete('/:idUser', [
 
 
 router.patch('/:idUser', [
-    //validarJWT,
+    validarJWT,
     check('idUser', 'No es un id valido').isUUID(),
     check('idUser').custom(verificarId),
     validarCampos
