@@ -6,8 +6,8 @@ const {addService,getServices, getService,putService ,deleteService} = require('
 const {verificarServicio} = require("../helpers/db-validators")
 
 router.post('/', [
-    //validarJWT,
-    //esAdminRol,
+    validarJWT,
+    esAdminRol,
     check('name', 'name is required').not().isEmpty().isString(),
     check('detail', 'detail is required').not().isEmpty(),
     check('price', 'price is required' ).not().isEmpty().isFloat(),
